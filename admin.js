@@ -1,67 +1,90 @@
-const tabs = document.querySelectorAll(".tab");
-const sections = document.querySelectorAll(".section");
+const STORAGE_KEY = "STUDIO_STATE";
 
-const inputs = document.querySelectorAll("input, textarea, select");
-
-// TAB SYSTEM (FIXED)
-tabs.forEach(t=>{
-t.onclick=()=>{
-
-tabs.forEach(x=>x.classList.remove("active"));
-sections.forEach(s=>s.classList.remove("active"));
-
-t.classList.add("active");
-
-document.getElementById(
-t.dataset.tab
-).classList.add("active");
-
-}
-});
-
-// SAVE DATA
-function saveData(){
-
-const data = {
-width: width.value,
-height: height.value,
-radius: radius.value,
-title: title.value,
-subtitle: subtitle.value,
-titleFont: titleFont.value,
-subtitleFont: subtitleFont.value,
-bgColor: bgColor.value,
-titleColor: titleColor.value,
-subtitleColor: subtitleColor.value,
-transition: transition.value
+// default state
+const defaultState = {
+width:1200,
+height:200,
+radius:20,
+title:"BREAKING NEWS",
+subtitle:"Live Broadcast",
+titleFont:"IRANSans",
+subtitleFont:"IRANSans",
+bgColor:"#1e1e1e",
+titleColor:"#ffffff",
+subtitleColor:"#cccccc",
+transition:"fade"
 };
 
-localStorage.setItem("broadcast_pro", JSON.stringify(data));
-
+// load state
+function getState(){
+return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState;
 }
 
-// AUTO SAVE
-inputs.forEach(i=>{
-i.addEventListener("input", saveData);
+// save state
+function setState(state){
+localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+// apply UI from state
+function loadUI(){
+
+const s = getState();
+
+Object.keys(s).forEach(k=>{
+let el = document.getElementById(k);
+if(el) el.value = s[k];
 });
 
-// MANUAL SAVE BUTTON
-document.getElementById("saveBtn").onclick = saveData;
-
-
-// LOAD DEFAULTS
-function load(){
-
-let data = JSON.parse(localStorage.getItem("broadcast_pro"));
-
-if(!data) return;
-
-// set values if exist
-for(let key in data){
-let el = document.getElementById(key);
-if(el) el.value = data[key];
 }
 
+// collect UI
+function collect(){
+
+return {
+width:+width.value,
+height:+height.value,
+radius:+radius.value,
+title:title.value,
+subtitle:subtitle.value,
+titleFont:titleFont.value,
+subtitleFont:subtitleFont.value,
+bgColor:bgColor.value,
+titleColor:titleColor.value,
+subtitleColor:subtitleColor.value,
+transition:transition.value
+};
+
 }
 
-load();
+// save live
+function save(){
+setState(collect());
+}
+
+// EVENTS (IMPORTANT FIX)
+document.querySelectorAll("input,textarea,select")
+.forEach(el=>{
+el.addEventListener("input", save);
+});
+
+// TAB SYSTEM FIX
+document.querySelectorAll(".tab").forEach(t=>{
+t.onclick=()=>{
+document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+
+t.classList.add("active");
+document.getElementById(t.dataset.tab).classList.add("active");
+};
+});
+
+// RESET
+document.getElementById("resetBtn").onclick=()=>{
+setState(defaultState);
+loadUI();
+save();
+};
+
+// INIT
+loadUI();
+save();
