@@ -1,0 +1,127 @@
+@font-face{
+
+    font-family:"Vazirmatn";
+
+    src:url("assets/fonts/Vazirmatn-Regular.ttf");
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+
+    background:#0b1120;
+
+    color:white;
+
+    font-family:"Vazirmatn";
+
+    direction:rtl;
+}
+
+.container{
+
+    display:flex;
+
+    min-height:100vh;
+}
+
+.sidebar{
+
+    width:260px;
+
+    background:#111827;
+
+    padding:30px;
+
+    border-left:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.content{
+
+    flex:1;
+
+    padding:40px;
+}
+
+.card{
+
+    background:#111827;
+
+    border-radius:24px;
+
+    padding:30px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+    0 0 30px rgba(0,0,0,0.35);
+}
+
+h3{
+
+    margin-top:0;
+}
+
+label{
+
+    display:block;
+
+    margin-top:20px;
+    margin-bottom:10px;
+}
+
+input,
+select{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:14px;
+
+    font-size:18px;
+
+    background:#1f2937;
+
+    color:white;
+
+    font-family:"Vazirmatn";
+}
+
+button{
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    font-size:22px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color:white;
+
+    cursor:pointer;
+
+    font-family:"Vazirmatn";
+}
+
+button:hover{
+
+    opacity:.9;
+}
