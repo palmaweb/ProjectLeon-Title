@@ -1,222 +1,44 @@
-// admin.js
+function saveData(){
 
-const navItems = document.querySelectorAll(".navItem");
-const tabs = document.querySelectorAll(".tab");
+let data = {
 
-navItems.forEach(btn=>{
+width:
+document.getElementById("width").value,
 
-btn.onclick=()=>{
+height:
+document.getElementById("height").value,
 
-navItems.forEach(n=>n.classList.remove("active"));
-tabs.forEach(t=>t.classList.remove("active"));
+bgColor:
+document.getElementById("bgColor").value,
 
-btn.classList.add("active");
+title:
+document.getElementById("title").value,
 
-document
-.getElementById(btn.dataset.tab)
-.classList.add("active");
+subtitle:
+document.getElementById("subtitle").value,
+
+titleColor:
+document.getElementById("titleColor").value,
+
+subtitleColor:
+document.getElementById("subtitleColor").value,
+
+titleSize:
+document.getElementById("titleSize").value,
+
+subtitleSize:
+document.getElementById("subtitleSize").value,
+
+logo:
+document.getElementById("logo").value
 
 };
 
-});
-
-
-// LIVE PREVIEW
-
-const widthInput =
-document.getElementById("width");
-
-const heightInput =
-document.getElementById("height");
-
-const radiusInput =
-document.getElementById("radius");
-
-const opacityInput =
-document.getElementById("opacity");
-
-const mainBg =
-document.getElementById("mainBg");
-
-const overlay =
-document.getElementById("previewOverlay");
-
-function updatePreview(){
-
-overlay.style.width =
-widthInput.value + "px";
-
-overlay.style.height =
-heightInput.value + "px";
-
-overlay.style.borderRadius =
-radiusInput.value + "px";
-
-overlay.style.opacity =
-opacityInput.value;
-
-overlay.style.background =
-mainBg.value;
-
-
-// TITLE
-
-document.getElementById(
-"previewTitle"
-).innerText =
-document.getElementById(
-"titleTextInput"
-).value;
-
-document.getElementById(
-"previewTitle"
-).style.fontSize =
-document.getElementById(
-"titleSize"
-).value + "px";
-
-document.getElementById(
-"previewTitle"
-).style.color =
-document.getElementById(
-"titleColor"
-).value;
-
-
-// SUBTITLE
-
-document.getElementById(
-"previewSubtitle"
-).innerText =
-document.getElementById(
-"subtitleInput"
-).value;
-
-document.getElementById(
-"previewSubtitle"
-).style.fontSize =
-document.getElementById(
-"subtitleSize"
-).value + "px";
-
-document.getElementById(
-"previewSubtitle"
-).style.color =
-document.getElementById(
-"subtitleColor"
-).value;
-
-
-// LOGO
-
-document.getElementById(
-"previewLogo"
-).src =
-document.getElementById(
-"logoURL"
-).value;
-
-
-// LOGO BG
-
-document.getElementById(
-"previewLeft"
-).style.background =
-document.getElementById(
-"logoBg"
-).value;
-
-
-// CLOCK BG
-
-document.getElementById(
-"previewClock"
-).style.background =
-document.getElementById(
-"clockBg"
-).value;
-
-
-// CLOCK COLOR
-
-document.getElementById(
-"previewClock"
-).style.color =
-document.getElementById(
-"clockColor"
-).value;
-
-}
-
-document.querySelectorAll(
-"input, textarea, select"
-).forEach(el=>{
-
-el.addEventListener(
-"input",
-updatePreview
+localStorage.setItem(
+"broadcastData",
+JSON.stringify(data)
 );
 
-});
-
-updatePreview();
-
-
-// CLOCK
-
-const clocks = [
-
-{
-name:"IRAN",
-zone:"Asia/Tehran"
-},
-
-{
-name:"ISRAEL",
-zone:"Asia/Jerusalem"
-},
-
-{
-name:"EUROPE",
-zone:"Europe/Berlin"
-},
-
-{
-name:"USA",
-zone:"America/New_York"
-}
-
-];
-
-let clockIndex = 0;
-
-function updateClock(){
-
-let c = clocks[clockIndex];
-
-let time = new Date()
-.toLocaleTimeString(
-'en-US',
-{
-timeZone:c.zone
-}
-);
-
-document.getElementById(
-"previewCountry"
-).innerText = c.name;
-
-document.getElementById(
-"previewTime"
-).innerText = time;
-
-clockIndex++;
-
-if(clockIndex >= clocks.length){
-clockIndex = 0;
-}
+alert("Saved");
 
 }
-
-setInterval(updateClock,10000);
-updateClock();
