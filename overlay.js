@@ -2,8 +2,9 @@ function loadData(){
 
     let title = localStorage.getItem("title");
     let subtitle = localStorage.getItem("subtitle");
-    let color = localStorage.getItem("bgcolor");
-    let logo = localStorage.getItem("logo");
+
+    let panelColor = localStorage.getItem("panelColor");
+    let leftColor = localStorage.getItem("leftColor");
 
     if(title){
         document.getElementById("title").innerText = title;
@@ -13,13 +14,14 @@ function loadData(){
         document.getElementById("subtitle").innerText = subtitle;
     }
 
-    if(color){
-        document.getElementById("news-box").style.background = color;
+    if(panelColor){
+        document.getElementById("news-box").style.background = panelColor;
     }
 
-    if(logo){
-        document.getElementById("logo").src = logo;
+    if(leftColor){
+        document.getElementById("left-box").style.background = leftColor;
     }
+
 }
 
 loadData();
