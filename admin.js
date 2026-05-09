@@ -1,39 +1,67 @@
 function saveData(){
 
-    localStorage.setItem(
-        "title",
-        document.getElementById("title").value
-    );
+    const data = {
 
-    localStorage.setItem(
-        "subtitle",
-        document.getElementById("subtitle").value
-    );
+        title:
+        document.getElementById("title").value,
 
-    localStorage.setItem(
-        "panelColor",
-        document.getElementById("panelColor").value
-    );
+        subtitle:
+        document.getElementById("subtitle").value,
 
-    localStorage.setItem(
-        "titleColor",
-        document.getElementById("titleColor").value
-    );
+        panelColor:
+        document.getElementById("panelColor").value,
 
-    localStorage.setItem(
-        "subtitleColor",
-        document.getElementById("subtitleColor").value
-    );
+        titleColor:
+        document.getElementById("titleColor").value,
 
-    localStorage.setItem(
-        "logo",
-        document.getElementById("logo").value
-    );
+        subtitleColor:
+        document.getElementById("subtitleColor").value,
 
-    localStorage.setItem(
-        "live",
+        logo:
+        document.getElementById("logo").value,
+
+        live:
         document.getElementById("live").value
+    };
+
+    localStorage.setItem(
+        "overlayData",
+        JSON.stringify(data)
     );
 
     alert("ذخیره شد");
 }
+
+function loadForm(){
+
+    const saved =
+    localStorage.getItem("overlayData");
+
+    if(!saved) return;
+
+    const data =
+    JSON.parse(saved);
+
+    document.getElementById("title").value =
+    data.title || "";
+
+    document.getElementById("subtitle").value =
+    data.subtitle || "";
+
+    document.getElementById("panelColor").value =
+    data.panelColor || "#ffffff";
+
+    document.getElementById("titleColor").value =
+    data.titleColor || "#111111";
+
+    document.getElementById("subtitleColor").value =
+    data.subtitleColor || "#555555";
+
+    document.getElementById("logo").value =
+    data.logo || "";
+
+    document.getElementById("live").value =
+    data.live || "on";
+}
+
+loadForm();
