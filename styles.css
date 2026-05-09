@@ -1,4 +1,128 @@
+@font-face{
+
+    font-family:"Vazirmatn";
+
+    src:url("fonts/Vazirmatn-Regular.ttf");
+}
+
+*{
+    box-sizing:border-box;
+}
+
 body{
+
+    margin:0;
+
+    background:transparent;
+
+    overflow:hidden;
+
+    font-family:"Vazirmatn";
+}
+
+#news-box{
+
+    width:1200px;
+    height:200px;
+
+    background:#ffffff;
+
+    position:absolute;
+
+    left:50%;
+    bottom:40px;
+
+    transform:translateX(-50%);
+
+    border-radius:34px;
+
+    display:flex;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    border:2px solid rgba(255,255,255,0.2);
+
+    box-shadow:
+    0 10px 40px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+
+    backdrop-filter:blur(8px);
+}
+
+#logo-area{
+
+    width:230px;
+    height:100%;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+}
+
+#logo{
+
+    width:140px;
+
+    max-height:140px;
+
+    object-fit:contain;
+}
+
+#divider{
+
+    width:2px;
+    height:75%;
+
+    background:#dddddd;
+
+    border-radius:10px;
+}
+
+#text-area{
+
+    flex:1;
+
+    padding:0 45px;
+
+    direction:rtl;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+}
+
+#title{
+
+    margin:0;
+
+    font-size:56px;
+
+    line-height:1.2;
+
+    color:#111111;
+
+    font-weight:900;
+}
+
+#subtitle{
+
+    margin-top:14px;
+
+    font-size:28px;
+
+    line-height:1.5;
+
+    color:#555555;
+
+    font-weight:500;
+}body{
     margin:0;
     background:transparent;
     font-family:tahoma;
