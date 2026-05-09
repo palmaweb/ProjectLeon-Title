@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/fonts/fonts.css">
   <title>Broadcast Display</title>
 
   <style>
@@ -14,39 +13,50 @@
       font-family: Vazirmatn, sans-serif;
     }
 
-    .container {
-  position: relative;
-}
+    /* OUTER WRAPPER */
+    .container{
+      position:fixed;
+      bottom:60px;
+      left:50%;
+      transform:translateX(-50%);
+      border-radius:18px;
+      overflow:hidden;
+      display:flex;
+      align-items:stretch;
+      box-shadow:0 0 25px rgba(0,0,0,0.4);
+    }
 
-.container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--bg-color);
-  opacity: var(--bg-opacity);
-  z-index: 0;
-}
+    /* BACKGROUND LAYER (ONLY THIS GETS OPACITY) */
+    .bg-layer{
+      position:absolute;
+      inset:0;
+      z-index:0;
+    }
 
-.content {
-  position: relative;
-  z-index: 2;
-}
+    /* CONTENT LAYER (NO OPACITY AFFECT) */
+    .content-layer{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:center;
+    }
 
+    /* LOGO */
     .logo{
       width:90px;
-      height:100%;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      background:rgba(0,0,0,0.25);
       padding:10px;
+      background:rgba(0,0,0,0.2);
     }
 
     .logo img{
       width:55px;
       height:55px;
       object-fit:contain;
+      display:none;
     }
 
     .clock{
@@ -56,18 +66,22 @@
       opacity:0.9;
     }
 
+    /* TEXT AREA CENTERED */
     .content{
       padding:10px 18px;
       display:flex;
       flex-direction:column;
+      align-items:center;
       justify-content:center;
-      gap:4px;
-      min-width:500px;
+      text-align:center;
+      min-width:520px;
     }
 
+    /* TITLE ROW */
     .titleRow{
       display:flex;
       align-items:center;
+      justify-content:center;
       gap:10px;
     }
 
@@ -88,39 +102,50 @@
       font-size:18px;
       color:#ddd;
       opacity:0.9;
+      margin-top:4px;
     }
 
-    /* simple transitions */
+    /* SIMPLE ANIMATION */
     .fade{
-      animation:fadeIn 0.5s ease;
+      animation:fadeIn 0.4s ease;
     }
 
     @keyframes fadeIn{
       from{opacity:0; transform:translateY(10px)}
       to{opacity:1; transform:translateY(0)}
     }
+
   </style>
 </head>
 <body>
 
 <div class="container" id="box">
 
-  <div class="logo">
-    <img id="logoImg" src="" />
-    <div class="clock" id="clock">--:--</div>
-  </div>
+  <!-- BACKGROUND LAYER -->
+  <div class="bg-layer" id="bg"></div>
 
-  <div class="content">
+  <!-- CONTENT -->
+  <div class="content-layer">
 
-    <div class="titleRow">
-      <img id="iconImg" class="icon" />
-      <div class="title" id="titleText">Loading...</div>
+    <!-- LOGO -->
+    <div class="logo">
+      <img id="logoImg">
+      <div class="clock" id="clock">--:--</div>
     </div>
 
-    <div class="subtitle" id="subtitleText"></div>
+    <!-- TEXT -->
+    <div class="content">
+
+      <div class="titleRow">
+        <div class="title" id="titleText"></div>
+        <img id="iconImg" class="icon">
+      </div>
+
+      <div class="subtitle" id="subtitleText"></div>
+
+    </div>
 
   </div>
-
 </div>
 
 <script>
@@ -144,39 +169,50 @@ function load(){
 function apply(){
 
   const box = document.getElementById("box");
+  const bg = document.getElementById("bg");
 
-  // container style
+  /* CONTAINER SIZE */
   if(state.container){
     box.style.width = state.container.width + "px";
     box.style.height = state.container.height + "px";
-    box.style.background = state.container.bgColor;
-    box.style.opacity = state.container.opacity;
   }
 
-  // logo
+  /* BACKGROUND ONLY OPACITY */
+  if(state.container){
+    bg.style.background = state.container.bgColor || "rgba(0,0,0,0.5)";
+    bg.style.opacity = state.container.opacity;
+  }
+
+  /* LOGO SAFE */
+  const logo = document.getElementById("logoImg");
   if(state.logo?.url){
-    document.getElementById("logoImg").src = state.logo.url;
+    logo.src = state.logo.url;
+    logo.style.display = "block";
+  } else {
+    logo.style.display = "none";
   }
 
-  // title
+  /* TITLE */
+  const title = document.getElementById("titleText");
   if(state.title){
-    document.getElementById("titleText").innerText = state.title.text || "";
-    document.getElementById("titleText").style.fontSize = state.title.size + "px";
-    document.getElementById("titleText").style.color = state.title.color;
-    document.getElementById("titleText").style.fontWeight = state.title.weight;
+    title.innerText = state.title.text || "";
+    title.style.fontSize = (state.title.size || 28) + "px";
+    title.style.color = state.title.color || "#fff";
+    title.style.fontWeight = state.title.weight || 700;
   }
 
-  // subtitle
+  /* SUBTITLE */
+  const sub = document.getElementById("subtitleText");
   if(state.subtitle){
-    document.getElementById("subtitleText").innerText = state.subtitle.text || "";
-    document.getElementById("subtitleText").style.fontSize = state.subtitle.size + "px";
-    document.getElementById("subtitleText").style.color = state.subtitle.color;
+    sub.innerText = state.subtitle.text || "";
+    sub.style.fontSize = (state.subtitle.size || 18) + "px";
+    sub.style.color = state.subtitle.color || "#ddd";
   }
 
-  // icon
+  /* ICON SAFE */
   const icon = document.getElementById("iconImg");
-
   if(state.icon && state.icon.type !== "off"){
+
     icon.style.display = "block";
 
     if(state.icon.type === "custom" && state.icon.url){
@@ -187,19 +223,19 @@ function apply(){
     if(state.icon.type === "breaking") icon.src = "https://upload.wikimedia.org/wikipedia/commons/3/3b/Red_pog.svg";
     if(state.icon.type === "alert") icon.src = "https://upload.wikimedia.org/wikipedia/commons/5/5f/Red_warning_icon.svg";
 
-    if(state.icon.size) icon.style.width = state.icon.size + "px";
+    icon.style.width = (state.icon.size || 22) + "px";
+
   } else {
     icon.style.display = "none";
   }
 
-  // clock
+  /* CLOCK */
   if(state.clock?.enabled){
     startClock();
   }
 
-  // transition
   box.classList.add("fade");
-  setTimeout(()=>box.classList.remove("fade"),500);
+  setTimeout(()=>box.classList.remove("fade"),400);
 }
 
 function startClock(){
@@ -209,8 +245,8 @@ function startClock(){
   setInterval(()=>{
 
     const zone = zones[clockIndex % zones.length];
-    const now = new Date();
 
+    const now = new Date();
     const utc = now.getTime() + now.getTimezoneOffset()*60000;
     const local = new Date(utc + (3600000 * zone.offset));
 
