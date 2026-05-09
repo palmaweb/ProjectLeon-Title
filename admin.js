@@ -1,16 +1,26 @@
-// Tabs
-document.querySelectorAll(".tab").forEach(btn=>{
-btn.onclick=()=>{
-document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
-document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+const tabs = document.querySelectorAll(".tab");
+const sections = document.querySelectorAll(".section");
 
-btn.classList.add("active");
-document.getElementById(btn.dataset.tab).classList.add("active");
+const inputs = document.querySelectorAll("input, textarea, select");
+
+// TAB SYSTEM (FIXED)
+tabs.forEach(t=>{
+t.onclick=()=>{
+
+tabs.forEach(x=>x.classList.remove("active"));
+sections.forEach(s=>s.classList.remove("active"));
+
+t.classList.add("active");
+
+document.getElementById(
+t.dataset.tab
+).classList.add("active");
+
 }
 });
 
-// Save live data
-function save(){
+// SAVE DATA
+function saveData(){
 
 const data = {
 width: width.value,
@@ -23,17 +33,35 @@ subtitleFont: subtitleFont.value,
 bgColor: bgColor.value,
 titleColor: titleColor.value,
 subtitleColor: subtitleColor.value,
-leftColor: leftColor.value,
-rightColor: rightColor.value,
 transition: transition.value
 };
 
-localStorage.setItem("overlay", JSON.stringify(data));
+localStorage.setItem("broadcast_pro", JSON.stringify(data));
+
 }
 
-document.querySelectorAll("input,textarea,select")
-.forEach(el=>{
-el.addEventListener("input", save);
+// AUTO SAVE
+inputs.forEach(i=>{
+i.addEventListener("input", saveData);
 });
 
-save();
+// MANUAL SAVE BUTTON
+document.getElementById("saveBtn").onclick = saveData;
+
+
+// LOAD DEFAULTS
+function load(){
+
+let data = JSON.parse(localStorage.getItem("broadcast_pro"));
+
+if(!data) return;
+
+// set values if exist
+for(let key in data){
+let el = document.getElementById(key);
+if(el) el.value = data[key];
+}
+
+}
+
+load();
