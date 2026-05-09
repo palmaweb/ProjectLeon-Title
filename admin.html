@@ -1,18 +1,37 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Admin Panel</title>
+<title>Broadcast Panel</title>
 
 <link rel="stylesheet" href="admin.css">
+
 </head>
 <body>
 
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+<h2>CONTROL PANEL</h2>
+
+<button class="tab active" data-tab="overlay">Overlay</button>
+<button class="tab" data-tab="text">Text</button>
+<button class="tab" data-tab="fonts">Fonts</button>
+<button class="tab" data-tab="colors">Colors</button>
+<button class="tab" data-tab="animation">Animation</button>
+
+</div>
+
+<!-- SETTINGS -->
 <div class="panel">
 
-<h1>Broadcast Admin</h1>
+<!-- OVERLAY -->
+<div class="section active" id="overlay">
+
+<h3>Overlay Size</h3>
 
 <label>Width</label>
 <input type="number" id="width" value="1200">
@@ -20,33 +39,91 @@
 <label>Height</label>
 <input type="number" id="height" value="200">
 
-<label>Background Color</label>
-<input type="color" id="bgColor" value="#1f1f1f">
+<label>Radius</label>
+<input type="number" id="radius" value="20">
 
-<label>Title</label>
-<input type="text" id="title">
+</div>
+
+<!-- TEXT -->
+<div class="section" id="text">
+
+<h3>Text Content</h3>
+
+<label>Main Title</label>
+<input type="text" id="title" value="BREAKING NEWS">
 
 <label>Subtitle</label>
-<textarea id="subtitle"></textarea>
+<textarea id="subtitle">Live broadcast text</textarea>
+
+</div>
+
+<!-- FONTS -->
+<div class="section" id="fonts">
+
+<h3>Fonts</h3>
+
+<label>Title Font</label>
+<select id="titleFont">
+<option value="IRANSans">IRANSans</option>
+<option value="Vazir">Vazir</option>
+<option value="Yekan">Yekan</option>
+<option value="Ray">Ray</option>
+</select>
+
+<label>Subtitle Font</label>
+<select id="subtitleFont">
+<option value="IRANSans">IRANSans</option>
+<option value="Vazir">Vazir</option>
+<option value="Yekan">Yekan</option>
+<option value="Ray">Ray</option>
+</select>
+
+</div>
+
+<!-- COLORS -->
+<div class="section" id="colors">
+
+<h3>Colors</h3>
+
+<label>Background</label>
+<input type="color" id="bgColor" value="#1e1e1e">
 
 <label>Title Color</label>
 <input type="color" id="titleColor" value="#ffffff">
 
 <label>Subtitle Color</label>
-<input type="color" id="subtitleColor" value="#ffffff">
+<input type="color" id="subtitleColor" value="#cccccc">
 
-<label>Title Size</label>
-<input type="number" id="titleSize" value="56">
+<label>Left Panel Color</label>
+<input type="color" id="leftColor" value="#111111">
 
-<label>Subtitle Size</label>
-<input type="number" id="subtitleSize" value="28">
+<label>Right Panel Color</label>
+<input type="color" id="rightColor" value="#1a1a1a">
 
-<label>Logo URL</label>
-<input type="text" id="logo">
+</div>
 
-<button onclick="saveData()">
-SAVE
-</button>
+<!-- ANIMATION -->
+<div class="section" id="animation">
+
+<h3>Transitions</h3>
+
+<select id="transition">
+<option value="fade">Fade</option>
+<option value="slide">Slide</option>
+<option value="zoom">Zoom</option>
+<option value="blur">Blur</option>
+</select>
+
+</div>
+
+</div>
+
+<!-- LIVE PREVIEW -->
+<div class="preview">
+
+<iframe src="index.html"></iframe>
+
+</div>
 
 </div>
 
