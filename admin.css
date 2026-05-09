@@ -1,7 +1,7 @@
 body{
 margin:0;
 font-family:Arial;
-background:#0f1116;
+background:#0e1118;
 color:white;
 }
 
@@ -13,25 +13,23 @@ height:100vh;
 /* SIDEBAR */
 .sidebar{
 width:220px;
-background:#151923;
-padding:20px;
+background:#141826;
+padding:15px;
 }
 
 .sidebar h2{
+color:#00c2ff;
 font-size:16px;
-margin-bottom:20px;
-color:#00d4ff;
 }
 
 .tab{
-display:block;
 width:100%;
-margin-bottom:10px;
-padding:12px;
+padding:10px;
+margin:6px 0;
 border:none;
-background:#1f2430;
+background:#1e2436;
 color:white;
-border-radius:10px;
+border-radius:8px;
 cursor:pointer;
 }
 
@@ -39,11 +37,23 @@ cursor:pointer;
 background:#00aaff;
 }
 
+.save{
+width:100%;
+margin-top:10px;
+padding:12px;
+border:none;
+background:#00d46a;
+color:black;
+font-weight:bold;
+border-radius:8px;
+cursor:pointer;
+}
+
 /* PANEL */
 .panel{
-width:350px;
-padding:20px;
-background:#10131a;
+width:320px;
+padding:15px;
+background:#0f1420;
 overflow:auto;
 }
 
@@ -55,20 +65,20 @@ display:none;
 display:block;
 }
 
-input, textarea, select{
+input,textarea,select{
 width:100%;
-margin:8px 0;
+margin:6px 0 12px;
 padding:10px;
 border:none;
-border-radius:8px;
-background:#1d2230;
+border-radius:6px;
+background:#1c2233;
 color:white;
 }
 
 /* PREVIEW */
 .preview{
 flex:1;
-background:#000;
+background:black;
 }
 
 iframe{
