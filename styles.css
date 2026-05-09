@@ -1,0 +1,58 @@
+body{
+    margin:0;
+    background:transparent;
+    font-family:tahoma;
+}
+
+#news-box{
+    width:1200px;
+    height:200px;
+    background:white;
+
+    display:flex;
+    align-items:center;
+
+    border-radius:20px;
+    overflow:hidden;
+
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+
+    position:absolute;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+#logo-area{
+    width:220px;
+    height:100%;
+    background:#f1f1f1;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#logo{
+    width:150px;
+    max-height:150px;
+}
+
+#text-area{
+    flex:1;
+    padding:30px;
+    direction:rtl;
+}
+
+#title{
+    margin:0;
+    font-size:52px;
+    color:#111;
+    font-weight:bold;
+}
+
+#subtitle{
+    margin-top:15px;
+    font-size:28px;
+    color:#444;
+}
