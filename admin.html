@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت</title>
+
+  <style>
+
+    body{
+        font-family:tahoma;
+        background:#111;
+        color:white;
+        padding:40px;
+        direction:rtl;
+    }
+
+    input{
+        width:100%;
+        padding:15px;
+        margin-bottom:20px;
+        font-size:20px;
+        border:none;
+        border-radius:10px;
+    }
+
+    button{
+        padding:15px 40px;
+        font-size:20px;
+        background:red;
+        color:white;
+        border:none;
+        border-radius:10px;
+        cursor:pointer;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<h1>پنل مدیریت FOX Overlay</h1>
+
+<input type="text" id="title" placeholder="تیتر اصلی">
+
+<input type="text" id="subtitle" placeholder="زیر تیتر">
+
+<input type="text" id="logo" placeholder="لینک لوگو">
+
+<input type="color" id="bgcolor">
+
+<button onclick="saveData()">ذخیره</button>
+
+<script src="admin.js"></script>
+
+</body>
+</html>
