@@ -8,8 +8,14 @@ function saveData(){
         subtitle:
         document.getElementById("subtitle").value,
 
-        panelColor:
-        document.getElementById("panelColor").value,
+        logo:
+        document.getElementById("logo").value,
+
+        bg:
+        document.getElementById("bg").value,
+
+        leftColor:
+        document.getElementById("leftColor").value,
 
         titleColor:
         document.getElementById("titleColor").value,
@@ -17,51 +23,50 @@ function saveData(){
         subtitleColor:
         document.getElementById("subtitleColor").value,
 
-        logo:
-        document.getElementById("logo").value,
-
         live:
-        document.getElementById("live").value
+        document.getElementById("live").checked
     };
 
     localStorage.setItem(
-        "overlayData",
+        "overlay",
         JSON.stringify(data)
     );
 
     alert("ذخیره شد");
 }
 
-function loadForm(){
-
-    const saved =
-    localStorage.getItem("overlayData");
-
-    if(!saved) return;
+function loadData(){
 
     const data =
-    JSON.parse(saved);
+    JSON.parse(
+        localStorage.getItem("overlay")
+    );
+
+    if(!data) return;
 
     document.getElementById("title").value =
-    data.title || "";
+    data.title;
 
     document.getElementById("subtitle").value =
-    data.subtitle || "";
-
-    document.getElementById("panelColor").value =
-    data.panelColor || "#ffffff";
-
-    document.getElementById("titleColor").value =
-    data.titleColor || "#111111";
-
-    document.getElementById("subtitleColor").value =
-    data.subtitleColor || "#555555";
+    data.subtitle;
 
     document.getElementById("logo").value =
-    data.logo || "";
+    data.logo;
 
-    document.getElementById("live").value =
-    data.live || "on";
+    document.getElementById("bg").value =
+    data.bg;
+
+    document.getElementById("leftColor").value =
+    data.leftColor;
+
+    document.getElementById("titleColor").value =
+    data.titleColor;
+
+    document.getElementById("subtitleColor").value =
+    data.subtitleColor;
+
+    document.getElementById("live").checked =
+    data.live;
 }
 
-loadForm();
+loadData();
