@@ -2,44 +2,51 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Admin Panel</title>
+
 <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
 <div class="panel">
 
-<input id="width" type="number" value="1200">
-<input id="height" type="number" value="200">
+<h1>Broadcast Admin</h1>
 
-<input id="bg" type="color" value="#1a1a1a">
+<label>Width</label>
+<input type="number" id="width" value="1200">
 
-<input id="logo" placeholder="Logo URL">
+<label>Height</label>
+<input type="number" id="height" value="200">
 
-<input id="title" placeholder="عنوان">
+<label>Background Color</label>
+<input type="color" id="bgColor" value="#1f1f1f">
 
-<input id="desc" placeholder="توضیحات">
+<label>Title</label>
+<input type="text" id="title">
 
-<input id="titleColor" type="color" value="#ffffff">
-<input id="descColor" type="color" value="#dddddd">
+<label>Subtitle</label>
+<textarea id="subtitle"></textarea>
 
-<input id="titleSize" type="number" value="52">
-<input id="descSize" type="number" value="24">
+<label>Title Color</label>
+<input type="color" id="titleColor" value="#ffffff">
 
-<select id="font">
-<option>Tahoma</option>
-<option>Arial</option>
-<option>Verdana</option>
-<option>Georgia</option>
-</select>
+<label>Subtitle Color</label>
+<input type="color" id="subtitleColor" value="#ffffff">
 
-<select id="effect">
-<option value="fade">Fade</option>
-<option value="slide">Slide</option>
-<option value="zoom">Zoom</option>
-</select>
+<label>Title Size</label>
+<input type="number" id="titleSize" value="56">
 
-<button onclick="save()">Apply</button>
+<label>Subtitle Size</label>
+<input type="number" id="subtitleSize" value="28">
+
+<label>Logo URL</label>
+<input type="text" id="logo">
+
+<button onclick="saveData()">
+SAVE
+</button>
 
 </div>
 
