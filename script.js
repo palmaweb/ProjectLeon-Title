@@ -1,59 +1,73 @@
-const zones = [
-{label:"IRAN", zone:"Asia/Tehran"},
-{label:"ISRAEL", zone:"Asia/Jerusalem"},
-{label:"EUROPE", zone:"Europe/Berlin"},
-{label:"USA", zone:"America/New_York"}
+const clocks = [
+  {name:"IRAN",zone:"Asia/Tehran"},
+  {name:"ISRAEL",zone:"Asia/Jerusalem"},
+  {name:"EUROPE",zone:"Europe/Berlin"},
+  {name:"USA",zone:"America/New_York"}
 ];
 
-let current = 0;
+let clockIndex = 0;
 
 function updateClock(){
-const z = zones[current];
 
-const time = new Date().toLocaleTimeString("en-US",{
-timeZone:z.zone
-});
+let c = clocks[clockIndex];
 
-document.getElementById("clock").innerHTML=
-`${z.label}<br>${time}`;
+let time = new Date().toLocaleTimeString(
+'en-US',
+{
+timeZone:c.zone
+}
+);
 
-current=(current+1)%zones.length;
+document.getElementById("countryName").innerText = c.name;
+document.getElementById("countryTime").innerText = time;
+
+clockIndex++;
+
+if(clockIndex >= clocks.length){
+clockIndex = 0;
 }
 
-updateClock();
+}
+
 setInterval(updateClock,10000);
+updateClock();
 
-window.addEventListener("storage",()=>{
 
-const data=JSON.parse(localStorage.getItem("newsData"));
+
+function loadData(){
+
+let data = JSON.parse(
+localStorage.getItem("broadcastData")
+);
 
 if(!data) return;
 
-const box=document.getElementById("newsBox");
-const title=document.getElementById("title");
-const desc=document.getElementById("desc");
 
-box.style.width=data.width+"px";
-box.style.height=data.height+"px";
-box.style.background=data.bg;
+let box = document.getElementById("lowerThird");
 
-title.innerText=data.title;
-desc.innerText=data.desc;
+box.style.width = data.width + "px";
+box.style.height = data.height + "px";
 
-title.style.color=data.titleColor;
-desc.style.color=data.descColor;
+box.style.background = data.bgColor;
 
-title.style.fontSize=data.titleSize+"px";
-desc.style.fontSize=data.descSize+"px";
+document.getElementById("titleText").innerText = data.title;
 
-title.style.fontFamily=data.font;
-desc.style.fontFamily=data.font;
+document.getElementById("subtitleText").innerText = data.subtitle;
 
-document.getElementById("logo").src=data.logo;
+document.getElementById("titleText").style.color = data.titleColor;
 
-title.className=data.effect;
-desc.className=data.effect;
+document.getElementById("subtitleText").style.color = data.subtitleColor;
 
-});
+document.getElementById("titleText").style.fontSize =
+data.titleSize + "px";
 
-dispatchEvent(new Event("storage"));
+document.getElementById("subtitleText").style.fontSize =
+data.subtitleSize + "px";
+
+document.getElementById("logo").src = data.logo;
+
+}
+
+
+setInterval(loadData,500);
+loadData();
