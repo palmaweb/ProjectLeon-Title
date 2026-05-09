@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Broadcast Panel</title>
+<title>PRO Broadcast Panel</title>
 
 <link rel="stylesheet" href="admin.css">
-
 </head>
 <body>
 
@@ -15,7 +14,7 @@
 <!-- SIDEBAR -->
 <div class="sidebar">
 
-<h2>CONTROL PANEL</h2>
+<h2>🎛 CONTROL</h2>
 
 <button class="tab active" data-tab="overlay">Overlay</button>
 <button class="tab" data-tab="text">Text</button>
@@ -23,111 +22,95 @@
 <button class="tab" data-tab="colors">Colors</button>
 <button class="tab" data-tab="animation">Animation</button>
 
+<hr>
+
+<button id="saveBtn" class="save">💾 SAVE</button>
+
 </div>
 
-<!-- SETTINGS -->
+<!-- PANEL -->
 <div class="panel">
 
 <!-- OVERLAY -->
 <div class="section active" id="overlay">
-
-<h3>Overlay Size</h3>
+<h3>Overlay Settings</h3>
 
 <label>Width</label>
-<input type="number" id="width" value="1200">
+<input id="width" type="number" value="1200">
 
 <label>Height</label>
-<input type="number" id="height" value="200">
+<input id="height" type="number" value="200">
 
 <label>Radius</label>
-<input type="number" id="radius" value="20">
-
+<input id="radius" type="number" value="20">
 </div>
 
 <!-- TEXT -->
 <div class="section" id="text">
+<h3>Text</h3>
 
-<h3>Text Content</h3>
-
-<label>Main Title</label>
-<input type="text" id="title" value="BREAKING NEWS">
+<label>Title</label>
+<input id="title" type="text" value="BREAKING NEWS">
 
 <label>Subtitle</label>
 <textarea id="subtitle">Live broadcast text</textarea>
-
 </div>
 
 <!-- FONTS -->
 <div class="section" id="fonts">
-
 <h3>Fonts</h3>
 
 <label>Title Font</label>
 <select id="titleFont">
-<option value="IRANSans">IRANSans</option>
-<option value="Vazir">Vazir</option>
-<option value="Yekan">Yekan</option>
-<option value="Ray">Ray</option>
+<option>IRANSans</option>
+<option>Vazir</option>
+<option>Yekan</option>
+<option>Ray</option>
 </select>
 
 <label>Subtitle Font</label>
 <select id="subtitleFont">
-<option value="IRANSans">IRANSans</option>
-<option value="Vazir">Vazir</option>
-<option value="Yekan">Yekan</option>
-<option value="Ray">Ray</option>
+<option>IRANSans</option>
+<option>Vazir</option>
+<option>Yekan</option>
+<option>Ray</option>
 </select>
-
 </div>
 
 <!-- COLORS -->
 <div class="section" id="colors">
-
 <h3>Colors</h3>
 
 <label>Background</label>
-<input type="color" id="bgColor" value="#1e1e1e">
+<input id="bgColor" type="color">
 
 <label>Title Color</label>
-<input type="color" id="titleColor" value="#ffffff">
+<input id="titleColor" type="color">
 
 <label>Subtitle Color</label>
-<input type="color" id="subtitleColor" value="#cccccc">
-
-<label>Left Panel Color</label>
-<input type="color" id="leftColor" value="#111111">
-
-<label>Right Panel Color</label>
-<input type="color" id="rightColor" value="#1a1a1a">
-
+<input id="subtitleColor" type="color">
 </div>
 
 <!-- ANIMATION -->
 <div class="section" id="animation">
-
-<h3>Transitions</h3>
+<h3>Transition</h3>
 
 <select id="transition">
 <option value="fade">Fade</option>
 <option value="slide">Slide</option>
 <option value="zoom">Zoom</option>
-<option value="blur">Blur</option>
 </select>
-
 </div>
 
 </div>
 
-<!-- LIVE PREVIEW -->
+<!-- PREVIEW -->
 <div class="preview">
-
 <iframe src="index.html"></iframe>
-
 </div>
 
 </div>
 
 <script src="admin.js"></script>
-
 </body>
 </html>
