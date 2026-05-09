@@ -1,38 +1,59 @@
 <!DOCTYPE html>
 <html lang="fa">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>پنل مدیریت</title>
+<title>پنل مدیریت Overlay</title>
 
 <style>
 
+@font-face{
+
+    font-family:"Vazirmatn";
+
+    src:url("fonts/Vazirmatn-Regular.ttf");
+}
+
 body{
 
-    background:#111;
+    background:#0f172a;
+
     color:white;
 
-    font-family:tahoma;
+    font-family:"Vazirmatn";
 
     padding:40px;
 
     direction:rtl;
 }
 
-input{
+.container{
 
-    width:100%;
+    max-width:900px;
 
-    padding:16px;
+    margin:auto;
+}
 
-    margin-bottom:20px;
+.card{
 
-    border:none;
+    background:#111827;
 
-    border-radius:12px;
+    padding:30px;
 
-    font-size:20px;
+    border-radius:24px;
+
+    box-shadow:0 0 25px rgba(0,0,0,0.4);
+
+    margin-bottom:30px;
+}
+
+h1{
+
+    margin-bottom:30px;
 }
 
 label{
@@ -41,12 +62,29 @@ label{
 
     margin-bottom:10px;
 
-    font-size:20px;
+    font-size:18px;
+}
+
+input{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:14px;
+
+    margin-bottom:20px;
+
+    font-size:18px;
+
+    font-family:"Vazirmatn";
 }
 
 button{
 
-    background:#e10000;
+    background:#2563eb;
 
     color:white;
 
@@ -54,31 +92,57 @@ button{
 
     padding:16px 45px;
 
-    font-size:22px;
-
     border-radius:14px;
 
+    font-size:20px;
+
     cursor:pointer;
+
+    font-family:"Vazirmatn";
+}
+
+button:hover{
+
+    opacity:0.9;
 }
 
 </style>
 
 </head>
+
 <body>
 
-<h1>پنل مدیریت Overlay</h1>
+<div class="container">
 
-<input type="text" id="title" placeholder="تیتر اصلی">
+<h1>پنل مدیریت خبر</h1>
 
-<input type="text" id="subtitle" placeholder="زیر تیتر">
+<div class="card">
 
-<label>رنگ پنل</label>
+<label>تیتر اصلی</label>
+<input type="text" id="title">
+
+<label>زیر تیتر</label>
+<input type="text" id="subtitle">
+
+<label>لینک لوگو</label>
+<input type="text" id="logo" placeholder="logo.png">
+
+<label>رنگ بک گراند پنل</label>
 <input type="color" id="panelColor">
 
-<label>رنگ باکس سمت چپ</label>
-<input type="color" id="leftColor">
+<label>رنگ تیتر</label>
+<input type="color" id="titleColor">
 
-<button onclick="saveData()">ذخیره</button>
+<label>رنگ زیر تیتر</label>
+<input type="color" id="subtitleColor">
+
+<button onclick="saveData()">
+ذخیره تغییرات
+</button>
+
+</div>
+
+</div>
 
 <script src="admin.js"></script>
 
