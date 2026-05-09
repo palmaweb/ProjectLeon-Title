@@ -1,53 +1,82 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پنل مدیریت</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
+<title>پنل مدیریت</title>
 
-    body{
-        font-family:tahoma;
-        background:#111;
-        color:white;
-        padding:40px;
-        direction:rtl;
-    }
+<style>
 
-    input{
-        width:100%;
-        padding:15px;
-        margin-bottom:20px;
-        font-size:20px;
-        border:none;
-        border-radius:10px;
-    }
+body{
 
-    button{
-        padding:15px 40px;
-        font-size:20px;
-        background:red;
-        color:white;
-        border:none;
-        border-radius:10px;
-        cursor:pointer;
-    }
+    background:#111;
+    color:white;
 
-  </style>
+    font-family:tahoma;
+
+    padding:40px;
+
+    direction:rtl;
+}
+
+input{
+
+    width:100%;
+
+    padding:16px;
+
+    margin-bottom:20px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:20px;
+}
+
+label{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-size:20px;
+}
+
+button{
+
+    background:#e10000;
+
+    color:white;
+
+    border:none;
+
+    padding:16px 45px;
+
+    font-size:22px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+}
+
+</style>
 
 </head>
 <body>
 
-<h1>پنل مدیریت FOX Overlay</h1>
+<h1>پنل مدیریت Overlay</h1>
 
 <input type="text" id="title" placeholder="تیتر اصلی">
 
 <input type="text" id="subtitle" placeholder="زیر تیتر">
 
-<input type="text" id="logo" placeholder="لینک لوگو">
+<label>رنگ پنل</label>
+<input type="color" id="panelColor">
 
-<input type="color" id="bgcolor">
+<label>رنگ باکس سمت چپ</label>
+<input type="color" id="leftColor">
 
 <button onclick="saveData()">ذخیره</button>
 
