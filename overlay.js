@@ -1,66 +1,42 @@
 function loadOverlay(){
 
-    const saved =
-    localStorage.getItem("overlayData");
-
-    if(!saved) return;
-
     const data =
-    JSON.parse(saved);
+    JSON.parse(
+        localStorage.getItem("overlay")
+    );
 
-    if(data.title){
+    if(!data) return;
 
-        document
-        .getElementById("title")
-        .innerText = data.title;
-    }
+    document.getElementById("title").innerText =
+    data.title;
 
-    if(data.subtitle){
+    document.getElementById("subtitle").innerText =
+    data.subtitle;
 
-        document
-        .getElementById("subtitle")
-        .innerText = data.subtitle;
-    }
+    document.getElementById("overlay").style.background =
+    data.bg;
 
-    if(data.panelColor){
+    document.getElementById("title").style.color =
+    data.titleColor;
 
-        document
-        .getElementById("news-box")
-        .style.background = data.panelColor;
-    }
+    document.getElementById("subtitle").style.color =
+    data.subtitleColor;
 
-    if(data.titleColor){
+    document.getElementById("left-side").style.background =
+    data.leftColor;
 
-        document
-        .getElementById("title")
-        .style.color = data.titleColor;
-    }
+    document.getElementById("logo").src =
+    data.logo;
 
-    if(data.subtitleColor){
+    if(data.live){
 
-        document
-        .getElementById("subtitle")
-        .style.color = data.subtitleColor;
-    }
-
-    if(data.logo){
-
-        document
-        .getElementById("logo")
-        .src = data.logo;
-    }
-
-    if(data.live === "off"){
-
-        document
-        .getElementById("live-badge")
-        .style.display = "none";
+        document.getElementById("live").style.display =
+        "block";
 
     }else{
 
-        document
-        .getElementById("live-badge")
-        .style.display = "block";
+        document.getElementById("live").style.display =
+        "none";
     }
 }
 
