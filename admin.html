@@ -332,6 +332,62 @@ function saveIcon(){
   safeSet("icon.position", iconPosition.value);
   saveState(state);
 }
+  function hydrateUI(){
+
+  const s = state;
+
+  // TITLE
+  if(s.title){
+    titleText.value = s.title.text || "";
+    titleFont.value = s.title.font || "Vazirmatn";
+    titleWeight.value = s.title.weight || "700";
+    titleSize.value = s.title.size || 28;
+    titleColor.value = s.title.color || "#ffffff";
+  }
+
+  // SUBTITLE
+  if(s.subtitle){
+    subText.value = s.subtitle.text || "";
+    subFont.value = s.subtitle.font || "Vazirmatn";
+    subWeight.value = s.subtitle.weight || "400";
+    subSize.value = s.subtitle.size || 18;
+    subColor.value = s.subtitle.color || "#dddddd";
+  }
+
+  // CONTAINER
+  if(s.container){
+    width.value = s.container.width || 600;
+    height.value = s.container.height || 120;
+    bgColor.value = s.container.bgColor || "#000000";
+    opacity.value = s.container.opacity || 0.5;
+  }
+
+  // LOGO
+  if(s.logo){
+    logoUrl.value = s.logo.url || "";
+  }
+
+  // ICON
+  if(s.icon){
+    iconType.value = s.icon.type || "off";
+    iconUrl.value = s.icon.url || "";
+    iconSize.value = s.icon.size || 22;
+    iconPosition.value = s.icon.position || "right";
+  }
+
+  // CLOCK
+  if(s.clock){
+    clockEnabled.value = String(s.clock.enabled ?? true);
+    clockInterval.value = s.clock.interval || 10;
+    clockMode.value = s.clock.mode || "all";
+  }
+
+  // TRANSITION
+  if(s.transition){
+    transitionType.value = s.transition.type || "fade";
+    transitionDuration.value = s.transition.duration || 400;
+  }
+}
 
 </script>
 
