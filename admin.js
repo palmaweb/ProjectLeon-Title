@@ -1,44 +1,39 @@
-function saveData(){
+// Tabs
+document.querySelectorAll(".tab").forEach(btn=>{
+btn.onclick=()=>{
+document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
 
-let data = {
+btn.classList.add("active");
+document.getElementById(btn.dataset.tab).classList.add("active");
+}
+});
 
-width:
-document.getElementById("width").value,
+// Save live data
+function save(){
 
-height:
-document.getElementById("height").value,
-
-bgColor:
-document.getElementById("bgColor").value,
-
-title:
-document.getElementById("title").value,
-
-subtitle:
-document.getElementById("subtitle").value,
-
-titleColor:
-document.getElementById("titleColor").value,
-
-subtitleColor:
-document.getElementById("subtitleColor").value,
-
-titleSize:
-document.getElementById("titleSize").value,
-
-subtitleSize:
-document.getElementById("subtitleSize").value,
-
-logo:
-document.getElementById("logo").value
-
+const data = {
+width: width.value,
+height: height.value,
+radius: radius.value,
+title: title.value,
+subtitle: subtitle.value,
+titleFont: titleFont.value,
+subtitleFont: subtitleFont.value,
+bgColor: bgColor.value,
+titleColor: titleColor.value,
+subtitleColor: subtitleColor.value,
+leftColor: leftColor.value,
+rightColor: rightColor.value,
+transition: transition.value
 };
 
-localStorage.setItem(
-"broadcastData",
-JSON.stringify(data)
-);
-
-alert("Saved");
-
+localStorage.setItem("overlay", JSON.stringify(data));
 }
+
+document.querySelectorAll("input,textarea,select")
+.forEach(el=>{
+el.addEventListener("input", save);
+});
+
+save();
