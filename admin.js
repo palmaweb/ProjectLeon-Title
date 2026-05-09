@@ -1,26 +1,44 @@
-function save(){
+function saveData(){
 
-const data={
+let data = {
 
-width:width.value,
-height:height.value,
-bg:bg.value,
-logo:logo.value,
+width:
+document.getElementById("width").value,
 
-title:title.value,
-desc:desc.value,
+height:
+document.getElementById("height").value,
 
-titleColor:titleColor.value,
-descColor:descColor.value,
+bgColor:
+document.getElementById("bgColor").value,
 
-titleSize:titleSize.value,
-descSize:descSize.value,
+title:
+document.getElementById("title").value,
 
-font:font.value,
-effect:effect.value
+subtitle:
+document.getElementById("subtitle").value,
+
+titleColor:
+document.getElementById("titleColor").value,
+
+subtitleColor:
+document.getElementById("subtitleColor").value,
+
+titleSize:
+document.getElementById("titleSize").value,
+
+subtitleSize:
+document.getElementById("subtitleSize").value,
+
+logo:
+document.getElementById("logo").value
 
 };
 
-localStorage.setItem("newsData",JSON.stringify(data));
+localStorage.setItem(
+"broadcastData",
+JSON.stringify(data)
+);
+
+alert("Saved");
 
 }
