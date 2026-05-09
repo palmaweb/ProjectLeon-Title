@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRO Broadcast Panel</title>
-
+<title>Studio Control Panel</title>
 <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -13,8 +12,7 @@
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-
-<h2>🎛 CONTROL</h2>
+<h2>🎛 STUDIO</h2>
 
 <button class="tab active" data-tab="overlay">Overlay</button>
 <button class="tab" data-tab="text">Text</button>
@@ -25,6 +23,7 @@
 <hr>
 
 <button id="saveBtn" class="save">💾 SAVE</button>
+<button id="resetBtn" class="reset">♻ RESET</button>
 
 </div>
 
@@ -33,31 +32,36 @@
 
 <!-- OVERLAY -->
 <div class="section active" id="overlay">
-<h3>Overlay Settings</h3>
+
+<h3>Overlay</h3>
 
 <label>Width</label>
-<input id="width" type="number" value="1200">
+<input id="width" type="number">
 
 <label>Height</label>
-<input id="height" type="number" value="200">
+<input id="height" type="number">
 
 <label>Radius</label>
-<input id="radius" type="number" value="20">
+<input id="radius" type="number">
+
 </div>
 
 <!-- TEXT -->
 <div class="section" id="text">
+
 <h3>Text</h3>
 
 <label>Title</label>
-<input id="title" type="text" value="BREAKING NEWS">
+<input id="title" type="text">
 
 <label>Subtitle</label>
-<textarea id="subtitle">Live broadcast text</textarea>
+<textarea id="subtitle"></textarea>
+
 </div>
 
 <!-- FONTS -->
 <div class="section" id="fonts">
+
 <h3>Fonts</h3>
 
 <label>Title Font</label>
@@ -75,10 +79,12 @@
 <option>Yekan</option>
 <option>Ray</option>
 </select>
+
 </div>
 
 <!-- COLORS -->
 <div class="section" id="colors">
+
 <h3>Colors</h3>
 
 <label>Background</label>
@@ -89,23 +95,27 @@
 
 <label>Subtitle Color</label>
 <input id="subtitleColor" type="color">
+
 </div>
 
 <!-- ANIMATION -->
 <div class="section" id="animation">
-<h3>Transition</h3>
+
+<h3>Animation</h3>
 
 <select id="transition">
 <option value="fade">Fade</option>
 <option value="slide">Slide</option>
 <option value="zoom">Zoom</option>
 </select>
+
 </div>
 
 </div>
 
 <!-- PREVIEW -->
 <div class="preview">
+<div class="hint">LIVE OUTPUT (index.html)</div>
 <iframe src="index.html"></iframe>
 </div>
 
