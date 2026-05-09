@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <title>Broadcast Display</title>
+
+  <style>
+    body{
+      margin:0;
+      background:transparent;
+      overflow:hidden;
+      font-family: Vazirmatn, sans-serif;
+    }
+
+    .container{
+      position:fixed;
+      bottom:50px;
+      left:50%;
+      transform:translateX(-50%);
+
+      display:flex;
+      align-items:center;
+
+      border-radius:18px;
+      overflow:hidden;
+
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:0 0 25px rgba(0,0,0,0.4);
+
+      transition:all 0.4s ease;
+    }
+
+    .logo{
+      width:90px;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.25);
+      padding:10px;
+    }
+
+    .logo img{
+      width:55px;
+      height:55px;
+      object-fit:contain;
+    }
+
+    .clock{
+      font-size:12px;
+      margin-top:5px;
+      color:#fff;
+      opacity:0.9;
+    }
+
+    .content{
+      padding:10px 18px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:4px;
+      min-width:500px;
+    }
+
+    .titleRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .icon{
+      width:22px;
+      height:22px;
+      display:none;
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:700;
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .subtitle{
+      font-size:18px;
+      color:#ddd;
+      opacity:0.9;
+    }
+
+    /* simple transitions */
+    .fade{
+      animation:fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(10px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="box">
+
+  <div class="logo">
+    <img id="logoImg" src="" />
+    <div class="clock" id="clock">--:--</div>
+  </div>
+
+  <div class="content">
+
+    <div class="titleRow">
+      <img id="iconImg" class="icon" />
+      <div class="title" id="titleText">Loading...</div>
+    </div>
+
+    <div class="subtitle" id="subtitleText"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+const STORAGE_KEY = "broadcast_settings";
+let state = {};
+let clockIndex = 0;
+
+const zones = [
+  {name:"Iran", offset:3.5},
+  {name:"Europe", offset:1},
+  {name:"USA", offset:-5},
+  {name:"Israel", offset:2}
+];
+
+function load(){
+  state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  apply();
+}
+
+function apply(){
+
+  const box = document.getElementById("box");
+
+  // container style
+  if(state.container){
+    box.style.width = state.container.width + "px";
+    box.style.height = state.container.height + "px";
+    box.style.background = state.container.bgColor;
+    box.style.opacity = state.container.opacity;
+  }
+
+  // logo
+  if(state.logo?.url){
+    document.getElementById("logoImg").src = state.logo.url;
+  }
+
+  // title
+  if(state.title){
+    document.getElementById("titleText").innerText = state.title.text || "";
+    document.getElementById("titleText").style.fontSize = state.title.size + "px";
+    document.getElementById("titleText").style.color = state.title.color;
+    document.getElementById("titleText").style.fontWeight = state.title.weight;
+  }
+
+  // subtitle
+  if(state.subtitle){
+    document.getElementById("subtitleText").innerText = state.subtitle.text || "";
+    document.getElementById("subtitleText").style.fontSize = state.subtitle.size + "px";
+    document.getElementById("subtitleText").style.color = state.subtitle.color;
+  }
+
+  // icon
+  const icon = document.getElementById("iconImg");
+
+  if(state.icon && state.icon.type !== "off"){
+    icon.style.display = "block";
+
+    if(state.icon.type === "custom" && state.icon.url){
+      icon.src = state.icon.url;
+    }
+
+    if(state.icon.type === "live") icon.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
+    if(state.icon.type === "breaking") icon.src = "https://upload.wikimedia.org/wikipedia/commons/3/3b/Red_pog.svg";
+    if(state.icon.type === "alert") icon.src = "https://upload.wikimedia.org/wikipedia/commons/5/5f/Red_warning_icon.svg";
+
+    if(state.icon.size) icon.style.width = state.icon.size + "px";
+  } else {
+    icon.style.display = "none";
+  }
+
+  // clock
+  if(state.clock?.enabled){
+    startClock();
+  }
+
+  // transition
+  box.classList.add("fade");
+  setTimeout(()=>box.classList.remove("fade"),500);
+}
+
+function startClock(){
+
+  const interval = (state.clock?.interval || 10) * 1000;
+
+  setInterval(()=>{
+
+    const zone = zones[clockIndex % zones.length];
+    const now = new Date();
+
+    const utc = now.getTime() + now.getTimezoneOffset()*60000;
+    const local = new Date(utc + (3600000 * zone.offset));
+
+    const hh = String(local.getHours()).padStart(2,"0");
+    const mm = String(local.getMinutes()).padStart(2,"0");
+
+    document.getElementById("clock").innerText = hh + ":" + mm;
+
+    clockIndex++;
+
+  }, interval);
+}
+
+window.addEventListener("storage", load);
+window.addEventListener("broadcast_update", load);
+
+load();
+
+</script>
+
+</body>
+</html>
