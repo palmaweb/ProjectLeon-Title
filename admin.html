@@ -9,104 +9,7 @@
 
 <title>پنل مدیریت Overlay</title>
 
-<style>
-
-@font-face{
-
-    font-family:"Vazirmatn";
-
-    src:url("fonts/Vazirmatn-Regular.ttf");
-}
-
-body{
-
-    background:#0f172a;
-
-    color:white;
-
-    font-family:"Vazirmatn";
-
-    padding:40px;
-
-    direction:rtl;
-}
-
-.container{
-
-    max-width:900px;
-
-    margin:auto;
-}
-
-.card{
-
-    background:#111827;
-
-    padding:30px;
-
-    border-radius:24px;
-
-    box-shadow:0 0 25px rgba(0,0,0,0.4);
-
-    margin-bottom:30px;
-}
-
-h1{
-
-    margin-bottom:30px;
-}
-
-label{
-
-    display:block;
-
-    margin-bottom:10px;
-
-    font-size:18px;
-}
-
-input{
-
-    width:100%;
-
-    padding:16px;
-
-    border:none;
-
-    border-radius:14px;
-
-    margin-bottom:20px;
-
-    font-size:18px;
-
-    font-family:"Vazirmatn";
-}
-
-button{
-
-    background:#2563eb;
-
-    color:white;
-
-    border:none;
-
-    padding:16px 45px;
-
-    border-radius:14px;
-
-    font-size:20px;
-
-    cursor:pointer;
-
-    font-family:"Vazirmatn";
-}
-
-button:hover{
-
-    opacity:0.9;
-}
-
-</style>
+<link rel="stylesheet" href="admin.css">
 
 </head>
 
@@ -114,33 +17,120 @@ button:hover{
 
 <div class="container">
 
-<h1>پنل مدیریت خبر</h1>
+    <div class="sidebar">
 
-<div class="card">
+        <h2>
+            پنل مدیریت
+        </h2>
 
-<label>تیتر اصلی</label>
-<input type="text" id="title">
+    </div>
 
-<label>زیر تیتر</label>
-<input type="text" id="subtitle">
+    <div class="content">
 
-<label>لینک لوگو</label>
-<input type="text" id="logo" placeholder="logo.png">
+        <div class="card">
 
-<label>رنگ بک گراند پنل</label>
-<input type="color" id="panelColor">
+            <h3>
+                متن ها
+            </h3>
 
-<label>رنگ تیتر</label>
-<input type="color" id="titleColor">
+            <label>
+                تیتر اصلی
+            </label>
 
-<label>رنگ زیر تیتر</label>
-<input type="color" id="subtitleColor">
+            <input
+                type="text"
+                id="title"
+            >
 
-<button onclick="saveData()">
-ذخیره تغییرات
-</button>
+            <label>
+                زیر تیتر
+            </label>
 
-</div>
+            <input
+                type="text"
+                id="subtitle"
+            >
+
+        </div>
+
+        <div class="card">
+
+            <h3>
+                تنظیمات ظاهری
+            </h3>
+
+            <label>
+                رنگ پنل
+            </label>
+
+            <input
+                type="color"
+                id="panelColor"
+            >
+
+            <label>
+                رنگ تیتر
+            </label>
+
+            <input
+                type="color"
+                id="titleColor"
+            >
+
+            <label>
+                رنگ زیر تیتر
+            </label>
+
+            <input
+                type="color"
+                id="subtitleColor"
+            >
+
+        </div>
+
+        <div class="card">
+
+            <h3>
+                لوگو
+            </h3>
+
+            <label>
+                لینک لوگو
+            </label>
+
+            <input
+                type="text"
+                id="logo"
+                placeholder="assets/logo.png"
+            >
+
+        </div>
+
+        <div class="card">
+
+            <h3>
+                LIVE
+            </h3>
+
+            <select id="live">
+
+                <option value="on">
+                    روشن
+                </option>
+
+                <option value="off">
+                    خاموش
+                </option>
+
+            </select>
+
+        </div>
+
+        <button onclick="saveData()">
+            ذخیره تغییرات
+        </button>
+
+    </div>
 
 </div>
 
