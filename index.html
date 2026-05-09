@@ -1,57 +1,43 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Broadcast Overlay</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="styles.css">
-
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="overlay">
+<div id="lowerThird">
 
-    <div class="leftSide">
+    <div class="leftPanel">
 
-        <div class="logoContainer">
-            <img id="logo" src="" alt="logo">
-        </div>
+        <img id="logo" src="" alt="logo">
 
-        <div class="clockContainer">
-
-            <div id="clockCountry">
-                IRAN
-            </div>
-
-            <div id="clockTime">
-                00:00:00
-            </div>
-
+        <div id="clockBox">
+            <div id="countryName">IRAN</div>
+            <div id="countryTime">00:00</div>
         </div>
 
     </div>
 
 
-    <div class="rightSide">
+    <div class="rightPanel">
 
-        <div class="titleWrapper">
+        <h1 id="titleText">
+            MAIN TITLE
+        </h1>
 
-            <h1 id="mainTitle">
-                BREAKING NEWS
-            </h1>
-
-            <p id="subTitle">
-                Professional Broadcast Overlay System
-            </p>
-
-        </div>
+        <p id="subtitleText">
+            Subtitle Text
+        </p>
 
     </div>
 
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
