@@ -1,44 +1,74 @@
 function loadData(){
 
-    const title = localStorage.getItem("title");
-    const subtitle = localStorage.getItem("subtitle");
+    const title =
+    localStorage.getItem("title");
 
-    const panelColor = localStorage.getItem("panelColor");
-    const titleColor = localStorage.getItem("titleColor");
-    const subtitleColor = localStorage.getItem("subtitleColor");
+    const subtitle =
+    localStorage.getItem("subtitle");
 
-    const logo = localStorage.getItem("logo");
+    const panelColor =
+    localStorage.getItem("panelColor");
+
+    const titleColor =
+    localStorage.getItem("titleColor");
+
+    const subtitleColor =
+    localStorage.getItem("subtitleColor");
+
+    const logo =
+    localStorage.getItem("logo");
+
+    const live =
+    localStorage.getItem("live");
 
     if(title){
 
-        document.getElementById("title").innerText = title;
+        document
+        .getElementById("title")
+        .innerText = title;
     }
 
     if(subtitle){
 
-        document.getElementById("subtitle").innerText = subtitle;
+        document
+        .getElementById("subtitle")
+        .innerText = subtitle;
     }
 
     if(panelColor){
 
-        document.getElementById("news-box").style.background = panelColor;
+        document
+        .getElementById("news-box")
+        .style.background = panelColor;
     }
 
     if(titleColor){
 
-        document.getElementById("title").style.color = titleColor;
+        document
+        .getElementById("title")
+        .style.color = titleColor;
     }
 
     if(subtitleColor){
 
-        document.getElementById("subtitle").style.color = subtitleColor;
+        document
+        .getElementById("subtitle")
+        .style.color = subtitleColor;
     }
 
     if(logo){
 
-        document.getElementById("logo").src = logo;
+        document
+        .getElementById("logo")
+        .src = logo;
     }
 
+    if(live === "off"){
+
+        document
+        .getElementById("live-badge")
+        .style.display = "none";
+    }
 }
 
 loadData();
