@@ -1,76 +1,69 @@
-function loadData(){
+function loadOverlay(){
 
-    const title =
-    localStorage.getItem("title");
+    const saved =
+    localStorage.getItem("overlayData");
 
-    const subtitle =
-    localStorage.getItem("subtitle");
+    if(!saved) return;
 
-    const panelColor =
-    localStorage.getItem("panelColor");
+    const data =
+    JSON.parse(saved);
 
-    const titleColor =
-    localStorage.getItem("titleColor");
-
-    const subtitleColor =
-    localStorage.getItem("subtitleColor");
-
-    const logo =
-    localStorage.getItem("logo");
-
-    const live =
-    localStorage.getItem("live");
-
-    if(title){
+    if(data.title){
 
         document
         .getElementById("title")
-        .innerText = title;
+        .innerText = data.title;
     }
 
-    if(subtitle){
+    if(data.subtitle){
 
         document
         .getElementById("subtitle")
-        .innerText = subtitle;
+        .innerText = data.subtitle;
     }
 
-    if(panelColor){
+    if(data.panelColor){
 
         document
         .getElementById("news-box")
-        .style.background = panelColor;
+        .style.background = data.panelColor;
     }
 
-    if(titleColor){
+    if(data.titleColor){
 
         document
         .getElementById("title")
-        .style.color = titleColor;
+        .style.color = data.titleColor;
     }
 
-    if(subtitleColor){
+    if(data.subtitleColor){
 
         document
         .getElementById("subtitle")
-        .style.color = subtitleColor;
+        .style.color = data.subtitleColor;
     }
 
-    if(logo){
+    if(data.logo){
 
         document
         .getElementById("logo")
-        .src = logo;
+        .src = data.logo;
     }
 
-    if(live === "off"){
+    if(data.live === "off"){
 
         document
         .getElementById("live-badge")
         .style.display = "none";
+
+    }else{
+
+        document
+        .getElementById("live-badge")
+        .style.display = "block";
     }
 }
 
-loadData();
+loadOverlay();
 
-setInterval(loadData,1000);
+setInterval(loadOverlay,500);
