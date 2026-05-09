@@ -11,6 +11,29 @@ function saveData(){
     );
 
     localStorage.setItem(
+        "panelColor",
+        document.getElementById("panelColor").value
+    );
+
+    localStorage.setItem(
+        "leftColor",
+        document.getElementById("leftColor").value
+    );
+
+    alert("ذخیره شد");
+}function saveData(){
+
+    localStorage.setItem(
+        "title",
+        document.getElementById("title").value
+    );
+
+    localStorage.setItem(
+        "subtitle",
+        document.getElementById("subtitle").value
+    );
+
+    localStorage.setItem(
         "bgcolor",
         document.getElementById("bgcolor").value
     );
