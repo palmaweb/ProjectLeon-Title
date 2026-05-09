@@ -1,243 +1,45 @@
 <!DOCTYPE html>
 <html lang="fa">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>پنل مدیریت</title>
-
+<title>Admin Panel</title>
 <link rel="stylesheet" href="admin.css">
-
 </head>
-
 <body>
 
 <div class="panel">
 
-    <h1>
-        پنل مدیریت Overlay
-    </h1>
+<input id="width" type="number" value="1200">
+<input id="height" type="number" value="200">
 
-    <label>
-        تیتر اصلی
-    </label>
+<input id="bg" type="color" value="#1a1a1a">
 
-    <input
-        type="text"
-        id="title"
-    >
+<input id="logo" placeholder="Logo URL">
 
-    <label>
-        زیر تیتر
-    </label>
+<input id="title" placeholder="عنوان">
 
-    <input
-        type="text"
-        id="subtitle"
-    >
+<input id="desc" placeholder="توضیحات">
 
-    <label>
-        لوگو
-    </label>
+<input id="titleColor" type="color" value="#ffffff">
+<input id="descColor" type="color" value="#dddddd">
 
-    <input
-        type="text"
-        id="logo"
-        value="assets/logo.png"
-    >
+<input id="titleSize" type="number" value="52">
+<input id="descSize" type="number" value="24">
 
-    <label>
-        رنگ بک گراند
-    </label>
+<select id="font">
+<option>Tahoma</option>
+<option>Arial</option>
+<option>Verdana</option>
+<option>Georgia</option>
+</select>
 
-    <input
-        type="color"
-        id="bg"
-    >
+<select id="effect">
+<option value="fade">Fade</option>
+<option value="slide">Slide</option>
+<option value="zoom">Zoom</option>
+</select>
 
-    <label>
-        رنگ بخش چپ
-    </label>
-
-    <input
-        type="color"
-        id="leftColor"
-    >
-
-    <label>
-        رنگ تیتر
-    </label>
-
-    <input
-        type="color"
-        id="titleColor"
-    >
-
-    <label>
-        رنگ زیر تیتر
-    </label>
-
-    <input
-        type="color"
-        id="subtitleColor"
-    >
-
-    <label class="check">
-
-        <input
-            type="checkbox"
-            id="live"
-        >
-
-        نمایش LIVE
-
-    </label>
-
-    <button onclick="saveData()">
-        ذخیره
-    </button>
-
-</div>
-
-<script src="admin.js"></script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="fa">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>پنل مدیریت Overlay</title>
-
-<link rel="stylesheet" href="admin.css">
-
-</head>
-
-<body>
-
-<div class="container">
-
-    <div class="sidebar">
-
-        <h2>
-            پنل مدیریت
-        </h2>
-
-    </div>
-
-    <div class="content">
-
-        <div class="card">
-
-            <h3>
-                متن ها
-            </h3>
-
-            <label>
-                تیتر اصلی
-            </label>
-
-            <input
-                type="text"
-                id="title"
-            >
-
-            <label>
-                زیر تیتر
-            </label>
-
-            <input
-                type="text"
-                id="subtitle"
-            >
-
-        </div>
-
-        <div class="card">
-
-            <h3>
-                تنظیمات ظاهری
-            </h3>
-
-            <label>
-                رنگ پنل
-            </label>
-
-            <input
-                type="color"
-                id="panelColor"
-            >
-
-            <label>
-                رنگ تیتر
-            </label>
-
-            <input
-                type="color"
-                id="titleColor"
-            >
-
-            <label>
-                رنگ زیر تیتر
-            </label>
-
-            <input
-                type="color"
-                id="subtitleColor"
-            >
-
-        </div>
-
-        <div class="card">
-
-            <h3>
-                لوگو
-            </h3>
-
-            <label>
-                لینک لوگو
-            </label>
-
-            <input
-                type="text"
-                id="logo"
-                placeholder="assets/logo.png"
-            >
-
-        </div>
-
-        <div class="card">
-
-            <h3>
-                LIVE
-            </h3>
-
-            <select id="live">
-
-                <option value="on">
-                    روشن
-                </option>
-
-                <option value="off">
-                    خاموش
-                </option>
-
-            </select>
-
-        </div>
-
-        <button onclick="saveData()">
-            ذخیره تغییرات
-        </button>
-
-    </div>
+<button onclick="save()">Apply</button>
 
 </div>
 
