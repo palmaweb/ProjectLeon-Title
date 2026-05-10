@@ -214,28 +214,47 @@
   </div>
 
   <h2>⏱ ساعت جهانی</h2>
-  <div class="box">
 
-    <label>فعال</label>
-    <select id="clockEnabled">
-      <option value="true">ON</option>
-      <option value="false">OFF</option>
-    </select>
+<div class="box">
 
-    <label>زمان تغییر (ثانیه)</label>
-    <input type="range" id="clockInterval" min="5" max="60">
+  <label>فعال</label>
+  <select id="clockEnabled">
+    <option value="true">ON</option>
+    <option value="false">OFF</option>
+  </select>
 
-    <label>حالت</label>
-    <select id="clockMode">
-      <option value="all">All</option>
-      <option value="iran">Iran</option>
-      <option value="usa">USA</option>
-      <option value="europe">Europe</option>
-      <option value="israel">Israel</option>
-    </select>
+  <label>زمان تغییر کشورها (ثانیه)</label>
+  <input type="range"
+         id="clockInterval"
+         min="5"
+         max="60">
 
-    <button onclick="saveClock()">ذخیره ساعت</button>
-  </div>
+  <label>حالت نمایش</label>
+  <select id="clockMode">
+    <option value="all">All</option>
+    <option value="iran">Iran</option>
+    <option value="usa">USA</option>
+    <option value="europe">Europe</option>
+    <option value="israel">Israel</option>
+  </select>
+
+  <label>سایز نام کشور</label>
+  <input type="range"
+         id="clockCountrySize"
+         min="8"
+         max="40">
+
+  <label>سایز ساعت</label>
+  <input type="range"
+         id="clockTimeSize"
+         min="10"
+         max="60">
+
+  <button onclick="saveClock()">
+    ذخیره ساعت
+  </button>
+
+</div>
 
   <h2>🎞 ترنزیشن</h2>
   <div class="box">
@@ -313,10 +332,40 @@ function saveLogoUrl(){
 }
 
 function saveClock(){
-  safeSet("clock.enabled", clockEnabled.value === "true");
-  safeSet("clock.interval", clockInterval.value);
-  safeSet("clock.mode", clockMode.value);
-  saveState(state);
+
+  safeSet(
+    "clock.enabled",
+    clockEnabled.value === "true"
+  );
+
+  safeSet(
+    "clock.interval",
+    +clockInterval.value
+  );
+
+  safeSet(
+    "clock.mode",
+    clockMode.value
+  );
+
+  safeSet(
+    "clock.countrySize",
+    +clockCountrySize.value
+  );
+
+  safeSet(
+    "clock.timeSize",
+    +clockTimeSize.value
+  );
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(state)
+  );
+
+  window.dispatchEvent(
+    new Event("broadcast_update")
+  );
 }
 
 function saveTransition(){
@@ -333,6 +382,146 @@ function saveIcon(){
   saveState(state);
 }
 
+  function hydrate(){
+
+  /* TITLE */
+  titleText.value =
+    state.title?.text || "";
+
+  titleFont.value =
+    state.title?.font || "Vazirmatn";
+
+  titleWeight.value =
+    state.title?.weight || "700";
+
+  titleSize.value =
+    state.title?.size || 28;
+
+  titleColor.value =
+    state.title?.color || "#ffffff";
+
+  /* SUBTITLE */
+  subText.value =
+    state.subtitle?.text || "";
+
+  subFont.value =
+    state.subtitle?.font || "Vazirmatn";
+
+  subWeight.value =
+    state.subtitle?.weight || "400";
+
+  subSize.value =
+    state.subtitle?.size || 18;
+
+  subColor.value =
+    state.subtitle?.color || "#dddddd";
+
+  /* CONTAINER */
+  width.value =
+    state.container?.width || 900;
+
+  height.value =
+    state.container?.height || 160;
+
+  bgColor.value =
+    state.container?.bgColor || "#000000";
+
+  opacity.value =
+    state.container?.opacity || 0.6;
+
+  /* LOGO */
+  logoUrl.value =
+    state.logo?.url || "";
+
+  /* ICON */
+  iconType.value =
+    state.icon?.type || "off";
+
+  iconUrl.value =
+    state.icon?.url || "";
+
+  iconSize.value =
+    state.icon?.size || 22;
+
+  iconPosition.value =
+    state.icon?.position || "right";
+
+  /* CLOCK */
+  clockEnabled.value =
+    String(state.clock?.enabled ?? true);
+
+  clockInterval.value =
+    state.clock?.interval || 10;
+
+  clockMode.value =
+    state.clock?.mode || "all";
+
+  clockCountrySize.value =
+    state.clock?.countrySize || 11;
+
+  clockTimeSize.value =
+    state.clock?.timeSize || 16;
+
+  /* TRANSITION */
+  transitionType.value =
+    state.transition?.type || "fade";
+
+  transitionDuration.value =
+    state.transition?.duration || 400;
+
+}
+  hydrate();
+  const inputs = document.querySelectorAll("input, select");
+
+inputs.forEach(el => {
+  el.addEventListener("input", () => {
+    // فقط save مربوط به بخش خودش اجرا شود
+    if(el.closest(".box")){
+      tryAutoSave(el);
+    }
+  });
+
+  el.addEventListener("change", () => {
+    if(el.closest(".box")){
+      tryAutoSave(el);
+    }
+  });
+});
+
+function tryAutoSave(el){
+
+  // TEXT
+  if(["titleText","titleFont","titleWeight","titleSize","titleColor"].includes(el.id) ||
+     ["subText","subFont","subWeight","subSize","subColor"].includes(el.id)){
+    saveText();
+  }
+
+  // CONTAINER
+  if(["width","height","bgColor","opacity"].includes(el.id)){
+    saveContainer();
+  }
+
+  // LOGO
+  if(el.id === "logoUrl"){
+    saveLogoUrl();
+  }
+
+  // ICON
+  if(["iconType","iconUrl","iconSize","iconPosition"].includes(el.id)){
+    saveIcon();
+  }
+
+  // CLOCK
+  if(["clockEnabled","clockInterval","clockMode","clockCountrySize","clockTimeSize"].includes(el.id)){
+    saveClock();
+  }
+
+  // TRANSITION
+  if(["transitionType","transitionDuration"].includes(el.id)){
+    saveTransition();
+  }
+
+}
 </script>
 
 </body>
