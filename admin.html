@@ -1,394 +1,183 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Broadcast Admin Panel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Broadcast Admin</title>
 
-  <style>
-    body{
-      margin:0;
-      font-family: Vazirmatn, sans-serif;
-      background:#0b0f1a;
-      color:#fff;
-      display:flex;
-      height:100vh;
-    }
+<style>
+body{
+  margin:0;
+  font-family: Vazirmatn;
+  background:#0b0f1a;
+  color:#fff;
+  display:flex;
+  height:100vh;
+}
 
-    .sidebar{
-      width:290px;
-      background:#11182a;
-      padding:15px;
-      overflow-y:auto;
-      border-left:1px solid rgba(255,255,255,0.05);
-    }
+.sidebar{
+  width:300px;
+  background:#11182a;
+  padding:15px;
+  overflow-y:auto;
+}
 
-    .main{
-      flex:1;
-      padding:20px;
-      overflow-y:auto;
-    }
+.main{
+  flex:1;
+  padding:20px;
+}
 
-    h2{
-      font-size:13px;
-      color:#4ea1ff;
-      margin:12px 0;
-    }
+.box{
+  background:#141c30;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
 
-    .box{
-      background:#141c30;
-      padding:12px;
-      border-radius:10px;
-      margin-bottom:12px;
-      border:1px solid rgba(255,255,255,0.05);
-    }
+label{font-size:12px;color:#aaa;display:block;margin-top:8px;}
+input,select{
+  width:100%;
+  padding:7px;
+  margin-top:4px;
+  border-radius:8px;
+  border:none;
+  background:#0b1220;
+  color:#fff;
+}
 
-    label{
-      font-size:11px;
-      color:#aaa;
-      display:block;
-      margin-top:8px;
-    }
-
-    input,select{
-      width:100%;
-      padding:7px;
-      margin-top:4px;
-      border-radius:8px;
-      border:none;
-      background:#0b1220;
-      color:#fff;
-      outline:none;
-      font-size:12px;
-    }
-
-    input[type="range"]{padding:0;}
-
-    button{
-      width:100%;
-      padding:10px;
-      margin-top:10px;
-      background:#2d7dff;
-      border:none;
-      color:#fff;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:bold;
-      font-size:12px;
-    }
-
-    button:hover{background:#1f66d1;}
-
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-    }
-
-    .small{
-      font-size:10px;
-      color:#888;
-    }
-  </style>
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:#2d7dff;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="sidebar">
 
-  <h2>✍ متن</h2>
-
-  <div class="box">
-    <label>تیتر</label>
-    <input id="titleText">
-
-    <label>فونت</label>
-    <select id="titleFont">
-      <option>IRANYekanX</option>
-      <option>Vazirmatn</option>
-      <option>IRANSansX</option>
-    </select>
-
-    <label>وزن</label>
-    <select id="titleWeight">
-      <option value="100">Thin</option>
-      <option value="300">Light</option>
-      <option value="400">Regular</option>
-      <option value="700">Bold</option>
-      <option value="900">Black</option>
-    </select>
-
-    <label>سایز</label>
-    <input type="range" id="titleSize" min="10" max="80">
-
-    <label>رنگ</label>
-    <input type="color" id="titleColor">
-  </div>
-
-  <div class="box">
-    <label>زیرتیتر</label>
-    <input id="subText">
-
-    <label>فونت</label>
-    <select id="subFont">
-      <option>IRANYekanX</option>
-      <option>Vazirmatn</option>
-      <option>IRANSansX</option>
-    </select>
-
-    <label>وزن</label>
-    <select id="subWeight">
-      <option value="100">Thin</option>
-      <option value="400">Regular</option>
-      <option value="700">Bold</option>
-    </select>
-
-    <label>سایز</label>
-    <input type="range" id="subSize" min="8" max="50">
-
-    <label>رنگ</label>
-    <input type="color" id="subColor">
-  </div>
-
-  <button onclick="saveText()">ذخیره متن</button>
-
+<h3>Text</h3>
+<div class="box">
+<input id="titleText" placeholder="Title">
+<input id="subText" placeholder="Subtitle">
 </div>
 
-<div class="main">
-
-  <h2>🧱 کادر</h2>
-  <div class="box">
-
-    <div class="grid">
-      <div>
-        <label>عرض</label>
-        <input type="number" id="width">
-      </div>
-      <div>
-        <label>ارتفاع</label>
-        <input type="number" id="height">
-      </div>
-    </div>
-
-    <label>رنگ کادر</label>
-    <input type="color" id="bgColor">
-
-    <label>Opacity</label>
-    <input type="range" id="opacity" min="0" max="1" step="0.05">
-
-    <button onclick="saveContainer()">ذخیره کادر</button>
-  </div>
-
-  <h2>🖼 لوگو شبکه (URL)</h2>
-  <div class="box">
-    <label>آدرس لوگو</label>
-    <input id="logoUrl" placeholder="https://...">
-    <p class="small">GitHub / CDN / Direct URL</p>
-    <button onclick="saveLogoUrl()">ذخیره لوگو</button>
-  </div>
-
-  <h2>🔴 آیکون LIVE / وضعیت</h2>
-  <div class="box">
-
-    <label>نوع آیکون</label>
-    <select id="iconType">
-      <option value="off">OFF</option>
-      <option value="live">LIVE</option>
-      <option value="breaking">BREAKING</option>
-      <option value="alert">ALERT</option>
-      <option value="custom">CUSTOM URL</option>
-    </select>
-
-    <label>URL آیکون (فقط اگر custom)</label>
-    <input id="iconUrl" placeholder="https://.../icon.png">
-
-    <label>اندازه آیکون</label>
-    <input type="range" id="iconSize" min="10" max="60">
-
-    <label>موقعیت</label>
-    <select id="iconPosition">
-      <option value="right">Right</option>
-      <option value="left">Left</option>
-    </select>
-
-    <button onclick="saveIcon()">ذخیره آیکون</button>
-  </div>
-
-  <h3>Clock</h3>
-
+<h3>Container</h3>
 <div class="box">
+<input id="width" type="number" placeholder="Width">
+<input id="height" type="number" placeholder="Height">
+<input id="bgColor" type="color">
+<input id="opacity" type="range" min="0" max="1" step="0.05">
+</div>
 
-<label>نمایش ساعت</label>
+<h3>Logo</h3>
+<div class="box">
+<input id="logoUrl" placeholder="Logo URL">
+<label>Logo Size</label>
+<input id="logoSize" type="range" min="20" max="200">
+</div>
+
+<h3>Icon</h3>
+<div class="box">
+<select id="iconType">
+<option value="off">OFF</option>
+<option value="live">LIVE</option>
+<option value="breaking">BREAKING</option>
+<option value="alert">ALERT</option>
+<option value="custom">CUSTOM</option>
+</select>
+
+<input id="iconUrl" placeholder="Icon URL">
+</div>
+
+<h3>Clock</h3>
+<div class="box">
 <select id="clockEnabled">
 <option value="true">ON</option>
 <option value="false">OFF</option>
 </select>
-
-<label>زمان تعویض کشورها (ثانیه)</label>
 <input id="clockInterval" type="range" min="5" max="60">
+</div>
 
-<label>سایز نام کشور</label>
-<input id="clockCountrySize" type="range" min="8" max="30">
-
-<label>سایز ساعت</label>
-<input id="clockTimeSize" type="range" min="10" max="40">
+<button onclick="save()">SAVE</button>
 
 </div>
 
-  <h2>🎞 ترنزیشن</h2>
-  <div class="box">
-
-    <label>نوع</label>
-    <select id="transitionType">
-      <option>fade</option>
-      <option>slide</option>
-      <option>zoom</option>
-      <option>glitch</option>
-      <option>typewriter</option>
-    </select>
-
-    <label>مدت</label>
-    <input type="range" id="transitionDuration" min="100" max="2000">
-
-    <button onclick="saveTransition()">ذخیره</button>
-  </div>
-
+<div class="main">
+<h2>Broadcast Admin Panel</h2>
 </div>
 
 <script>
 
-const STORAGE_KEY = "broadcast_settings";
-const defaultState = { title:{}, subtitle:{}, container:{}, logo:{}, icon:{}, clock:{}, transition:{} };
+const KEY = "broadcast_settings";
 
-function loadState(){
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState;
-}
+let state = JSON.parse(localStorage.getItem(KEY)) || {
+  title:{},
+  subtitle:{},
+  container:{},
+  logo:{},
+  icon:{},
+  clock:{}
+};
 
-function saveState(state){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  window.dispatchEvent(new Event("broadcast_update"));
-}
-
-let state = loadState();
-
-function safeSet(path,value){
-  const keys = path.split(".");
+function safeSet(path,val){
   let obj = state;
+  let keys = path.split(".");
   for(let i=0;i<keys.length-1;i++){
     obj[keys[i]] = obj[keys[i]] || {};
     obj = obj[keys[i]];
   }
-  obj[keys[keys.length-1]] = value;
+  obj[keys[keys.length-1]] = val;
 }
 
-function saveText(){
+function save(){
   safeSet("title.text", titleText.value);
-  safeSet("title.font", titleFont.value);
-  safeSet("title.weight", titleWeight.value);
-  safeSet("title.size", titleSize.value);
-  safeSet("title.color", titleColor.value);
-
   safeSet("subtitle.text", subText.value);
-  safeSet("subtitle.font", subFont.value);
-  safeSet("subtitle.weight", subWeight.value);
-  safeSet("subtitle.size", subSize.value);
-  safeSet("subtitle.color", subColor.value);
 
-  saveState(state);
-}
-
-function saveContainer(){
   safeSet("container.width", +width.value);
   safeSet("container.height", +height.value);
   safeSet("container.bgColor", bgColor.value);
   safeSet("container.opacity", opacity.value);
-  saveState(state);
-}
 
-function saveLogoUrl(){
   safeSet("logo.url", logoUrl.value);
-  saveState(state);
-}
+  safeSet("logo.size", +logoSize.value);
 
-function saveClock(){
-  safeSet("clock.enabled", clockEnabled.value === "true");
-  safeSet("clock.interval", clockInterval.value);
-  safeSet("clock.mode", clockMode.value);
-  safeSet("clock.countrySize", +clockCountrySize.value);
-  safeSet("clock.timeSize", +clockTimeSize.value);
-  saveState(state);
-}
-
-function saveTransition(){
-  safeSet("transition.type", transitionType.value);
-  safeSet("transition.duration", transitionDuration.value);
-  saveState(state);
-}
-
-function saveIcon(){
   safeSet("icon.type", iconType.value);
   safeSet("icon.url", iconUrl.value);
-  safeSet("icon.size", iconSize.value);
-  safeSet("icon.position", iconPosition.value);
-  saveState(state);
+
+  safeSet("clock.enabled", clockEnabled.value === "true");
+  safeSet("clock.interval", +clockInterval.value);
+
+  localStorage.setItem(KEY, JSON.stringify(state));
+  window.dispatchEvent(new Event("broadcast_update"));
 }
-  function hydrateUI(){
 
-  const s = state;
-  clockCountrySize.value = state.clock?.countrySize || 11;
-  clockTimeSize.value = state.clock?.timeSize || 16;
+/* 🧠 IMPORTANT: fill UI after reload */
+function hydrate(){
+  titleText.value = state.title?.text || "";
+  subText.value = state.subtitle?.text || "";
 
-  // TITLE
-  if(s.title){
-    titleText.value = s.title.text || "";
-    titleFont.value = s.title.font || "Vazirmatn";
-    titleWeight.value = s.title.weight || "700";
-    titleSize.value = s.title.size || 28;
-    titleColor.value = s.title.color || "#ffffff";
-  }
+  width.value = state.container?.width || 600;
+  height.value = state.container?.height || 120;
+  bgColor.value = state.container?.bgColor || "#000000";
+  opacity.value = state.container?.opacity || 0.5;
 
-  // SUBTITLE
-  if(s.subtitle){
-    subText.value = s.subtitle.text || "";
-    subFont.value = s.subtitle.font || "Vazirmatn";
-    subWeight.value = s.subtitle.weight || "400";
-    subSize.value = s.subtitle.size || 18;
-    subColor.value = s.subtitle.color || "#dddddd";
-  }
+  logoUrl.value = state.logo?.url || "";
+  logoSize.value = state.logo?.size || 55;
 
-  // CONTAINER
-  if(s.container){
-    width.value = s.container.width || 600;
-    height.value = s.container.height || 120;
-    bgColor.value = s.container.bgColor || "#000000";
-    opacity.value = s.container.opacity || 0.5;
-  }
+  iconType.value = state.icon?.type || "off";
+  iconUrl.value = state.icon?.url || "";
 
-  // LOGO
-  if(s.logo){
-    logoUrl.value = s.logo.url || "";
-  }
-
-  // ICON
-  if(s.icon){
-    iconType.value = s.icon.type || "off";
-    iconUrl.value = s.icon.url || "";
-    iconSize.value = s.icon.size || 22;
-    iconPosition.value = s.icon.position || "right";
-  }
-
-  // CLOCK
-  if(s.clock){
-    clockEnabled.value = String(s.clock.enabled ?? true);
-    clockInterval.value = s.clock.interval || 10;
-    clockMode.value = s.clock.mode || "all";
-  }
-
-  // TRANSITION
-  if(s.transition){
-    transitionType.value = s.transition.type || "fade";
-    transitionDuration.value = s.transition.duration || 400;
-  }
+  clockEnabled.value = String(state.clock?.enabled ?? true);
+  clockInterval.value = state.clock?.interval || 10;
 }
+
+hydrate();
 
 </script>
 
