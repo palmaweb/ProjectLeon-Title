@@ -213,29 +213,26 @@
     <button onclick="saveIcon()">ذخیره آیکون</button>
   </div>
 
-  <h2>⏱ ساعت جهانی</h2>
-  <div class="box">
+  <h3>Clock</h3>
 
-    <label>فعال</label>
-    <select id="clockEnabled">
-      <option value="true">ON</option>
-      <option value="false">OFF</option>
-    </select>
+<div class="box">
 
-    <label>زمان تغییر (ثانیه)</label>
-    <input type="range" id="clockInterval" min="5" max="60">
+<label>نمایش ساعت</label>
+<select id="clockEnabled">
+<option value="true">ON</option>
+<option value="false">OFF</option>
+</select>
 
-    <label>حالت</label>
-    <select id="clockMode">
-      <option value="all">All</option>
-      <option value="iran">Iran</option>
-      <option value="usa">USA</option>
-      <option value="europe">Europe</option>
-      <option value="israel">Israel</option>
-    </select>
+<label>زمان تعویض کشورها (ثانیه)</label>
+<input id="clockInterval" type="range" min="5" max="60">
 
-    <button onclick="saveClock()">ذخیره ساعت</button>
-  </div>
+<label>سایز نام کشور</label>
+<input id="clockCountrySize" type="range" min="8" max="30">
+
+<label>سایز ساعت</label>
+<input id="clockTimeSize" type="range" min="10" max="40">
+
+</div>
 
   <h2>🎞 ترنزیشن</h2>
   <div class="box">
