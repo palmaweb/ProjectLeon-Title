@@ -313,6 +313,8 @@ function saveClock(){
   safeSet("clock.enabled", clockEnabled.value === "true");
   safeSet("clock.interval", clockInterval.value);
   safeSet("clock.mode", clockMode.value);
+  safeSet("clock.countrySize", +clockCountrySize.value);
+  safeSet("clock.timeSize", +clockTimeSize.value);
   saveState(state);
 }
 
@@ -332,6 +334,8 @@ function saveIcon(){
   function hydrateUI(){
 
   const s = state;
+  clockCountrySize.value = state.clock?.countrySize || 11;
+  clockTimeSize.value = state.clock?.timeSize || 16;
 
   // TITLE
   if(s.title){
