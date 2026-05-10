@@ -1,178 +1,267 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Display</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Broadcast Display</title>
 
-<style>
-body{margin:0;background:transparent;font-family:Vazirmatn;}
+  <style>
+    body{
+      margin:0;
+      background:transparent;
+      overflow:hidden;
+      font-family: Vazirmatn, sans-serif;
+    }
 
-.container{
-  position:fixed;
-  bottom:60px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  border-radius:16px;
-  overflow:hidden;
-}
+    /* OUTER WRAPPER */
+    .container{
+      position:fixed;
+      bottom:60px;
+      left:50%;
+      transform:translateX(-50%);
+      border-radius:18px;
+      overflow:hidden;
+      display:flex;
+      align-items:stretch;
+      box-shadow:0 0 25px rgba(0,0,0,0.4);
+    }
 
-/* only background opacity */
-.bg{
-  position:absolute;
-  inset:0;
-  z-index:0;
-}
+    /* BACKGROUND LAYER (ONLY THIS GETS OPACITY) */
+    .bg-layer{
+      position:absolute;
+      inset:0;
+      z-index:0;
+    }
 
-.content{
-  position:relative;
-  z-index:2;
-  display:flex;
-}
+    /* CONTENT LAYER (NO OPACITY AFFECT) */
+    .content-layer{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:center;
+    }
 
-.logo{
-  width:90px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
+    /* LOGO */
+    .logo{
+      width:90px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:10px;
+      background:rgba(0,0,0,0.2);
+    }
 
-.logo img{
-  width:55px;
-  display:none;
-}
+    .logo img{
+      width:55px;
+      height:55px;
+      object-fit:contain;
+      display:none;
+    }
 
-.clock{font-size:12px;color:white;}
+    .clock{
+      font-size:12px;
+      margin-top:5px;
+      color:#fff;
+      opacity:0.9;
+    }
 
-.text{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  text-align:center;
-  min-width:500px;
-}
+    /* TEXT AREA CENTERED */
+    .content{
+      padding:10px 18px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-width:520px;
+    }
 
-.titleRow{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-}
+    /* TITLE ROW */
+    .titleRow{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
 
-.icon{
-  width:20px;
-  display:none;
-}
-</style>
+    .icon{
+      width:22px;
+      height:22px;
+      display:none;
+    }
 
+    .title{
+      font-size:28px;
+      font-weight:700;
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .subtitle{
+      font-size:18px;
+      color:#ddd;
+      opacity:0.9;
+      margin-top:4px;
+    }
+
+    /* SIMPLE ANIMATION */
+    .fade{
+      animation:fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(10px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+  </style>
 </head>
-
 <body>
 
 <div class="container" id="box">
 
-<div class="bg" id="bg"></div>
+  <!-- BACKGROUND LAYER -->
+  <div class="bg-layer" id="bg"></div>
 
-<div class="content">
+  <!-- CONTENT -->
+  <div class="content-layer">
 
-  <div class="logo">
-    <img id="logoImg">
-    <div class="clock" id="clock">--:--</div>
-  </div>
-
-  <div class="text">
-
-    <div class="titleRow">
-      <div id="title"></div>
-      <img id="icon" class="icon">
+    <!-- LOGO -->
+    <div class="logo">
+      <img id="logoImg">
+      <div class="clock" id="clock">--:--</div>
     </div>
 
-    <div id="sub"></div>
+    <!-- TEXT -->
+    <div class="content">
+
+      <div class="titleRow">
+        <div class="title" id="titleText"></div>
+        <img id="iconImg" class="icon">
+      </div>
+
+      <div class="subtitle" id="subtitleText"></div>
+
+    </div>
 
   </div>
-
-</div>
-
 </div>
 
 <script>
 
-const KEY="broadcast_settings";
-let state={};
-let i=0;
+const STORAGE_KEY = "broadcast_settings";
+let state = {};
+let clockIndex = 0;
 
-const zones=[
- {n:"IR",o:3.5},
- {n:"EU",o:1},
- {n:"US",o:-5},
- {n:"IL",o:2}
+const zones = [
+  {name:"Iran", offset:3.5},
+  {name:"Europe", offset:1},
+  {name:"USA", offset:-5},
+  {name:"Israel", offset:2}
 ];
 
 function load(){
- state=JSON.parse(localStorage.getItem(KEY))||{};
- apply();
+  state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  apply();
 }
 
 function apply(){
 
- const box=document.getElementById("box");
- const bg=document.getElementById("bg");
+  const box = document.getElementById("box");
+  const bg = document.getElementById("bg");
 
- /* container */
- if(state.container){
-   box.style.width=state.container.width+"px";
-   box.style.height=state.container.height+"px";
-   bg.style.background=state.container.bgColor;
-   bg.style.opacity=state.container.opacity;
- }
+  /* CONTAINER SIZE */
+  if(state.container){
+    box.style.width = state.container.width + "px";
+    box.style.height = state.container.height + "px";
+  }
 
- /* logo SAFE */
- const logo=document.getElementById("logoImg");
- if(state.logo?.url){
-   logo.src=state.logo.url;
-   logo.style.display="block";
-   logo.style.width=(state.logo.size||55)+"px";
- } else logo.style.display="none";
+  /* BACKGROUND ONLY OPACITY */
+  if(state.container){
+    bg.style.background = state.container.bgColor || "rgba(0,0,0,0.5)";
+    bg.style.opacity = state.container.opacity;
+  }
 
- /* title */
- document.getElementById("title").innerText=state.title?.text||"";
- document.getElementById("sub").innerText=state.subtitle?.text||"";
+  /* LOGO SAFE */
+  const logo = document.getElementById("logoImg");
+  if(state.logo?.url){
+    logo.src = state.logo.url;
+    logo.style.display = "block";
+  } else {
+    logo.style.display = "none";
+  }
 
- /* icon SAFE */
- const icon=document.getElementById("icon");
- if(state.icon?.type!=="off"){
-   icon.style.display="block";
-   if(state.icon.type==="custom") icon.src=state.icon.url;
-   if(state.icon.type==="live") icon.src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
- } else icon.style.display="none";
+  /* TITLE */
+  const title = document.getElementById("titleText");
+  if(state.title){
+    title.innerText = state.title.text || "";
+    title.style.fontSize = (state.title.size || 28) + "px";
+    title.style.color = state.title.color || "#fff";
+    title.style.fontWeight = state.title.weight || 700;
+  }
 
- startClock();
+  /* SUBTITLE */
+  const sub = document.getElementById("subtitleText");
+  if(state.subtitle){
+    sub.innerText = state.subtitle.text || "";
+    sub.style.fontSize = (state.subtitle.size || 18) + "px";
+    sub.style.color = state.subtitle.color || "#ddd";
+  }
+
+  /* ICON SAFE */
+  const icon = document.getElementById("iconImg");
+  if(state.icon && state.icon.type !== "off"){
+
+    icon.style.display = "block";
+
+    if(state.icon.type === "custom" && state.icon.url){
+      icon.src = state.icon.url;
+    }
+
+    if(state.icon.type === "live") icon.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
+    if(state.icon.type === "breaking") icon.src = "https://upload.wikimedia.org/wikipedia/commons/3/3b/Red_pog.svg";
+    if(state.icon.type === "alert") icon.src = "https://upload.wikimedia.org/wikipedia/commons/5/5f/Red_warning_icon.svg";
+
+    icon.style.width = (state.icon.size || 22) + "px";
+
+  } else {
+    icon.style.display = "none";
+  }
+
+  /* CLOCK */
+  if(state.clock?.enabled){
+    startClock();
+  }
+
+  box.classList.add("fade");
+  setTimeout(()=>box.classList.remove("fade"),400);
 }
 
-let timer;
 function startClock(){
- if(timer) clearInterval(timer);
 
- const interval=(state.clock?.interval||10)*1000;
+  const interval = (state.clock?.interval || 10) * 1000;
 
- timer=setInterval(()=>{
+  setInterval(()=>{
 
-  const z=zones[i%zones.length];
-  const now=new Date();
-  const utc=now.getTime()+now.getTimezoneOffset()*60000;
-  const d=new Date(utc+3600000*z.o);
+    const zone = zones[clockIndex % zones.length];
 
-  document.getElementById("clock").innerText=
-  z.n+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset()*60000;
+    const local = new Date(utc + (3600000 * zone.offset));
 
-  i++;
+    const hh = String(local.getHours()).padStart(2,"0");
+    const mm = String(local.getMinutes()).padStart(2,"0");
 
- },interval);
+    document.getElementById("clock").innerText = hh + ":" + mm;
+
+    clockIndex++;
+
+  }, interval);
 }
 
-window.addEventListener("storage",load);
-window.addEventListener("broadcast_update",load);
+window.addEventListener("storage", load);
+window.addEventListener("broadcast_update", load);
 
 load();
 
