@@ -251,24 +251,62 @@ function apply(){
 
 function startClock(){
 
+  let timer;
+
+const countryMap = {
+  IR:"ایران",
+  EU:"اروپا",
+  US:"آمریکا",
+  IL:"اسرائیل"
+};
+
+function startClock(){
+
+  if(timer) clearInterval(timer);
+
+  if(!state.clock?.enabled){
+    document.querySelector(".clock").style.display = "none";
+    return;
+  }
+
+  document.querySelector(".clock").style.display = "flex";
+
   const interval = (state.clock?.interval || 10) * 1000;
 
-  setInterval(()=>{
+  const countryEl = document.getElementById("clockCountry");
+  const timeEl = document.getElementById("clockTime");
 
-    const zone = zones[clockIndex % zones.length];
+  countryEl.style.fontSize =
+    (state.clock?.countrySize || 11) + "px";
+
+  timeEl.style.fontSize =
+    (state.clock?.timeSize || 16) + "px";
+
+  function updateClock(){
+
+    const z = zones[i % zones.length];
 
     const now = new Date();
-    const utc = now.getTime() + now.getTimezoneOffset()*60000;
-    const local = new Date(utc + (3600000 * zone.offset));
 
-    const hh = String(local.getHours()).padStart(2,"0");
-    const mm = String(local.getMinutes()).padStart(2,"0");
+    const utc =
+      now.getTime() + now.getTimezoneOffset()*60000;
 
-    document.getElementById("clock").innerText = hh + ":" + mm;
+    const d =
+      new Date(utc + (3600000 * z.o));
 
-    clockIndex++;
+    countryEl.innerText = countryMap[z.n];
 
-  }, interval);
+    timeEl.innerText =
+      String(d.getHours()).padStart(2,"0") +
+      ":" +
+      String(d.getMinutes()).padStart(2,"0");
+
+    i++;
+  }
+
+  updateClock();
+
+  timer = setInterval(updateClock, interval);
 }
 
 window.addEventListener("storage", load);
