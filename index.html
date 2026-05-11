@@ -167,14 +167,48 @@
 }
 
     /* SIMPLE ANIMATION */
-    .fade{
-      animation:fadeIn 0.4s ease;
-    }
+    .fade {
+  animation: fadeIn 0.5s ease;
+}
 
-    @keyframes fadeIn{
-      from{opacity:0; transform:translateY(10px)}
-      to{opacity:1; transform:translateY(0)}
-    }
+.slide {
+  animation: slideIn 0.5s ease;
+}
+
+.zoom {
+  animation: zoomIn 0.5s ease;
+}
+
+.glitch {
+  animation: glitch 0.4s infinite;
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 1s steps(30);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {opacity:0}
+  to {opacity:1}
+}
+
+@keyframes slideIn {
+  from {transform:translateY(20px); opacity:0}
+  to {transform:translateY(0); opacity:1}
+}
+
+@keyframes zoomIn {
+  from {transform:scale(0.9); opacity:0}
+  to {transform:scale(1); opacity:1}
+}
+
+@keyframes typing {
+  from {width:0}
+  to {width:100%}
+}
 
   </style>
 </head>
