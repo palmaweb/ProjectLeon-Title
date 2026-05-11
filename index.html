@@ -147,6 +147,31 @@
       margin-top:2px;
       width:100%;
     }
+    /* Icons*/
+    .statusBox{
+    width:90px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(255,255,255,0.04);
+
+    border-right:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(8px);
+
+    flex-shrink:0;
+}
+
+  .statusIcon{
+  width:36px;
+  height:36px;
+
+  object-fit:contain;
+
+  display:none;
+}
 
     /* SIMPLE ANIMATION */
     .fade{
@@ -181,12 +206,11 @@
 
       <div class="text">
         <div class="title" id="titleText"></div>
-        <img id="iconImg" class="icon">
-      </div>
-
       <div class="subtitle" id="subtitleText"></div>
-
     </div>
+      <div class="statusBox">
+  <img id="iconImg" class="statusIcon">
+</div>
 
   </div>
 </div>
@@ -266,7 +290,9 @@ function apply(){
     if(state.icon.type === "breaking") icon.src = "https://upload.wikimedia.org/wikipedia/commons/3/3b/Red_pog.svg";
     if(state.icon.type === "alert") icon.src = "https://upload.wikimedia.org/wikipedia/commons/5/5f/Red_warning_icon.svg";
 
-    icon.style.width = (state.icon.size || 22) + "px";
+    icon.style.width = (state.icon.size || 36) + "px";
+
+    icon.style.height = (state.icon.size || 36) + "px";
 
   } else {
     icon.style.display = "none";
