@@ -141,6 +141,7 @@ body{
   color:#fff;
   text-align:center;
   overflow:hidden;
+  display:flex;
 }
 
 .clock-country{
@@ -416,9 +417,9 @@ function startClock(){
     });
 
     clockEl.innerHTML = `
-      <div class="clock-country">${zone.name}</div>
-      <div class="clock-time">${time}</div>
-    `;
+  <div class="clock-country">${zone.name}</div>
+  <div class="clock-time">${timeString}</div>
+`;
   }
 }
 
