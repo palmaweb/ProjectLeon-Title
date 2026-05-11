@@ -295,8 +295,10 @@ function apply(){
 
   /* CLOCK */
   if(state.clock?.enabled){
-    startClock();
-  }
+  startClock();
+}else{
+  stopClock();
+}
 
   box.classList.add("fade");
   setTimeout(()=>box.classList.remove("fade"),400);
