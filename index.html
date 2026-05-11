@@ -327,6 +327,22 @@ function apply(){
     icon.style.display = "none";
   }
 
+  /* Transitions */
+  function applyTransition(){
+
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+  const type = state.transition?.type || "fade";
+
+  const box = document.getElementById("box");
+
+  box.classList.remove("fade","slide","zoom","glitch","typewriter");
+
+  void box.offsetWidth; // restart animation
+
+  box.classList.add(type);
+}
+
  /* CLOCK */
   
   if(state.clock?.enabled){
@@ -363,6 +379,7 @@ window.addEventListener("storage", load);
 window.addEventListener("broadcast_update", load);
 
 load();
+ applyTransition();
 
 </script>
 
