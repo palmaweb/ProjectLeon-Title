@@ -67,26 +67,54 @@
   flex-shrink:0;
 }
 
+/* CLOCK BOX */
 .clock{
   display:flex;
   flex-direction:column;
+
   align-items:center;
   justify-content:center;
-  color:#fff;
-  opacity:0.9;
-  line-height:1.2;
+
+  width:100%;
+
   margin-top:auto;
   margin-bottom:10px;
+
+  line-height:1.1;
+
+  color:#fff;
+
   flex-shrink:0;
-}
-.clock-country{
-  font-size:14px;
-  opacity:0.8;
+
+  text-align:center;
+
+  overflow:hidden;
 }
 
+/* COUNTRY */
+.clock-country{
+
+  font-size:14px;
+
+  opacity:0.8;
+
+  white-space:nowrap;
+
+  margin-bottom:4px;
+
+  font-weight:500;
+}
+
+/* TIME */
 .clock-time{
-  font-size:22px;
-  font-weight:bold;
+
+  font-size:24px;
+
+  font-weight:800;
+
+  white-space:nowrap;
+
+  line-height:1;
 }
 
     /* TEXT AREA CENTERED */
@@ -234,7 +262,7 @@
     <!-- LOGO -->
     <div class="logo">
       <img id="logoImg">
-      <div class="clock" id="clock">--:--</div>
+      <div class="clock" id="clock"></div>
     </div>
 
     <!-- TEXT -->
