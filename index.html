@@ -294,98 +294,185 @@ function apply(){
   }
 
   /* CLOCK */
-  let clockIntervalId = null;
-  let clockRenderId = null;
-  let currentZoneIndex = 0;
-  let lastSwitch = 0;
-  let isApplying = false;
 
-  box.classList.add("fade");
-  setTimeout(()=>box.classList.remove("fade"),400);
-}
+let state = {};
+let clockRAF = null;
+let clockRunning = false;
 
-function startClock(){
+let currentZoneIndex = 0;
+let lastSwitchTime = 0;
 
-  stopClock(); // جلوگیری از دوباره اجرا شدن
+const STORAGE_KEY = "broadcast_settings";
 
-  const switchInterval = (state.clock?.interval || 10) * 1000;
-
-  const clockEl = document.getElementById("clock");
-
-  function update(){
-
-    const now = performance.now();
-
-    // 🔁 تعویض کشورها
-    if(now - lastSwitch > switchInterval){
-      currentZoneIndex = (currentZoneIndex + 1) % zones.length;
-      lastSwitch = now;
-    }
-
-    const zones = [
-  {name:"ایران", offset:3.5},
-  {name:"اروپا", offset:1},
-  {name:"آمریکا", offset:-5},
-  {name:"اسرائیل", offset:2}
+/* 🌍 ZONES */
+const zones = [
+  { name: "ایران", offset: 3.5 },
+  { name: "اروپا", offset: 1 },
+  { name: "آمریکا", offset: -5 },
+  { name: "اسرائیل", offset: 2 }
 ];
 
-    const date = new Date();
-
-    const utc = date.getTime() + date.getTimezoneOffset() * 60000;
-
-    const local = new Date(utc + (3600000 * zone.offset));
-
-    const hh = local.getHours().toString().padStart(2,"0");
-    const mm = local.getMinutes().toString().padStart(2,"0");
-
-    clockEl.textContent = `${zone.name} ${hh}:${mm}`;
-
-    clockRenderId = requestAnimationFrame(update);
-  }
-
-  clockRenderId = requestAnimationFrame(update);
-}
- function stopClock(){
-
-  if(clockRenderId){
-    cancelAnimationFrame(clockRenderId);
-    clockRenderId = null;
-  }
-
-  if(clockIntervalId){
-    clearInterval(clockIntervalId);
-    clockIntervalId = null;
-  }
-
-  const clockEl = document.getElementById("clock");
-
-  if(clockEl){
-    clockEl.textContent = "";
-  }
-   function load(){
+/* =========================
+   LOAD + SYNC ENGINE
+========================= */
+function load() {
 
   const newState =
     JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-  const oldClockState = state.clock?.enabled;
+  const oldClock = state.clock?.enabled;
 
   state = newState;
 
   apply();
 
-  // 🔥 اگر وضعیت ساعت تغییر کرده باشد
-  if(oldClockState !== state.clock?.enabled){
+  /* 🔥 فقط اگر تغییر کرده باشد */
+  if (oldClock !== state.clock?.enabled) {
 
-    if(state.clock?.enabled){
+    if (state.clock?.enabled) {
       startClock();
-    }else{
+    } else {
       stopClock();
     }
+
+  }
 }
 
+/* =========================
+   APPLY DISPLAY
+========================= */
+function apply() {
+
+  const box = document.getElementById("box");
+  const bg = document.getElementById("bg");
+
+  /* container */
+  if (state.container) {
+    box.style.width = state.container.width + "px";
+    box.style.height = state.container.height + "px";
+
+    bg.style.background = state.container.bgColor || "rgba(0,0,0,0.6)";
+    bg.style.opacity = state.container.opacity;
+  }
+
+  /* logo */
+  const logo = document.getElementById("logoImg");
+
+  if (state.logo?.url) {
+    logo.src = state.logo.url;
+    logo.style.display = "block";
+  } else {
+    logo.style.display = "none";
+  }
+
+  /* title */
+  document.getElementById("titleText").innerText =
+    state.title?.text || "";
+
+  /* subtitle */
+  document.getElementById("subtitleText").innerText =
+    state.subtitle?.text || "";
+
+  /* icon */
+  const icon = document.getElementById("iconImg");
+
+  if (state.icon?.type && state.icon.type !== "off") {
+
+    let src = "";
+
+    if (state.icon.type === "custom") {
+      src = state.icon.url;
+    }
+
+    if (state.icon.type === "live") {
+      src =
+        "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
+    }
+
+    if (src) {
+      icon.src = src;
+      icon.style.display = "block";
+    }
+
+  } else {
+    icon.style.display = "none";
+  }
+
+}
+
+/* =========================
+   CLOCK START
+========================= */
+function startClock() {
+
+  stopClock(); // جلوگیری از دوبل اجرا
+
+  clockRunning = true;
+
+  const clockEl = document.getElementById("clock");
+
+  const intervalMs =
+    (state.clock?.interval || 10) * 1000;
+
+  function loop(time) {
+
+    if (!clockRunning) return;
+
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+
+    /* ⏱ switch zone */
+    if (time - lastSwitchTime > intervalMs) {
+      currentZoneIndex =
+        (currentZoneIndex + 1) % zones.length;
+
+      lastSwitchTime = time;
+    }
+
+    const zone = zones[currentZoneIndex];
+
+    const local = new Date(
+      utc + 3600000 * zone.offset
+    );
+
+    const hh = String(local.getHours()).padStart(2, "0");
+    const mm = String(local.getMinutes()).padStart(2, "0");
+
+    clockEl.textContent =
+      `${zone.name} ${hh}:${mm}`;
+
+    clockRAF = requestAnimationFrame(loop);
+  }
+
+  clockRAF = requestAnimationFrame(loop);
+}
+
+/* =========================
+   CLOCK STOP
+========================= */
+function stopClock() {
+
+  clockRunning = false;
+
+  if (clockRAF) {
+    cancelAnimationFrame(clockRAF);
+    clockRAF = null;
+  }
+
+  const clockEl = document.getElementById("clock");
+
+  if (clockEl) {
+    clockEl.textContent = "";
+  }
+}
+
+/* =========================
+   EVENTS
+========================= */
 window.addEventListener("storage", load);
 window.addEventListener("broadcast_update", load);
 
+/* INIT */
 load();
 
 </script>
