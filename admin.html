@@ -589,6 +589,10 @@ window.onload = function(){
     document.getElementById("loginBox").style.display = "none";
   }
 };
+  function logout(){
+  localStorage.removeItem("auth");
+  location.reload();
+}
 </script>
 
 </body>
