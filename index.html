@@ -344,6 +344,10 @@ function apply(){
 }
 
  /* CLOCK */
+let clockIntervalId = null;
+let clockRenderId = null;
+let currentZoneIndex = 0;
+let lastSwitch = 0;
   
   if(state.clock?.enabled){
     startClock();
@@ -355,22 +359,40 @@ function apply(){
 
 function startClock(){
 
+  if(clockIntervalId){
+    clearInterval(clockIntervalId);
+  }
+
   const interval = (state.clock?.interval || 10) * 1000;
 
-  setInterval(()=>{
+  const zones = [
+    {name:"ایران", offset:3.5},
+    {name:"اروپا", offset:1},
+    {name:"آمریکا", offset:-5},
+    {name:"اسرائیل", offset:2}
+  ];
 
-    const zone = zones[clockIndex % zones.length];
+  let i = 0;
+
+  const clockEl = document.getElementById("clock");
+
+  clockIntervalId = setInterval(()=>{
+
+    const z = zones[i % zones.length];
 
     const now = new Date();
+
     const utc = now.getTime() + now.getTimezoneOffset()*60000;
-    const local = new Date(utc + (3600000 * zone.offset));
 
-    const hh = String(local.getHours()).padStart(2,"0");
-    const mm = String(local.getMinutes()).padStart(2,"0");
+    const local = new Date(utc + (3600000 * z.offset));
 
-    document.getElementById("clock").innerText = hh + ":" + mm;
+    const hh = local.getHours().toString().padStart(2,"0");
+    const mm = local.getMinutes().toString().padStart(2,"0");
 
-    clockIndex++;
+    // 🔥 رندر سبک (بدون DOM query اضافی)
+    clockEl.textContent = `${z.name} ${hh}:${mm}`;
+
+    i++;
 
   }, interval);
 }
