@@ -21,7 +21,7 @@
     transform:translateX(-50%);
     display:flex;
     border-radius:16px;
-    overflow:hidden;
+    overflow:visible;
     align-items:stretch;
     overflow:hidden;
     z-index:1;
@@ -29,8 +29,9 @@
    .container::before{
   content:"";
   position:absolute;
-  inset:-3px;
-  border-radius:18px;
+  inset:-4px;  /* مهم: بیرون از کادر */
+
+  border-radius:20px;
 
   background:conic-gradient(
     red,
@@ -42,25 +43,15 @@
     red
   );
 
-  animation:rgbSpin 3s linear infinite;
-
-  filter:blur(10px);
+  animation:spin 2.5s linear infinite;
 
   z-index:0;
 
-  opacity:0.9;
-}
-    .container::after{
-  content:"";
-  position:absolute;
-  inset:3px;
-  border-radius:14px;
+  filter:blur(8px);
 
-  background:rgba(0,0,0,0.6); /* بک‌گراند اصلی */
-
-  z-index:1;
+  padding:2px;
 }
-    @keyframes rgbSpin{
+ @keyframes spin{
   from{
     transform:rotate(0deg);
   }
