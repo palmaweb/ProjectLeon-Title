@@ -294,11 +294,10 @@ function apply(){
   }
 
   /* CLOCK */
-  if(state.clock?.enabled){
-  startClock();
-}else{
-  stopClock();
-}
+  let clockIntervalId = null;
+  let clockRenderId = null;
+  let currentZoneIndex = 0;
+  let lastSwitch = 0;
 
   box.classList.add("fade");
   setTimeout(()=>box.classList.remove("fade"),400);
@@ -306,51 +305,67 @@ function apply(){
 
 function startClock(){
 
-  if(clockIntervalId){
-    clearInterval(clockIntervalId);
-  }
+  stopClock(); // جلوگیری از دوباره اجرا شدن
 
-  const interval = (state.clock?.interval || 10) * 1000;
-
-  const zones = [
-    {name:"ایران", offset:3.5},
-    {name:"اروپا", offset:1},
-    {name:"آمریکا", offset:-5},
-    {name:"اسرائیل", offset:2}
-  ];
-
-  let i = 0;
+  const switchInterval = (state.clock?.interval || 10) * 1000;
 
   const clockEl = document.getElementById("clock");
 
-  clockIntervalId = setInterval(()=>{
+  function update(){
 
-    const z = zones[i % zones.length];
+    const now = performance.now();
 
-    const now = new Date();
+    // 🔁 تعویض کشورها
+    if(now - lastSwitch > switchInterval){
+      currentZoneIndex = (currentZoneIndex + 1) % zones.length;
+      lastSwitch = now;
+    }
 
-    const utc = now.getTime() + now.getTimezoneOffset()*60000;
+    const zones = [
+  {name:"ایران", offset:3.5},
+  {name:"اروپا", offset:1},
+  {name:"آمریکا", offset:-5},
+  {name:"اسرائیل", offset:2}
+];
 
-    const local = new Date(utc + (3600000 * z.offset));
+    const date = new Date();
+
+    const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+
+    const local = new Date(utc + (3600000 * zone.offset));
 
     const hh = local.getHours().toString().padStart(2,"0");
     const mm = local.getMinutes().toString().padStart(2,"0");
 
-    // 🔥 رندر سبک (بدون DOM query اضافی)
-    clockEl.textContent = `${z.name} ${hh}:${mm}`;
+    clockEl.textContent = `${zone.name} ${hh}:${mm}`;
 
-    i++;
+    clockRenderId = requestAnimationFrame(update);
+  }
 
-  }, interval);
+  clockRenderId = requestAnimationFrame(update);
 }
-  function stopClock(){
+ function stopClock(){
+
+  if(clockRenderId){
+    cancelAnimationFrame(clockRenderId);
+    clockRenderId = null;
+  }
 
   if(clockIntervalId){
     clearInterval(clockIntervalId);
     clockIntervalId = null;
   }
 
-  document.getElementById("clock").textContent = "";
+  const clockEl = document.getElementById("clock");
+
+  if(clockEl){
+    clockEl.textContent = "";
+  }
+   if(state.clock?.enabled){
+  startClock();
+}else{
+  stopClock();
+}
 }
 
 window.addEventListener("storage", load);
