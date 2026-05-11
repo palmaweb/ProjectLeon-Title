@@ -407,35 +407,6 @@ function startClock(){
 
   function updateClock(){
 
-  const zone = zones[currentZoneIndex];
-
-  const timeString = new Date().toLocaleTimeString("fa-IR", {
-    timeZone: zone.timezone,
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
-  });
-
-  const clockEl = document.getElementById("clock");
-
-  if(!clockEl) return;
-
-  clockEl.innerHTML = `
-    <div class="clock-country">${zone.name}</div>
-    <div class="clock-time">${timeString}</div>
-  `;
-}
-
-/* STOP CLOCK */ function stopClock(){
-  if(clockIntervalId){
-    clearInterval(clockIntervalId);
-    clockIntervalId = null;
-  }
-
-  const clockEl = document.getElementById("clock");
-  clockEl.innerHTML = "";
-  clockEl.style.display = "none";
-}
 
 /* EVENTS */
 window.addEventListener("storage", load);
