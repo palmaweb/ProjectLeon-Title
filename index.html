@@ -27,48 +27,6 @@
     z-index:1;
     background:rgba(0,0,0,0.6);
   }
-   .container::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-
-  border-radius:18px;
-
-  padding:2px;
-
-  background:conic-gradient(
-    red,
-    yellow,
-    lime,
-    cyan,
-    blue,
-    magenta,
-    red
-  );
-
-  animation:spin 2.5s linear infinite;
-
-  /* مهم‌ترین بخش: فقط border دیده شود */
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-
-  -webkit-mask-composite:xor;
-  mask-composite:exclude;
-
-  z-index:0;
-}
-    .container::after{
-  content:"";
-  position:absolute;
-  inset:0;
-
-  border-radius:16px;
-
-  background:transparent;
-
-  z-index:1;
-}
 
     /* BACKGROUND LAYER (ONLY THIS GETS OPACITY) */
     .bg-layer{
