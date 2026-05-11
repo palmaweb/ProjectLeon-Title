@@ -256,177 +256,293 @@
 <script>
 
 const STORAGE_KEY = "broadcast_settings";
-let state = {};
-let clockIndex = 0;
 
+let state = {};
+let clockIntervalId = null;
+let currentZoneIndex = 0;
+
+/* TIMEZONES */
 const zones = [
-  {name:"ایران", offset:3.5},
-  {name:"اروپا", offset:1},
-  {name:"آمریکا", offset:-5},
-  {name:"اسرائیل", offset:2}
+  {
+    name:"ایران",
+    timezone:"Asia/Tehran"
+  },
+  {
+    name:"اروپا",
+    timezone:"Europe/Berlin"
+  },
+  {
+    name:"آمریکا",
+    timezone:"America/New_York"
+  },
+  {
+    name:"اسرائیل",
+    timezone:"Asia/Jerusalem"
+  }
 ];
 
+/* LOAD */
 function load(){
-  state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+  state =
+    JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
   apply();
 }
 
+/* APPLY UI */
 function apply(){
 
   const box = document.getElementById("box");
   const bg = document.getElementById("bg");
 
-  /* CONTAINER SIZE */
+  /* SIZE */
   if(state.container){
-    box.style.width = state.container.width + "px";
-    box.style.height = state.container.height + "px";
+
+    box.style.width =
+      (state.container.width || 900) + "px";
+
+    box.style.height =
+      (state.container.height || 180) + "px";
   }
 
-  /* BACKGROUND ONLY OPACITY */
+  /* BACKGROUND */
   if(state.container){
-    bg.style.background = state.container.bgColor || "rgba(0,0,0,0.5)";
-    bg.style.opacity = state.container.opacity;
+
+    bg.style.background =
+      state.container.bgColor || "#000";
+
+    bg.style.opacity =
+      state.container.opacity || 0.5;
   }
 
-  /* LOGO SAFE */
-  const logo = document.getElementById("logoImg");
+  /* LOGO */
+  const logo =
+    document.getElementById("logoImg");
+
   if(state.logo?.url){
+
     logo.src = state.logo.url;
     logo.style.display = "block";
-  } else {
+
+  }else{
+
     logo.style.display = "none";
   }
 
   /* TITLE */
-  const title = document.getElementById("titleText");
+  const title =
+    document.getElementById("titleText");
+
   if(state.title){
-    title.innerText = state.title.text || "";
-    title.style.fontSize = (state.title.size || 28) + "px";
-    title.style.color = state.title.color || "#fff";
-    title.style.fontWeight = state.title.weight || 700;
+
+    title.innerText =
+      state.title.text || "";
+
+    title.style.fontSize =
+      (state.title.size || 28) + "px";
+
+    title.style.color =
+      state.title.color || "#fff";
+
+    title.style.fontWeight =
+      state.title.weight || 700;
   }
 
   /* SUBTITLE */
-  const sub = document.getElementById("subtitleText");
+  const sub =
+    document.getElementById("subtitleText");
+
   if(state.subtitle){
-    sub.innerText = state.subtitle.text || "";
-    sub.style.fontSize = (state.subtitle.size || 18) + "px";
-    sub.style.color = state.subtitle.color || "#ddd";
+
+    sub.innerText =
+      state.subtitle.text || "";
+
+    sub.style.fontSize =
+      (state.subtitle.size || 18) + "px";
+
+    sub.style.color =
+      state.subtitle.color || "#ddd";
   }
 
-  /* ICON SAFE */
-  const icon = document.getElementById("iconImg");
+  /* ICON */
+  const icon =
+    document.getElementById("iconImg");
+
   if(state.icon && state.icon.type !== "off"){
 
     icon.style.display = "block";
 
     if(state.icon.type === "custom" && state.icon.url){
+
       icon.src = state.icon.url;
     }
 
-    if(state.icon.type === "live") icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
-    if(state.icon.type === "breaking") icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
-    if(state.icon.type === "alert") icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
+    if(state.icon.type === "live"){
 
-    icon.style.width = (state.icon.size || 100) + "px";
+      icon.src =
+      "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
+    }
 
-    icon.style.height = (state.icon.size || 100) + "px";
+    if(state.icon.type === "breaking"){
 
-  } else {
+      icon.src =
+      "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
+    }
+
+    if(state.icon.type === "alert"){
+
+      icon.src =
+      "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
+    }
+
+    icon.style.width =
+      (state.icon.size || 100) + "px";
+
+    icon.style.height =
+      (state.icon.size || 100) + "px";
+
+  }else{
+
     icon.style.display = "none";
   }
 
-  /* Transitions */
-  function applyTransition(){
+  /* TRANSITION */
+  applyTransition();
 
-  const state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  /* CLOCK */
+  if(state.clock?.enabled){
 
-  const type = state.transition?.type || "fade";
+    document.getElementById("clock").style.display = "flex";
 
-  const box = document.getElementById("box");
+    startClock();
 
-  box.classList.remove("fade","slide","zoom","glitch","typewriter");
+  }else{
 
-  void box.offsetWidth; // restart animation
+    stopClock();
+  }
+}
+
+/* TRANSITION ENGINE */
+function applyTransition(){
+
+  const type =
+    state.transition?.type || "fade";
+
+  const box =
+    document.getElementById("box");
+
+  box.classList.remove(
+    "fade",
+    "slide",
+    "zoom",
+    "glitch",
+    "typewriter"
+  );
+
+  void box.offsetWidth;
 
   box.classList.add(type);
 }
 
- /* CLOCK */
-let clockIntervalId = null;
-let clockRenderId = null;
-let currentZoneIndex = 0;
-let lastSwitch = 0;
-  
-  if(state.clock?.enabled){
-    startClock();
-  }
-
-  box.classList.add("fade");
-  setTimeout(()=>box.classList.remove("fade"),400);
-}
-
+/* CLOCK START */
 function startClock(){
 
-  if(clockIntervalId){
-    clearInterval(clockIntervalId);
-  }
+  stopClock();
 
-  const interval = (state.clock?.interval || 10) * 1000;
+  const interval =
+    (state.clock?.interval || 10) * 1000;
 
-  const zone = zones[currentZoneIndex];
+  const clockEl =
+    document.getElementById("clock");
 
-const timeString = new Date().toLocaleTimeString(
-  "fa-IR",
-  {
-    timeZone: zone.timezone,
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
-  }
-);
-
-/* نمایش نهایی */
-clockEl.innerHTML = `
-  <div class="clock-country">
-    ${zone.name}
-  </div>
-
-  <div class="clock-time">
-    ${timeString}
-  </div>
-`;
-
-  let i = 0;
-
-  const clockEl = document.getElementById("clock");
+  updateClock();
 
   clockIntervalId = setInterval(()=>{
 
-    const z = zones[i % zones.length];
+    currentZoneIndex++;
 
-    const now = new Date();
+    if(currentZoneIndex >= zones.length){
+      currentZoneIndex = 0;
+    }
 
-    const utc = now.getTime() + now.getTimezoneOffset()*60000;
-
-    const local = new Date(utc + (3600000 * z.offset));
-
-    const hh = local.getHours().toString().padStart(2,"0");
-    const mm = local.getMinutes().toString().padStart(2,"0");
-
-    // 🔥 رندر سبک (بدون DOM query اضافی)
-    clockEl.textContent = `${z.name} ${hh}:${mm}`;
-
-    i++;
+    updateClock();
 
   }, interval);
+
+  function updateClock(){
+
+    const zone = zones[currentZoneIndex];
+
+    const timeString =
+      new Date().toLocaleTimeString(
+        "fa-IR",
+        {
+          timeZone: zone.timezone,
+          hour:"2-digit",
+          minute:"2-digit",
+          hour12:false
+        }
+      );
+
+    clockEl.innerHTML = `
+      <div class="clock-country">
+        ${zone.name}
+      </div>
+
+      <div class="clock-time">
+        ${timeString}
+      </div>
+    `;
+
+    /* FONT SIZES FROM PANEL */
+    if(state.clock?.countrySize){
+
+      const country =
+        clockEl.querySelector(".clock-country");
+
+      country.style.fontSize =
+        state.clock.countrySize + "px";
+    }
+
+    if(state.clock?.timeSize){
+
+      const time =
+        clockEl.querySelector(".clock-time");
+
+      time.style.fontSize =
+        state.clock.timeSize + "px";
+    }
+  }
 }
 
-window.addEventListener("storage", load);
-window.addEventListener("broadcast_update", load);
+/* CLOCK STOP */
+function stopClock(){
 
+  if(clockIntervalId){
+
+    clearInterval(clockIntervalId);
+    clockIntervalId = null;
+  }
+
+  const clockEl =
+    document.getElementById("clock");
+
+  clockEl.style.display = "none";
+
+  clockEl.innerHTML = "";
+}
+
+/* EVENTS */
+window.addEventListener("storage", load);
+
+window.addEventListener(
+  "broadcast_update",
+  load
+);
+
+/* INIT */
 load();
- applyTransition();
 
 </script>
 
