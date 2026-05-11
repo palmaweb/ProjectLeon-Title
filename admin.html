@@ -561,6 +561,34 @@ function tryAutoSave(el){
     transition:{}
   };
 }
+  const ADMIN_PASS = "1234"; // ← رمز دلخواه تو
+
+function checkPass(){
+
+  const input =
+    document.getElementById("passInput").value;
+
+  if(input === ADMIN_PASS){
+
+    localStorage.setItem("auth","ok");
+
+    document.getElementById("loginBox").style.display = "none";
+
+  }else{
+
+    document.getElementById("err").innerText =
+      "رمز اشتباه است";
+  }
+}
+
+/* AUTO CHECK */
+window.onload = function(){
+
+  if(localStorage.getItem("auth") === "ok"){
+
+    document.getElementById("loginBox").style.display = "none";
+  }
+};
 </script>
 
 </body>
