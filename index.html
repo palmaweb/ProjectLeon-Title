@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Broadcast Display</title>
-
 <link rel="stylesheet" href="assets/fonts/fonts.css">
+
+<title>Broadcast Display</title>
 
 <style>
 
@@ -17,27 +17,25 @@ body{
   font-family: Vazirmatn, IRANYekanX, IRANSansX;
 }
 
-/* =======================
-   MAIN CONTAINER
-======================= */
+/* =========================
+   MAIN WRAPPER
+========================= */
 .container{
   position:fixed;
   bottom:60px;
   left:50%;
   transform:translateX(-50%);
   display:flex;
-  align-items:stretch;
   border-radius:16px;
   overflow:hidden;
-  background:rgba(0,0,0,0.55);
-  direction:ltr;
-  min-width:900px;
+  align-items:stretch;
+  width:fit-content;
   isolation:isolate;
 }
 
-/* =======================
-   RGB BORDER
-======================= */
+/* =========================
+   RGB BORDER (OUTER GLOW)
+========================= */
 .container::before{
   content:"";
   position:absolute;
@@ -49,7 +47,7 @@ body{
     #00ffff,#0066ff,#aa00ff,#ff0066,#ff0000
   );
   background-size:400% 400%;
-  animation:borderMove 8s linear infinite;
+  animation:rgbBorder 8s linear infinite;
   z-index:-1;
 
   -webkit-mask:
@@ -57,63 +55,90 @@ body{
     linear-gradient(#fff 0 0);
   -webkit-mask-composite:xor;
   mask-composite:exclude;
-  padding:3px;
+
+  pointer-events:none;
 }
 
-@keyframes borderMove{
+@keyframes rgbBorder{
   0%{background-position:0% 50%}
   100%{background-position:400% 50%}
 }
 
-/* =======================
-   LEFT (LOGO + CLOCK)
-======================= */
-.left{
+/* =========================
+   BACKGROUND (ONLY THIS OPACITY)
+========================= */
+.bg-layer{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:rgba(0,0,0,0.6);
+}
+
+/* =========================
+   CONTENT LAYER (NO OPACITY IMPACT)
+========================= */
+.content-layer{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:row;
+  align-items:stretch;
+}
+
+/* =========================
+   LOGO PANEL
+========================= */
+.logo{
   width:200px;
-  background:rgba(0,0,0,0.25);
-  backdrop-filter:blur(8px);
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:space-between;
   padding:10px;
+  box-sizing:border-box;
+  background:rgba(0,0,0,0.15);
+  backdrop-filter:blur(8px);
 }
 
-.left img{
+.logo img{
   width:120px;
   height:120px;
   object-fit:contain;
   display:none;
 }
 
-/* CLOCK */
+/* =========================
+   CLOCK
+========================= */
 .clock{
-  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   color:#fff;
-  margin-bottom:10px;
-  min-height:80px;
+  margin-top:auto;
 }
 
 .clock-country{
-  font-size:13px;
+  font-size:14px;
   opacity:0.8;
 }
 
 .clock-time{
   font-size:22px;
-  font-weight:bold;
+  font-weight:700;
 }
 
-/* =======================
-   CENTER TEXT
-======================= */
-.center{
-  flex:1;
+/* =========================
+   TEXT AREA
+========================= */
+.content{
   display:flex;
   flex-direction:column;
   justify-content:center;
-  align-items:center;
-  padding:0 40px;
+  min-width:500px;
+  padding:0 60px;
+  box-sizing:border-box;
   text-align:center;
 }
 
@@ -123,39 +148,38 @@ body{
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  width:100%;
 }
 
 .subtitle{
   font-size:18px;
   color:#ddd;
+  opacity:0.9;
   margin-top:6px;
-  max-width:600px;
-  overflow:hidden;
 }
 
-/* =======================
-   RIGHT ICON
-======================= */
-.right{
-  width:120px;
+/* =========================
+   STATUS ICON
+========================= */
+.statusBox{
+  width:100px;
   display:flex;
   align-items:center;
   justify-content:center;
+  background:rgba(0,0,0,0.1);
 }
 
-.right img{
-  width:80px;
-  height:80px;
+.statusIcon{
+  width:90px;
+  height:90px;
   object-fit:contain;
   display:none;
 }
 
-/* =======================
-   ANIMATION
-======================= */
-.fade{animation:fade .4s ease}
-@keyframes fade{from{opacity:0}to{opacity:1}}
+/* =========================
+   ANIMATIONS
+========================= */
+.fade{animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 </style>
 </head>
@@ -164,34 +188,38 @@ body{
 
 <div class="container" id="box">
 
-  <!-- LEFT -->
-  <div class="left">
-    <img id="logoImg">
-    <div class="clock" id="clock"></div>
-  </div>
+  <!-- BACKGROUND ONLY -->
+  <div class="bg-layer" id="bg"></div>
 
-  <!-- CENTER -->
-  <div class="center">
-    <div class="title" id="titleText"></div>
-    <div class="subtitle" id="subtitleText"></div>
-  </div>
+  <div class="content-layer">
 
-  <!-- RIGHT -->
-  <div class="right">
-    <img id="iconImg">
-  </div>
+    <!-- LOGO -->
+    <div class="logo">
+      <img id="logoImg">
+      <div class="clock" id="clock"></div>
+    </div>
 
+    <!-- TEXT -->
+    <div class="content">
+      <div class="title" id="titleText"></div>
+      <div class="subtitle" id="subtitleText"></div>
+    </div>
+
+    <!-- ICON -->
+    <div class="statusBox">
+      <img id="iconImg" class="statusIcon">
+    </div>
+
+  </div>
 </div>
 
 <script>
 
-const KEY = "broadcast_settings";
+const STORAGE_KEY = "broadcast_settings";
 
 let state = {};
-let clockIndex = 0;
-let clockTimer = null;
+let index = 0;
 
-/* TIMEZONES */
 const zones = [
   {name:"ایران", timezone:"Asia/Tehran"},
   {name:"اروپا", timezone:"Europe/Berlin"},
@@ -199,28 +227,23 @@ const zones = [
   {name:"اسرائیل", timezone:"Asia/Jerusalem"}
 ];
 
-/* LOAD */
 function load(){
-  state = JSON.parse(localStorage.getItem(KEY)) || {};
-  render();
+  state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  apply();
 }
 
-/* APPLY */
-function render(){
+function apply(){
 
   const box = document.getElementById("box");
+  const bg = document.getElementById("bg");
 
   /* SIZE */
   if(state.container){
     box.style.width = (state.container.width || 900) + "px";
     box.style.height = (state.container.height || 180) + "px";
-  }
 
-  /* BACKGROUND */
-  const bg = box;
-  if(state.container){
-    bg.style.background = state.container.bgColor || "rgba(0,0,0,0.55)";
-    bg.style.opacity = (state.container.opacity ?? 1);
+    /* مهم: فقط بک‌گراند شفاف می‌شود */
+    bg.style.background = `rgba(0,0,0,${state.container.opacity ?? 0.6})`;
   }
 
   /* LOGO */
@@ -228,13 +251,14 @@ function render(){
   if(state.logo?.url){
     logo.src = state.logo.url;
     logo.style.display = "block";
-  } else logo.style.display = "none";
+  } else {
+    logo.style.display = "none";
+  }
 
   /* TITLE */
   const title = document.getElementById("titleText");
   if(state.title){
     title.innerText = state.title.text || "";
-    if(state.title.font) title.style.fontFamily = state.title.font;
     title.style.fontSize = (state.title.size || 28) + "px";
     title.style.color = state.title.color || "#fff";
     title.style.fontWeight = state.title.weight || 700;
@@ -244,7 +268,6 @@ function render(){
   const sub = document.getElementById("subtitleText");
   if(state.subtitle){
     sub.innerText = state.subtitle.text || "";
-    if(state.subtitle.font) sub.style.fontFamily = state.subtitle.font;
     sub.style.fontSize = (state.subtitle.size || 18) + "px";
     sub.style.color = state.subtitle.color || "#ddd";
   }
@@ -252,21 +275,13 @@ function render(){
   /* ICON */
   const icon = document.getElementById("iconImg");
   if(state.icon && state.icon.type !== "off"){
-
     icon.style.display = "block";
 
-    const map = {
-      live:"https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon.png",
-      breaking:"https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news.png",
-      alert:"https://uxwing.com/wp-content/themes/uxwing/download/signs/red-alert-icon.png"
-    };
+    if(state.icon.type === "custom") icon.src = state.icon.url;
+    if(state.icon.type === "live") icon.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
 
-    icon.src = state.icon.type === "custom"
-      ? state.icon.url
-      : map[state.icon.type];
-
-    icon.style.width = (state.icon.size || 100) + "px";
-    icon.style.height = (state.icon.size || 100) + "px";
+    icon.style.width = (state.icon.size || 90) + "px";
+    icon.style.height = (state.icon.size || 90) + "px";
 
   } else {
     icon.style.display = "none";
@@ -274,7 +289,6 @@ function render(){
 
   /* CLOCK */
   if(state.clock?.enabled){
-    document.getElementById("clock").style.display = "block";
     startClock();
   } else {
     stopClock();
@@ -284,46 +298,37 @@ function render(){
   setTimeout(()=>box.classList.remove("fade"),400);
 }
 
-/* CLOCK */
 function startClock(){
 
   stopClock();
-  clockIndex = 0;
 
   const el = document.getElementById("clock");
-  const interval = (state.clock?.interval || 10) * 1000;
 
-  function update(){
+  setInterval(()=>{
 
-    const zone = zones[clockIndex];
+    const z = zones[index % zones.length];
 
     const time = new Date().toLocaleTimeString("fa-IR",{
-      timeZone: zone.timezone,
+      timeZone:z.timezone,
       hour:"2-digit",
       minute:"2-digit",
       hour12:false
     });
 
     el.innerHTML = `
-      <div class="clock-country">${zone.name}</div>
+      <div class="clock-country">${z.name}</div>
       <div class="clock-time">${time}</div>
     `;
 
-    clockIndex = (clockIndex + 1) % zones.length;
-  }
+    index++;
 
-  update();
-  clockTimer = setInterval(update, interval);
+  }, (state.clock?.interval || 10) * 1000);
 }
 
 function stopClock(){
-  if(clockTimer){
-    clearInterval(clockTimer);
-    clockTimer = null;
-  }
+  document.getElementById("clock").innerHTML = "";
 }
 
-/* SYNC */
 window.addEventListener("storage", load);
 window.addEventListener("broadcast_update", load);
 
