@@ -92,32 +92,6 @@
     }
   </style>
 </head>
-  <div id="loginBox" style="
-position:fixed;
-inset:0;
-background:#0b0f1a;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:9999;
-">
-
-  <div style="background:#141c30;padding:20px;border-radius:12px;width:250px">
-    <h3 style="color:#fff;text-align:center">Admin Login</h3>
-
-    <input id="passInput" type="password" placeholder="Password"
-    style="width:100%;padding:10px;margin-top:10px">
-
-    <button onclick="checkPass()" style="
-    width:100%;margin-top:10px;padding:10px;
-    background:#2d7dff;color:#fff;border:none;border-radius:8px">
-      ورود
-    </button>
-
-    <p id="err" style="color:red;text-align:center;font-size:12px"></p>
-  </div>
-
-</div>
 <body>
 
 <div class="sidebar">
@@ -550,49 +524,7 @@ function tryAutoSave(el){
   }
 
 }
-  function getState(){
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
-    title:{},
-    subtitle:{},
-    container:{},
-    logo:{},
-    icon:{},
-    clock:{},
-    transition:{}
-  };
-}
-  const ADMIN_PASS = "12345654321"; // ← رمز دلخواه تو
 
-function checkPass(){
-
-  const input =
-    document.getElementById("passInput").value;
-
-  if(input === ADMIN_PASS){
-
-    localStorage.setItem("auth","ok");
-
-    document.getElementById("loginBox").style.display = "none";
-
-  }else{
-
-    document.getElementById("err").innerText =
-      "رمز اشتباه است";
-  }
-}
-
-/* AUTO CHECK */
-window.onload = function(){
-
-  if(localStorage.getItem("auth") === "ok"){
-
-    document.getElementById("loginBox").style.display = "none";
-  }
-};
-  function logout(){
-  localStorage.removeItem("auth");
-  location.reload();
-}
 </script>
 
 </body>
