@@ -405,36 +405,9 @@ function startClock(){
     updateClock();
   }, interval);
 
-  function updateClock(){
+  function updateClock(){ const zone = zones[currentZoneIndex]; const time = new Date().toLocaleTimeString("fa-IR",{ timeZone: zone.timezone, hour:"2-digit", minute:"2-digit", hour12:false }); clockEl.innerHTML = <div class="clock-country">${zone.name}</div> <div class="clock-time">${timeString}</div> ; }
 
-  const zone = zones[currentZoneIndex];
-
-  const timeString = new Date().toLocaleTimeString("fa-IR",{
-    timeZone: zone.timezone,
-    hour:"2-digit",
-    minute:"2-digit",
-    hour12:false
-  });
-
-  const clockEl = document.getElementById("clock");
-
-  clockEl.innerHTML = `
-    <div class="clock-country">${zone.name}</div>
-    <div class="clock-time">${timeString}</div>
-  `;
-}
-
-/* STOP CLOCK */
-function stopClock(){
-  if(clockIntervalId){
-    clearInterval(clockIntervalId);
-    clockIntervalId = null;
-  }
-
-  const clockEl = document.getElementById("clock");
-  clockEl.innerHTML = "";
-  clockEl.style.display = "none";
-}
+/* STOP CLOCK */ function stopClock(){ if(clockIntervalId){ clearInterval(clockIntervalId); clockIntervalId = null; } document.getElementById("clock").innerHTML = ""; }
 
 /* EVENTS */
 window.addEventListener("storage", load);
