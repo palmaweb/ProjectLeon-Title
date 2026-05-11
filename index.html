@@ -91,8 +91,9 @@
     position:relative;
     z-index:2;
     display:flex;
-    align-items:center;
     flex-direction:row;
+    align-items:stretch;
+    direction:ltr; /* 👈 مهم */
   }
     .logo{
     order:1;
@@ -108,12 +109,13 @@
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  text-align:center;
+  text-align:right;
   width:100%;
   max-width:1000px;   /* 👈 کنترل واقعی عرض */
   padding:0 20px;    /* فاصله امن از لوگو */
   box-sizing:border-box;
   margin:0 auto;     /* وسط واقعی */
+  direction:rtl; /* 👈 فقط متن RTL */
     gap:10px;
 }
 
