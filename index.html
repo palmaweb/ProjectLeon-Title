@@ -298,6 +298,7 @@ function apply(){
   let clockRenderId = null;
   let currentZoneIndex = 0;
   let lastSwitch = 0;
+  let isApplying = false;
 
   box.classList.add("fade");
   setTimeout(()=>box.classList.remove("fade"),400);
@@ -361,11 +362,27 @@ function startClock(){
   if(clockEl){
     clockEl.textContent = "";
   }
-   if(state.clock?.enabled){
-  startClock();
-}else{
-  stopClock();
-}
+   function load(){
+
+  const newState =
+    JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+  const oldClockState = state.clock?.enabled;
+
+  state = newState;
+
+  apply();
+
+  // 🔥 اگر وضعیت ساعت تغییر کرده باشد
+  if(oldClockState !== state.clock?.enabled){
+
+    if(state.clock?.enabled){
+      startClock();
+    }else{
+      stopClock();
+    }
+
+  }
 }
 
 window.addEventListener("storage", load);
