@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- FONT CSS -->
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 
 <title>Broadcast Display</title>
@@ -12,13 +13,13 @@
 
 body{
   margin:0;
-  overflow:hidden;
   background:transparent;
+  overflow:hidden;
   font-family: Vazirmatn, IRANYekanX, IRANSansX;
 }
 
 /* =========================
-   MAIN WRAPPER
+   OUTER WRAPPER
 ========================= */
 .container{
   position:fixed;
@@ -29,22 +30,32 @@ body{
   border-radius:16px;
   overflow:hidden;
   align-items:stretch;
+  z-index:1;
+  background:transparent;
   width:fit-content;
   isolation:isolate;
 }
 
 /* =========================
-   RGB BORDER (OUTER GLOW)
+   RGB BORDER LAYER
 ========================= */
 .container::before{
   content:"";
   position:absolute;
   inset:-3px;
   border-radius:20px;
+  padding:3px;
   background:linear-gradient(
     90deg,
-    #ff0000,#ff9900,#ffee00,#00ff00,
-    #00ffff,#0066ff,#aa00ff,#ff0066,#ff0000
+    #ff0000,
+    #ff9900,
+    #ffee00,
+    #00ff00,
+    #00ffff,
+    #0066ff,
+    #aa00ff,
+    #ff0066,
+    #ff0000
   );
   background-size:400% 400%;
   animation:rgbBorder 8s linear infinite;
@@ -65,17 +76,16 @@ body{
 }
 
 /* =========================
-   BACKGROUND (ONLY THIS OPACITY)
+   BACKGROUND LAYER
 ========================= */
 .bg-layer{
   position:absolute;
   inset:0;
   z-index:0;
-  background:rgba(0,0,0,0.6);
 }
 
 /* =========================
-   CONTENT LAYER (NO OPACITY IMPACT)
+   CONTENT LAYER
 ========================= */
 .content-layer{
   position:relative;
@@ -83,28 +93,37 @@ body{
   display:flex;
   flex-direction:row;
   align-items:stretch;
+  width:100%;
+  height:100%;
+  direction:ltr;
 }
 
 /* =========================
-   LOGO PANEL
+   LOGO
 ========================= */
 .logo{
+  order:1;
   width:200px;
+  height:100%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:space-between;
-  padding:10px;
-  box-sizing:border-box;
-  background:rgba(0,0,0,0.15);
+  background:rgba(0,0,0,0.2);
   backdrop-filter:blur(8px);
+  padding:8px;
+  box-sizing:border-box;
+  flex-shrink:0;
+  overflow:hidden;
+  gap:10px;
 }
 
 .logo img{
-  width:120px;
-  height:120px;
+  width:130px;
+  height:130px;
   object-fit:contain;
   display:none;
+  flex-shrink:0;
 }
 
 /* =========================
@@ -115,62 +134,106 @@ body{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  color:#fff;
+  width:100%;
   margin-top:auto;
+  margin-bottom:10px;
+  line-height:1.1;
+  color:#fff;
+  text-align:center;
+  overflow:hidden;
 }
 
 .clock-country{
   font-size:14px;
   opacity:0.8;
+  white-space:nowrap;
+  margin-bottom:4px;
+  font-weight:500;
 }
 
 .clock-time{
-  font-size:22px;
-  font-weight:700;
+  font-size:24px;
+  font-weight:800;
+  white-space:nowrap;
+  line-height:1;
 }
 
 /* =========================
    TEXT AREA
 ========================= */
 .content{
+  order:2;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  min-width:500px;
-  padding:0 60px;
-  box-sizing:border-box;
   text-align:center;
+  min-width:500px;
+  gap:20px;
+  flex:1;
+  overflow:hidden;
+}
+
+/* =========================
+   TEXT BLOCK
+========================= */
+.text{
+  order:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  width:100%;
+  max-width:1000px;
+  padding:0 80px;
+  box-sizing:border-box;
+  margin:0 auto;
+  gap:10px;
+  direction:rtl;
 }
 
 .title{
   font-size:28px;
   color:#fff;
-  white-space:nowrap;
+  text-align:center;
   overflow:hidden;
   text-overflow:ellipsis;
+  white-space:nowrap;
+  width:100%;
 }
 
 .subtitle{
   font-size:18px;
   color:#ddd;
   opacity:0.9;
-  margin-top:6px;
+  text-align:center;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  margin-top:2px;
+  margin-bottom:10px;
+  width:100%;
 }
 
 /* =========================
-   STATUS ICON
+   ICON
 ========================= */
 .statusBox{
   width:100px;
+  height:100%;
+  order:3;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:rgba(0,0,0,0.1);
+  margin-left:auto;
+  backdrop-filter:blur(8px);
+  flex-shrink:0;
 }
 
 .statusIcon{
-  width:90px;
-  height:90px;
+  width:100px;
+  height:100px;
   object-fit:contain;
   display:none;
 }
@@ -178,8 +241,16 @@ body{
 /* =========================
    ANIMATIONS
 ========================= */
-.fade{animation:fadeIn .4s ease}
+.fade{animation:fadeIn 0.5s ease}
+.slide{animation:slideIn 0.5s ease}
+.zoom{animation:zoomIn 0.5s ease}
+.glitch{animation:glitch 0.4s infinite}
+.typewriter{overflow:hidden;white-space:nowrap;animation:typing 1s steps(30)}
+
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes zoomIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes typing{from{width:0}to{width:100%}}
 
 </style>
 </head>
@@ -188,7 +259,6 @@ body{
 
 <div class="container" id="box">
 
-  <!-- BACKGROUND ONLY -->
   <div class="bg-layer" id="bg"></div>
 
   <div class="content-layer">
@@ -201,8 +271,10 @@ body{
 
     <!-- TEXT -->
     <div class="content">
-      <div class="title" id="titleText"></div>
-      <div class="subtitle" id="subtitleText"></div>
+      <div class="text">
+        <div class="title" id="titleText"></div>
+        <div class="subtitle" id="subtitleText"></div>
+      </div>
     </div>
 
     <!-- ICON -->
@@ -214,39 +286,42 @@ body{
 </div>
 
 <script>
-
 const STORAGE_KEY = "broadcast_settings";
 
 let state = {};
-let index = 0;
+let clockIntervalId = null;
+let currentZoneIndex = 0;
 
+/* TIMEZONES */
 const zones = [
-  {name:"ایران", timezone:"Asia/Tehran"},
-  {name:"اروپا", timezone:"Europe/Berlin"},
-  {name:"آمریکا", timezone:"America/New_York"},
-  {name:"اسرائیل", timezone:"Asia/Jerusalem"}
+  { name:"ایران", timezone:"Asia/Tehran" },
+  { name:"اروپا", timezone:"Europe/Berlin" },
+  { name:"آمریکا", timezone:"America/New_York" },
+  { name:"اسرائیل", timezone:"Asia/Jerusalem" }
 ];
 
+/* LOAD */
 function load(){
   state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   apply();
 }
 
+/* APPLY UI */
 function apply(){
 
   const box = document.getElementById("box");
   const bg = document.getElementById("bg");
 
-  /* SIZE */
   if(state.container){
     box.style.width = (state.container.width || 900) + "px";
     box.style.height = (state.container.height || 180) + "px";
-
-    /* مهم: فقط بک‌گراند شفاف می‌شود */
-    bg.style.background = `rgba(0,0,0,${state.container.opacity ?? 0.6})`;
   }
 
-  /* LOGO */
+  if(state.container){
+    bg.style.background = state.container.bgColor || "#000";
+    bg.style.opacity = state.container.opacity || 0.5;
+  }
+
   const logo = document.getElementById("logoImg");
   if(state.logo?.url){
     logo.src = state.logo.url;
@@ -255,7 +330,6 @@ function apply(){
     logo.style.display = "none";
   }
 
-  /* TITLE */
   const title = document.getElementById("titleText");
   if(state.title){
     title.innerText = state.title.text || "";
@@ -264,7 +338,6 @@ function apply(){
     title.style.fontWeight = state.title.weight || 700;
   }
 
-  /* SUBTITLE */
   const sub = document.getElementById("subtitleText");
   if(state.subtitle){
     sub.innerText = state.subtitle.text || "";
@@ -272,68 +345,97 @@ function apply(){
     sub.style.color = state.subtitle.color || "#ddd";
   }
 
-  /* ICON */
   const icon = document.getElementById("iconImg");
   if(state.icon && state.icon.type !== "off"){
     icon.style.display = "block";
 
     if(state.icon.type === "custom") icon.src = state.icon.url;
-    if(state.icon.type === "live") icon.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
+    if(state.icon.type === "live")
+      icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
 
-    icon.style.width = (state.icon.size || 90) + "px";
-    icon.style.height = (state.icon.size || 90) + "px";
+    if(state.icon.type === "breaking")
+      icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
+
+    if(state.icon.type === "alert")
+      icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
+
+    icon.style.width = (state.icon.size || 100) + "px";
+    icon.style.height = (state.icon.size || 100) + "px";
 
   } else {
     icon.style.display = "none";
   }
 
-  /* CLOCK */
+  applyTransition();
+
   if(state.clock?.enabled){
+    document.getElementById("clock").style.display = "flex";
     startClock();
   } else {
     stopClock();
   }
-
-  box.classList.add("fade");
-  setTimeout(()=>box.classList.remove("fade"),400);
 }
 
+/* TRANSITION */
+function applyTransition(){
+  const type = state.transition?.type || "fade";
+  const box = document.getElementById("box");
+
+  box.classList.remove("fade","slide","zoom","glitch","typewriter");
+  void box.offsetWidth;
+  box.classList.add(type);
+}
+
+/* CLOCK */
 function startClock(){
 
   stopClock();
 
-  const el = document.getElementById("clock");
+  currentZoneIndex = 0;
 
-  setInterval(()=>{
+  const interval = (state.clock?.interval || 10) * 1000;
+  const clockEl = document.getElementById("clock");
 
-    const z = zones[index % zones.length];
+  updateClock();
+
+  clockIntervalId = setInterval(()=>{
+    currentZoneIndex++;
+    if(currentZoneIndex >= zones.length) currentZoneIndex = 0;
+    updateClock();
+  }, interval);
+
+  function updateClock(){
+
+    const zone = zones[currentZoneIndex];
 
     const time = new Date().toLocaleTimeString("fa-IR",{
-      timeZone:z.timezone,
+      timeZone: zone.timezone,
       hour:"2-digit",
       minute:"2-digit",
       hour12:false
     });
 
-    el.innerHTML = `
-      <div class="clock-country">${z.name}</div>
+    clockEl.innerHTML = `
+      <div class="clock-country">${zone.name}</div>
       <div class="clock-time">${time}</div>
     `;
-
-    index++;
-
-  }, (state.clock?.interval || 10) * 1000);
+  }
 }
 
+/* STOP CLOCK */
 function stopClock(){
+  if(clockIntervalId){
+    clearInterval(clockIntervalId);
+    clockIntervalId = null;
+  }
   document.getElementById("clock").innerHTML = "";
 }
 
+/* EVENTS */
 window.addEventListener("storage", load);
 window.addEventListener("broadcast_update", load);
 
 load();
-
 </script>
 
 </body>
