@@ -141,7 +141,6 @@ body{
   color:#fff;
   text-align:center;
   overflow:hidden;
-  display:flex;
 }
 
 .clock-country{
@@ -407,6 +406,30 @@ function startClock(){
 
   function updateClock(){
 
+    const zone = zones[currentZoneIndex];
+
+    const time = new Date().toLocaleTimeString("fa-IR",{
+      timeZone: zone.timezone,
+      hour:"2-digit",
+      minute:"2-digit",
+      hour12:false
+    });
+
+    clockEl.innerHTML = `
+      <div class="clock-country">${zone.name}</div>
+      <div class="clock-time">${time}</div>
+    `;
+  }
+}
+
+/* STOP CLOCK */
+function stopClock(){
+  if(clockIntervalId){
+    clearInterval(clockIntervalId);
+    clockIntervalId = null;
+  }
+  document.getElementById("clock").innerHTML = "";
+}
 
 /* EVENTS */
 window.addEventListener("storage", load);
