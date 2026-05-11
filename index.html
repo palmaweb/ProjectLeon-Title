@@ -407,20 +407,21 @@ function startClock(){
 
   function updateClock(){
 
-    const zone = zones[currentZoneIndex];
+  const zone = zones[currentZoneIndex];
 
-    const time = new Date().toLocaleTimeString("fa-IR",{
-      timeZone: zone.timezone,
-      hour:"2-digit",
-      minute:"2-digit",
-      hour12:false
-    });
+  const timeString = new Date().toLocaleTimeString("fa-IR",{
+    timeZone: zone.timezone,
+    hour:"2-digit",
+    minute:"2-digit",
+    hour12:false
+  });
 
-    clockEl.innerHTML = `
-  <div class="clock-country">${zone.name}</div>
-  <div class="clock-time">${timeString}</div>
-`;
-  }
+  const clockEl = document.getElementById("clock");
+
+  clockEl.innerHTML = `
+    <div class="clock-country">${zone.name}</div>
+    <div class="clock-time">${timeString}</div>
+  `;
 }
 
 /* STOP CLOCK */
@@ -429,7 +430,10 @@ function stopClock(){
     clearInterval(clockIntervalId);
     clockIntervalId = null;
   }
-  document.getElementById("clock").innerHTML = "";
+
+  const clockEl = document.getElementById("clock");
+  clockEl.innerHTML = "";
+  clockEl.style.display = "none";
 }
 
 /* EVENTS */
