@@ -23,40 +23,50 @@
     border-radius:16px;
     overflow:hidden;
     align-items:stretch;
-     /* برای افکت نور */
-    position:fixed;
+    overflow:hidden;
+    z-index:1;
   }
-    .container::before{
+   .container::before{
   content:"";
   position:absolute;
   inset:-3px;
   border-radius:18px;
 
   background:conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(0,150,255,0.0) 60deg,
-    rgba(0,150,255,0.9) 120deg,
-    rgba(0,255,255,0.8) 180deg,
-    rgba(0,150,255,0.9) 240deg,
-    transparent 360deg
+    red,
+    yellow,
+    lime,
+    cyan,
+    blue,
+    magenta,
+    red
   );
 
-  animation:spin 2.5s linear infinite;
+  animation:rgbSpin 3s linear infinite;
+
+  filter:blur(10px);
 
   z-index:0;
 
-  filter:blur(6px);
+  opacity:0.9;
 }
     .container::after{
   content:"";
   position:absolute;
-  inset:2px;
+  inset:3px;
   border-radius:14px;
 
-  background:rgba(0,0,0,0.0);
+  background:rgba(0,0,0,0.6); /* بک‌گراند اصلی */
 
   z-index:1;
+}
+    @keyframes rgbSpin{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
 }
 
     /* BACKGROUND LAYER (ONLY THIS GETS OPACITY) */
@@ -70,9 +80,7 @@
     .content-layer{
     position:relative;
     z-index:2;
-
     display:flex;
-  
     align-items:stretch;
   }
 
