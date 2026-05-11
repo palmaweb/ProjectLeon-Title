@@ -293,186 +293,40 @@ function apply(){
     icon.style.display = "none";
   }
 
-  /* CLOCK */
-
-let state = {};
-let clockRAF = null;
-let clockRunning = false;
-
-let currentZoneIndex = 0;
-let lastSwitchTime = 0;
-
-const STORAGE_KEY = "broadcast_settings";
-
-/* 🌍 ZONES */
-const zones = [
-  { name: "ایران", offset: 3.5 },
-  { name: "اروپا", offset: 1 },
-  { name: "آمریکا", offset: -5 },
-  { name: "اسرائیل", offset: 2 }
-];
-
-/* =========================
-   LOAD + SYNC ENGINE
-========================= */
-function load() {
-
-  const newState =
-    JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-
-  const oldClock = state.clock?.enabled;
-
-  state = newState;
-
-  apply();
-
-  /* 🔥 فقط اگر تغییر کرده باشد */
-  if (oldClock !== state.clock?.enabled) {
-
-    if (state.clock?.enabled) {
-      startClock();
-    } else {
-      stopClock();
-    }
-
+ /* CLOCK */
+  if(state.clock?.enabled){
+    startClock();
   }
+
+  box.classList.add("fade");
+  setTimeout(()=>box.classList.remove("fade"),400);
 }
 
-/* =========================
-   APPLY DISPLAY
-========================= */
-function apply() {
+function startClock(){
 
-  const box = document.getElementById("box");
-  const bg = document.getElementById("bg");
+  const interval = (state.clock?.interval || 10) * 1000;
 
-  /* container */
-  if (state.container) {
-    box.style.width = state.container.width + "px";
-    box.style.height = state.container.height + "px";
+  setInterval(()=>{
 
-    bg.style.background = state.container.bgColor || "rgba(0,0,0,0.6)";
-    bg.style.opacity = state.container.opacity;
-  }
-
-  /* logo */
-  const logo = document.getElementById("logoImg");
-
-  if (state.logo?.url) {
-    logo.src = state.logo.url;
-    logo.style.display = "block";
-  } else {
-    logo.style.display = "none";
-  }
-
-  /* title */
-  document.getElementById("titleText").innerText =
-    state.title?.text || "";
-
-  /* subtitle */
-  document.getElementById("subtitleText").innerText =
-    state.subtitle?.text || "";
-
-  /* icon */
-  const icon = document.getElementById("iconImg");
-
-  if (state.icon?.type && state.icon.type !== "off") {
-
-    let src = "";
-
-    if (state.icon.type === "custom") {
-      src = state.icon.url;
-    }
-
-    if (state.icon.type === "live") {
-      src =
-        "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
-    }
-
-    if (src) {
-      icon.src = src;
-      icon.style.display = "block";
-    }
-
-  } else {
-    icon.style.display = "none";
-  }
-
-}
-
-/* =========================
-   CLOCK START
-========================= */
-function startClock() {
-
-  stopClock(); // جلوگیری از دوبل اجرا
-
-  clockRunning = true;
-
-  const clockEl = document.getElementById("clock");
-
-  const intervalMs =
-    (state.clock?.interval || 10) * 1000;
-
-  function loop(time) {
-
-    if (!clockRunning) return;
+    const zone = zones[clockIndex % zones.length];
 
     const now = new Date();
-    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const utc = now.getTime() + now.getTimezoneOffset()*60000;
+    const local = new Date(utc + (3600000 * zone.offset));
 
-    /* ⏱ switch zone */
-    if (time - lastSwitchTime > intervalMs) {
-      currentZoneIndex =
-        (currentZoneIndex + 1) % zones.length;
+    const hh = String(local.getHours()).padStart(2,"0");
+    const mm = String(local.getMinutes()).padStart(2,"0");
 
-      lastSwitchTime = time;
-    }
+    document.getElementById("clock").innerText = hh + ":" + mm;
 
-    const zone = zones[currentZoneIndex];
+    clockIndex++;
 
-    const local = new Date(
-      utc + 3600000 * zone.offset
-    );
-
-    const hh = String(local.getHours()).padStart(2, "0");
-    const mm = String(local.getMinutes()).padStart(2, "0");
-
-    clockEl.textContent =
-      `${zone.name} ${hh}:${mm}`;
-
-    clockRAF = requestAnimationFrame(loop);
-  }
-
-  clockRAF = requestAnimationFrame(loop);
+  }, interval);
 }
 
-/* =========================
-   CLOCK STOP
-========================= */
-function stopClock() {
-
-  clockRunning = false;
-
-  if (clockRAF) {
-    cancelAnimationFrame(clockRAF);
-    clockRAF = null;
-  }
-
-  const clockEl = document.getElementById("clock");
-
-  if (clockEl) {
-    clockEl.textContent = "";
-  }
-}
-
-/* =========================
-   EVENTS
-========================= */
 window.addEventListener("storage", load);
 window.addEventListener("broadcast_update", load);
 
-/* INIT */
 load();
 
 </script>
