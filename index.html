@@ -1,54 +1,197 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- FONT -->
-  <link rel="stylesheet" href="assets/fonts/fonts.css">
+<title>Broadcast Display</title>
 
-  <title>Broadcast Display</title>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 
-  <style> body{ margin:0; background:transparent; overflow:hidden; font-family: Vazirmatn, IRANYekanX, IRANSansX; } /* OUTER WRAPPER */ .container{ position:fixed; bottom:60px; left:50%; transform:translateX(-50%); display:flex; border-radius:16px; overflow:hidden; align-items:stretch; z-index:1; background:rgba(0,0,0,0.6); width:fit-content; position:fixed; isolation:isolate; background:transparent; } /* RGB BORDER LAYER */ .container::before{ content:""; position:absolute; inset:-3px; border-radius:20px; padding:3px; background: linear-gradient( 90deg, #ff0000, #ff9900, #ffee00, #00ff00, #00ffff, #0066ff, #aa00ff, #ff0066, #ff0000 ); background-size:400% 400%; animation:rgbBorder 8s linear infinite; z-index:-1; /* MAGIC BORDER MASK */ -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; } /* RGB ANIMATION */ @keyframes rgbBorder{ 0%{ background-position:0% 50%; } 100%{ background-position:400% 50%; } } /* BACKGROUND LAYER (ONLY THIS GETS OPACITY) */ .bg-layer{ position:absolute; inset:0; z-index:0; } /* LOGO */ .logo{ order:1; width:200px; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:space-between; background:rgba(0,0,0,0.2); backdrop-filter:blur(8px); padding:8px 8px; box-sizing:border-box; flex-shrink:0; overflow:hidden; gap:10px; } .logo img{ width:130px; height:130px; object-fit:contain; display:none; flex-shrink:0; } /* CLOCK BOX */ .clock{ display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; margin-top:auto; margin-bottom:10px; line-height:1.1; color:#fff; flex-shrink:0; text-align:center; overflow:hidden; } /* COUNTRY */ .clock-country{ font-size:14px; opacity:0.8; white-space:nowrap; margin-bottom:4px; font-weight:500; } /* TIME */ .clock-time{ font-size:24px; font-weight:800; white-space:nowrap; line-height:1; } /* TEXT AREA CENTERED */ .content{ order:2; display:flex; flex-direction:column; justify-content:center; text-align:center; min-width:500px; gap:20px; flex:1; overflow:hidden; } .content-layer{ position:relative; z-index:2; display:flex; flex-direction:row; align-items:stretch; width:100%; height:100%; direction:ltr; } /* TITLE ROW */ .text{ order:2; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; width:100%; max-width:1000px; /* 👈 کنترل واقعی عرض */ padding:0 80px; /* فاصله امن از لوگو */ box-sizing:border-box; margin:0 auto; /* وسط واقعی */ gap:10px; direction:rtl; } .title{ font-size:28px; color:#fff; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%; } .subtitle{ font-size:18px; color:#ddd; opacity:0.9; text-align:center; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; margin-top:2px; margin-bottom:10px; width:100%; } /* Icons*/ .statusBox{ width:100px; height:100%; order:3; display:flex; align-items:center; justify-content:center; margin-left:auto; padding-right:0; backdrop-filter:blur(8px); flex-shrink:0; } .statusIcon{ width:100px; height:100px; object-fit:contain; display:none; } /* SIMPLE ANIMATION */ .fade { animation: fadeIn 0.5s ease; } .slide { animation: slideIn 0.5s ease; } .zoom { animation: zoomIn 0.5s ease; } .glitch { animation: glitch 0.4s infinite; } .typewriter { overflow: hidden; white-space: nowrap; animation: typing 1s steps(30); } /* Animations */ @keyframes fadeIn { from {opacity:0} to {opacity:1} } @keyframes slideIn { from {transform:translateY(20px); opacity:0} to {transform:translateY(0); opacity:1} } @keyframes zoomIn { from {transform:scale(0.9); opacity:0} to {transform:scale(1); opacity:1} } @keyframes typing { from {width:0} to {width:100%} } </style>
+<style>
+
+body{
+  margin:0;
+  overflow:hidden;
+  background:transparent;
+  font-family: Vazirmatn, IRANYekanX, IRANSansX;
+}
+
+/* =======================
+   MAIN CONTAINER
+======================= */
+.container{
+  position:fixed;
+  bottom:60px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  align-items:stretch;
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(0,0,0,0.55);
+  direction:ltr;
+  min-width:900px;
+  isolation:isolate;
+}
+
+/* =======================
+   RGB BORDER
+======================= */
+.container::before{
+  content:"";
+  position:absolute;
+  inset:-3px;
+  border-radius:20px;
+  background:linear-gradient(
+    90deg,
+    #ff0000,#ff9900,#ffee00,#00ff00,
+    #00ffff,#0066ff,#aa00ff,#ff0066,#ff0000
+  );
+  background-size:400% 400%;
+  animation:borderMove 8s linear infinite;
+  z-index:-1;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  padding:3px;
+}
+
+@keyframes borderMove{
+  0%{background-position:0% 50%}
+  100%{background-position:400% 50%}
+}
+
+/* =======================
+   LEFT (LOGO + CLOCK)
+======================= */
+.left{
+  width:200px;
+  background:rgba(0,0,0,0.25);
+  backdrop-filter:blur(8px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px;
+}
+
+.left img{
+  width:120px;
+  height:120px;
+  object-fit:contain;
+  display:none;
+}
+
+/* CLOCK */
+.clock{
+  text-align:center;
+  color:#fff;
+  margin-bottom:10px;
+  min-height:80px;
+}
+
+.clock-country{
+  font-size:13px;
+  opacity:0.8;
+}
+
+.clock-time{
+  font-size:22px;
+  font-weight:bold;
+}
+
+/* =======================
+   CENTER TEXT
+======================= */
+.center{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:0 40px;
+  text-align:center;
+}
+
+.title{
+  font-size:28px;
+  color:#fff;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  width:100%;
+}
+
+.subtitle{
+  font-size:18px;
+  color:#ddd;
+  margin-top:6px;
+  max-width:600px;
+  overflow:hidden;
+}
+
+/* =======================
+   RIGHT ICON
+======================= */
+.right{
+  width:120px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.right img{
+  width:80px;
+  height:80px;
+  object-fit:contain;
+  display:none;
+}
+
+/* =======================
+   ANIMATION
+======================= */
+.fade{animation:fade .4s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+</style>
 </head>
 
 <body>
 
 <div class="container" id="box">
 
-  <div class="content-layer">
-
-    <!-- LOGO -->
-    <div class="logo">
-      <img id="logoImg">
-      <div class="clock" id="clock"></div>
-    </div>
-
-    <!-- TEXT -->
-    <div class="content">
-      <div class="text">
-        <div class="title" id="titleText"></div>
-        <div class="subtitle" id="subtitleText"></div>
-      </div>
-    </div>
-
-    <!-- ICON -->
-    <div class="statusBox">
-      <img id="iconImg" class="statusIcon">
-    </div>
-
+  <!-- LEFT -->
+  <div class="left">
+    <img id="logoImg">
+    <div class="clock" id="clock"></div>
   </div>
+
+  <!-- CENTER -->
+  <div class="center">
+    <div class="title" id="titleText"></div>
+    <div class="subtitle" id="subtitleText"></div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <img id="iconImg">
+  </div>
+
 </div>
 
 <script>
 
-const STORAGE_KEY = "broadcast_settings";
+const KEY = "broadcast_settings";
 
 let state = {};
-let clockInterval = null;
-let zoneIndex = 0;
+let clockIndex = 0;
+let clockTimer = null;
 
-/* ZONES */
+/* TIMEZONES */
 const zones = [
   {name:"ایران", timezone:"Asia/Tehran"},
   {name:"اروپا", timezone:"Europe/Berlin"},
@@ -58,15 +201,14 @@ const zones = [
 
 /* LOAD */
 function load(){
-  state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-  apply();
+  state = JSON.parse(localStorage.getItem(KEY)) || {};
+  render();
 }
 
 /* APPLY */
-function apply(){
+function render(){
 
   const box = document.getElementById("box");
-  const bg = document.getElementById("bg");
 
   /* SIZE */
   if(state.container){
@@ -74,68 +216,71 @@ function apply(){
     box.style.height = (state.container.height || 180) + "px";
   }
 
+  /* BACKGROUND */
+  const bg = box;
+  if(state.container){
+    bg.style.background = state.container.bgColor || "rgba(0,0,0,0.55)";
+    bg.style.opacity = (state.container.opacity ?? 1);
+  }
+
   /* LOGO */
   const logo = document.getElementById("logoImg");
   if(state.logo?.url){
     logo.src = state.logo.url;
     logo.style.display = "block";
-  }else{
-    logo.style.display = "none";
-  }
+  } else logo.style.display = "none";
 
   /* TITLE */
   const title = document.getElementById("titleText");
   if(state.title){
     title.innerText = state.title.text || "";
+    if(state.title.font) title.style.fontFamily = state.title.font;
     title.style.fontSize = (state.title.size || 28) + "px";
     title.style.color = state.title.color || "#fff";
     title.style.fontWeight = state.title.weight || 700;
-    title.style.fontFamily = state.title.font || "Vazirmatn";
   }
 
   /* SUBTITLE */
   const sub = document.getElementById("subtitleText");
   if(state.subtitle){
     sub.innerText = state.subtitle.text || "";
+    if(state.subtitle.font) sub.style.fontFamily = state.subtitle.font;
     sub.style.fontSize = (state.subtitle.size || 18) + "px";
     sub.style.color = state.subtitle.color || "#ddd";
   }
 
   /* ICON */
   const icon = document.getElementById("iconImg");
-
   if(state.icon && state.icon.type !== "off"){
 
     icon.style.display = "block";
 
-    if(state.icon.type === "custom" && state.icon.url)
-      icon.src = state.icon.url;
+    const map = {
+      live:"https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon.png",
+      breaking:"https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news.png",
+      alert:"https://uxwing.com/wp-content/themes/uxwing/download/signs/red-alert-icon.png"
+    };
 
-    if(state.icon.type === "live")
-      icon.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
+    icon.src = state.icon.type === "custom"
+      ? state.icon.url
+      : map[state.icon.type];
 
-    if(state.icon.type === "breaking")
-      icon.src = "https://upload.wikimedia.org/wikipedia/commons/3/3b/Red_pog.svg";
+    icon.style.width = (state.icon.size || 100) + "px";
+    icon.style.height = (state.icon.size || 100) + "px";
 
-    if(state.icon.type === "alert")
-      icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
-
-    icon.style.width = (state.icon.size || 80) + "px";
-    icon.style.height = (state.icon.size || 80) + "px";
-
-  }else{
+  } else {
     icon.style.display = "none";
   }
 
   /* CLOCK */
   if(state.clock?.enabled){
-    document.getElementById("clock").style.display = "flex";
+    document.getElementById("clock").style.display = "block";
     startClock();
-  }else{
+  } else {
     stopClock();
   }
 
-  document.getElementById("box").classList.add("fade");
+  box.classList.add("fade");
   setTimeout(()=>box.classList.remove("fade"),400);
 }
 
@@ -143,14 +288,14 @@ function apply(){
 function startClock(){
 
   stopClock();
-  zoneIndex = 0;
+  clockIndex = 0;
 
   const el = document.getElementById("clock");
   const interval = (state.clock?.interval || 10) * 1000;
 
-  function render(){
+  function update(){
 
-    const zone = zones[zoneIndex];
+    const zone = zones[clockIndex];
 
     const time = new Date().toLocaleTimeString("fa-IR",{
       timeZone: zone.timezone,
@@ -163,23 +308,18 @@ function startClock(){
       <div class="clock-country">${zone.name}</div>
       <div class="clock-time">${time}</div>
     `;
+
+    clockIndex = (clockIndex + 1) % zones.length;
   }
 
-  render();
-
-  clockInterval = setInterval(()=>{
-
-    zoneIndex = (zoneIndex + 1) % zones.length;
-    render();
-
-  }, interval);
+  update();
+  clockTimer = setInterval(update, interval);
 }
 
-/* STOP */
 function stopClock(){
-  if(clockInterval){
-    clearInterval(clockInterval);
-    clockInterval = null;
+  if(clockTimer){
+    clearInterval(clockTimer);
+    clockTimer = null;
   }
 }
 
