@@ -345,10 +345,7 @@ const zones = [
   { name: "آمریکا", offset: -5 },
   { name: "اسرائیل", offset: 2 }
 ];
-
-/* =========================
-   LOAD + SYNC ENGINE
-========================= */
+  
 function load() {
 
   const newState =
@@ -371,9 +368,6 @@ function load() {
 
   }
 }
-/* =========================
-   CLOCK START
-========================= */
 function startClock() {
 
   stopClock(); // جلوگیری از دوبل اجرا
@@ -418,9 +412,6 @@ function startClock() {
   clockRAF = requestAnimationFrame(loop);
 }
 
-/* =========================
-   CLOCK STOP
-========================= */
 function stopClock() {
 
   clockRunning = false;
@@ -437,13 +428,9 @@ function stopClock() {
   }
 }
 
-/* =========================
-   EVENTS
-========================= */
 window.addEventListener("storage", load);
 window.addEventListener("broadcast_update", load);
-
-/* INIT */
+  
 load();
 
 </script>
