@@ -306,7 +306,21 @@ function startClock(){
 
   const interval = (state.clock?.interval || 10) * 1000;
 
-  setInterval(()=>{
+  // جلوگیری از چند interval همزمان
+  if(clockIntervalId){
+    clearInterval(clockIntervalId);
+  }
+
+  const zones = [
+    {name:"Iran", offset:3.5},
+    {name:"Europe", offset:1},
+    {name:"USA", offset:-5},
+    {name:"Israel", offset:2}
+  ];
+
+  let clockIndex = 0;
+
+  clockIntervalId = setInterval(()=>{
 
     const zone = zones[clockIndex % zones.length];
 
@@ -317,18 +331,39 @@ function startClock(){
     const hh = String(local.getHours()).padStart(2,"0");
     const mm = String(local.getMinutes()).padStart(2,"0");
 
-    document.getElementById("clock").innerText = hh + ":" + mm;
+    document.getElementById("clock").innerText =
+      zone.name + " " + hh + ":" + mm;
 
     clockIndex++;
 
   }, interval);
+}
+  function stopClock(){
+
+  if(clockIntervalId){
+    clearInterval(clockIntervalId);
+    clockIntervalId = null;
+  }
+
+  const clockEl = document.getElementById("clock");
+
+if(state.clock?.enabled){
+
+  clockEl.style.display = "block";
+  startClock();
+
+}else{
+
+  stopClock();
+
+}
 }
 
 window.addEventListener("storage", load);
 window.addEventListener("broadcast_update", load);
 
 load();
-
+let clockIntervalId = null;
 </script>
 
 </body>
