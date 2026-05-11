@@ -1,108 +1,108 @@
 --------Fontha----------
 @font-face{
   font-family:'IRANYekanX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANYekanX/IRANSansX-Thin.woff2') format('woff2');
+  src:url('/fonts/IRANYekanX/IRANSansX-Thin.woff2') format('woff2');
   font-weight:100;
 }
 
 @font-face{
   font-family:'IRANYekanX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANYekanX/IRANSansX-Light.woff2') format('woff2');
+  src:url('/fonts/IRANYekanX/IRANSansX-Light.woff2') format('woff2');
   font-weight:300;
 }
 
 @font-face{
   font-family:'IRANYekanX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANYekanX/IRANSansX-Regular.woff2') format('woff2');
+  src:url('/fonts/IRANYekanX/IRANSansX-Regular.woff2') format('woff2');
   font-weight:400;
 }
 
 @font-face{
   font-family:'IRANYekanX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANYekanX/IRANSansX-Medium.woff2') format('woff2');
+  src:url('/fonts/IRANYekanX/IRANSansX-Medium.woff2') format('woff2');
   font-weight:500;
 }
 
 @font-face{
   font-family:'IRANYekanX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANYekanX/IRANSansX-Bold.woff2') format('woff2');
+  src:url('/fonts/IRANYekanX/IRANSansX-Bold.woff2') format('woff2');
   font-weight:700;
 }
 
 @font-face{
   font-family:'IRANYekanX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANYekanX/IRANSansX-ExtraBold.woff2') format('woff2');
+  src:url('/fonts/IRANYekanX/IRANSansX-ExtraBold.woff2') format('woff2');
   font-weight:800;
 }
 
 @font-face{
   font-family:'Vazirmatn';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/Vazirmatn/Vazirmatn-Thin.woff2') format('woff2');
+  src:url('/fonts/Vazirmatn/Vazirmatn-Thin.woff2') format('woff2');
   font-weight:100;
 }
 
 @font-face{
   font-family:'Vazirmatn';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/Vazirmatn/Vazirmatn-Light.woff2') format('woff2');
+  src:url('/fonts/Vazirmatn/Vazirmatn-Light.woff2') format('woff2');
   font-weight:300;
 }
 
 @font-face{
   font-family:'Vazirmatn';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/Vazirmatn/Vazirmatn-Regular.woff2') format('woff2');
+  src:url('/fonts/Vazirmatn/Vazirmatn-Regular.woff2') format('woff2');
   font-weight:400;
 }
 
 @font-face{
   font-family:'Vazirmatn';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/Vazirmatn/Vazirmatn-Medium.woff2') format('woff2');
+  src:url('/fonts/Vazirmatn/Vazirmatn-Medium.woff2') format('woff2');
   font-weight:500;
 }
 
 @font-face{
   font-family:'Vazirmatn';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/Vazirmatn/Vazirmatn-Bold.woff2') format('woff2');
+  src:url('/fonts/Vazirmatn/Vazirmatn-Bold.woff2') format('woff2');
   font-weight:700;
 }
 
 @font-face{
   font-family:'Vazirmatn';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/Vazirmatn/Vazirmatn-ExtraBold.woff2') format('woff2');
+  src:url('/fonts/Vazirmatn/Vazirmatn-ExtraBold.woff2') format('woff2');
   font-weight:900;
 }
 
 @font-face{
   font-family:'IRANSansX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANSansX/IRANSansX-Thin.woff2') format('woff2');
+  src:url('/fonts/IRANSansX/IRANSansX-Thin.woff2') format('woff2');
   font-weight:100;
 }
 
 @font-face{
   font-family:'IRANSansX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANSansX/Light.woff2') format('woff2');
+  src:url('/fonts/IRANSansX/Light.woff2') format('woff2');
   font-weight:300;
 }
 
 @font-face{
   font-family:'IRANSansX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANSansX/IRANSansX-Light.woff2') format('woff2');
+  src:url('/fonts/IRANSansX/IRANSansX-Light.woff2') format('woff2');
   font-weight:400;
 }
 
 @font-face{
   font-family:'IRANSansX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANSansX/IRANSansX-Medium.woff2') format('woff2');
+  src:url('/fonts/IRANSansX/IRANSansX-Medium.woff2') format('woff2');
   font-weight:500;
 }
 
 @font-face{
   font-family:'IRANSansX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANSansX/IRANSansX-Bold.woff2') format('woff2');
+  src:url('/fonts/IRANSansX/IRANSansX-Bold.woff2') format('woff2');
   font-weight:700;
 }
 
 @font-face{
   font-family:'IRANSansX';
-  src:url('https://github.com/palmaweb/ProjectLeon-Title/tree/main/fonts/IRANSansX/IRANSansX-ExtraBold.woff2') format('woff2');
+  src:url('/fonts/IRANSansX/IRANSansX-ExtraBold.woff2') format('woff2');
   font-weight:900;
 }
