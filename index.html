@@ -337,69 +337,6 @@ function load() {
 
   }
 }
-
-/* =========================
-   APPLY DISPLAY
-========================= */
-function apply() {
-
-  const box = document.getElementById("box");
-  const bg = document.getElementById("bg");
-
-  /* container */
-  if (state.container) {
-    box.style.width = state.container.width + "px";
-    box.style.height = state.container.height + "px";
-
-    bg.style.background = state.container.bgColor || "rgba(0,0,0,0.6)";
-    bg.style.opacity = state.container.opacity;
-  }
-
-  /* logo */
-  const logo = document.getElementById("logoImg");
-
-  if (state.logo?.url) {
-    logo.src = state.logo.url;
-    logo.style.display = "block";
-  } else {
-    logo.style.display = "none";
-  }
-
-  /* title */
-  document.getElementById("titleText").innerText =
-    state.title?.text || "";
-
-  /* subtitle */
-  document.getElementById("subtitleText").innerText =
-    state.subtitle?.text || "";
-
-  /* icon */
-  const icon = document.getElementById("iconImg");
-
-  if (state.icon?.type && state.icon.type !== "off") {
-
-    let src = "";
-
-    if (state.icon.type === "custom") {
-      src = state.icon.url;
-    }
-
-    if (state.icon.type === "live") {
-      src =
-        "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
-    }
-
-    if (src) {
-      icon.src = src;
-      icon.style.display = "block";
-    }
-
-  } else {
-    icon.style.display = "none";
-  }
-
-}
-
 /* =========================
    CLOCK START
 ========================= */
