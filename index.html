@@ -251,10 +251,10 @@ let state = {};
 let clockIndex = 0;
 
 const zones = [
-  {name:"Iran", offset:3.5},
-  {name:"Europe", offset:1},
-  {name:"USA", offset:-5},
-  {name:"Israel", offset:2}
+  {name:"ایران", offset:3.5},
+  {name:"اروپا", offset:1},
+  {name:"آمریکا", offset:-5},
+  {name:"اسرائیل", offset:2}
 ];
 
 function load(){
@@ -329,108 +329,39 @@ function apply(){
 
  /* CLOCK */
   
-let state = {};
-let clockRAF = null;
-let clockRunning = false;
-
-let currentZoneIndex = 0;
-let lastSwitchTime = 0;
-
-const STORAGE_KEY = "broadcast_settings";
-
-/* 🌍 ZONES */
-const zones = [
-  { name: "ایران", offset: 3.5 },
-  { name: "اروپا", offset: 1 },
-  { name: "آمریکا", offset: -5 },
-  { name: "اسرائیل", offset: 2 }
-];
-  
-function load() {
-
-  const newState =
-    JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-
-  const oldClock = state.clock?.enabled;
-
-  state = newState;
-
-  apply();
-
-  /* 🔥 فقط اگر تغییر کرده باشد */
-  if (oldClock !== state.clock?.enabled) {
-
-    if (state.clock?.enabled) {
-      startClock();
-    } else {
-      stopClock();
-    }
-
+  if(state.clock?.enabled){
+    startClock();
   }
+
+  box.classList.add("fade");
+  setTimeout(()=>box.classList.remove("fade"),400);
 }
-function startClock() {
 
-  stopClock(); // جلوگیری از دوبل اجرا
+function startClock(){
 
-  clockRunning = true;
+  const interval = (state.clock?.interval || 10) * 1000;
 
-  const clockEl = document.getElementById("clock");
+  setInterval(()=>{
 
-  const intervalMs =
-    (state.clock?.interval || 10) * 1000;
-
-  function loop(time) {
-
-    if (!clockRunning) return;
+    const zone = zones[clockIndex % zones.length];
 
     const now = new Date();
-    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const utc = now.getTime() + now.getTimezoneOffset()*60000;
+    const local = new Date(utc + (3600000 * zone.offset));
 
-    /* ⏱ switch zone */
-    if (time - lastSwitchTime > intervalMs) {
-      currentZoneIndex =
-        (currentZoneIndex + 1) % zones.length;
+    const hh = String(local.getHours()).padStart(2,"0");
+    const mm = String(local.getMinutes()).padStart(2,"0");
 
-      lastSwitchTime = time;
-    }
+    document.getElementById("clock").innerText = hh + ":" + mm;
 
-    const zone = zones[currentZoneIndex];
+    clockIndex++;
 
-    const local = new Date(
-      utc + 3600000 * zone.offset
-    );
-
-    const hh = String(local.getHours()).padStart(2, "0");
-    const mm = String(local.getMinutes()).padStart(2, "0");
-
-    clockEl.textContent =
-      `${zone.name} ${hh}:${mm}`;
-
-    clockRAF = requestAnimationFrame(loop);
-  }
-
-  clockRAF = requestAnimationFrame(loop);
-}
-
-function stopClock() {
-
-  clockRunning = false;
-
-  if (clockRAF) {
-    cancelAnimationFrame(clockRAF);
-    clockRAF = null;
-  }
-
-  const clockEl = document.getElementById("clock");
-
-  if (clockEl) {
-    clockEl.textContent = "";
-  }
+  }, interval);
 }
 
 window.addEventListener("storage", load);
 window.addEventListener("broadcast_update", load);
-  
+
 load();
 
 </script>
