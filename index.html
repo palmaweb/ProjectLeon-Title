@@ -288,13 +288,13 @@ function apply(){
       icon.src = state.icon.url;
     }
 
-    if(state.icon.type === "live") icon.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Red_circle.gif";
-    if(state.icon.type === "breaking") icon.src = "https://upload.wikimedia.org/wikipedia/commons/3/3b/Red_pog.svg";
-    if(state.icon.type === "alert") icon.src = "https://upload.wikimedia.org/wikipedia/commons/5/5f/Red_warning_icon.svg";
+    if(state.icon.type === "live") icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
+    if(state.icon.type === "breaking") icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
+    if(state.icon.type === "alert") icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
 
-    icon.style.width = (state.icon.size || 36) + "px";
+    icon.style.width = (state.icon.size || 100) + "px";
 
-    icon.style.height = (state.icon.size || 36) + "px";
+    icon.style.height = (state.icon.size || 100) + "px";
 
   } else {
     icon.style.display = "none";
