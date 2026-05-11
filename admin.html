@@ -522,6 +522,17 @@ function tryAutoSave(el){
   }
 
 }
+  function getState(){
+  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+    title:{},
+    subtitle:{},
+    container:{},
+    logo:{},
+    icon:{},
+    clock:{},
+    transition:{}
+  };
+}
 </script>
 
 </body>
