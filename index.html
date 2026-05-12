@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache">
 
 <!-- FONT CSS -->
 <link rel="stylesheet" href="assets/fonts/fonts.css">
@@ -14,7 +15,7 @@
 body{
   margin:0;
   background:transparent;
-  overflow:hidden;
+  overflow:visible;
   font-family: Vazirmatn, IRANYekanX, IRANSansX;
 }
 
@@ -44,6 +45,8 @@ body{
   position:absolute;
   inset:0;
   z-index:0;
+
+  border-radius:16px;
 }
 
 /* =========================
@@ -51,13 +54,23 @@ body{
 ========================= */
 .content-layer{
   position:relative;
+
   z-index:2;
+
   display:flex;
+
   flex-direction:row;
+
   align-items:stretch;
+
   width:100%;
   height:100%;
+
   direction:ltr;
+
+  border-radius:16px;
+
+  overflow:hidden;
 }
 
 /* =========================
@@ -67,14 +80,22 @@ body{
   order:1;
   width:200px;
   height:100%;
+
   display:flex;
   flex-direction:column;
+
   align-items:center;
   justify-content:space-between;
+
   background:rgba(0,0,0,0.2);
+
   backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
   box-sizing:border-box;
+
   flex-shrink:0;
+
   overflow:hidden;
 }
 
@@ -181,14 +202,17 @@ body{
 ========================= */
 .statusBox{
   width:100px;
-  height:100%;
-  margin-right:20px;
-  order:3;
+
   display:flex;
+
   align-items:center;
   justify-content:center;
-  margin-left:auto;
+
+  order:3;
+
   flex-shrink:0;
+
+  margin-right:20px;
 }
 
 .statusIcon{
