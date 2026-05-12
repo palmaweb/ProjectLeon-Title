@@ -1,240 +1,257 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache">
 
-<!-- FONT CSS -->
-<link rel="stylesheet" href="assets/fonts/fonts.css">
-
 <title>Broadcast Display</title>
+
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 
 <style>
 
 body{
-  margin:0;
-  background:transparent;
-  overflow:visible;
-  font-family: Vazirmatn, IRANYekanX, IRANSansX;
+    margin:0;
+    overflow:hidden;
+    background:transparent;
+    font-family:Vazirmatn, IRANYekanX, IRANSansX;
 }
 
 /* =========================
-   OUTER WRAPPER
+   MAIN BOX
 ========================= */
+
 .container{
-  position:fixed;
-  bottom:60px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  border-radius:16px;
-  
-  align-items:stretch;
-  z-index:1;
-  background:transparent;
-  width:auto;
-  min-width:900px;
-  isolation:isolate;
+
+    position:fixed;
+
+    bottom:60px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:900px;
+    height:180px;
+
+    border-radius:16px;
+
+    overflow:visible;
+
+    z-index:9999;
 }
 
 /* =========================
-   BACKGROUND LAYER
+   BACKGROUND
 ========================= */
+
 .bg-layer{
-  position:absolute;
-  inset:0;
-  z-index:0;
 
-  border-radius:16px;
+    position:absolute;
+
+    inset:0;
+
+    border-radius:16px;
+
+    background:#000;
+
+    opacity:.6;
+
+    z-index:1;
 }
 
 /* =========================
-   CONTENT LAYER
+   CONTENT
 ========================= */
+
 .content-layer{
-  position:relative;
 
-  z-index:2;
+    position:relative;
 
-  display:flex;
+    z-index:2;
 
-  flex-direction:row;
+    width:100%;
+    height:100%;
 
-  align-items:stretch;
+    display:flex;
 
-  width:100%;
-  height:100%;
+    flex-direction:row-reverse;
 
-  direction:ltr;
-
-  border-radius:16px;
-
-  overflow:hidden;
+    align-items:stretch;
 }
 
 /* =========================
    LOGO
 ========================= */
+
 .logo{
-  order:1;
-  width:200px;
-  height:100%;
 
-  display:flex;
-  flex-direction:column;
+    width:200px;
 
-  align-items:center;
-  justify-content:space-between;
+    height:100%;
 
-  background:rgba(0,0,0,0.2);
+    display:flex;
 
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+    flex-direction:column;
 
-  box-sizing:border-box;
+    justify-content:space-between;
 
-  flex-shrink:0;
+    align-items:center;
 
-  overflow:hidden;
+    box-sizing:border-box;
+
+    padding:10px;
+
+    background:rgba(255,255,255,.04);
+
+    flex-shrink:0;
 }
 
 .logo img{
-  width:130px;
-  height:130px;
-  object-fit:contain;
-  display:none;
-  flex-shrink:0;
+
+    width:120px;
+    height:120px;
+
+    object-fit:contain;
+
+    display:none;
 }
 
 /* =========================
    CLOCK
 ========================= */
+
 .clock{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  width:100%;
-  height:100%;
-  margin-top:auto;
-  margin-bottom:8px;
-  line-height:1.0;
-  color:#fff;
-  text-align:center;
+
+    color:#fff;
+
+    text-align:center;
+
+    margin-bottom:6px;
 }
 
 .clock-country{
-  font-size:24px;
-  opacity:0.8;
-  white-space:nowrap;
-  margin-bottom:4px;
-  font-weight:800;
+
+    font-size:14px;
+
+    opacity:.8;
+
+    margin-bottom:4px;
 }
 
 .clock-time{
-  font-size:24px;
-  font-weight:800;
-  white-space:nowrap;
-  line-height:1;
+
+    font-size:24px;
+
+    font-weight:800;
 }
 
 /* =========================
    TEXT AREA
 ========================= */
+
 .content{
-  order:2;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  text-align:center;
-  min-width:500px;
-  gap:20px;
-  flex:1;
-  overflow:hidden;
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
 }
 
-/* =========================
-   TEXT BLOCK
-========================= */
 .text{
-  order:2;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  width:100%;
-  max-width:1000px;
-  padding:0 80px;
-  box-sizing:border-box;
-  margin:0 auto;
-  gap:10px;
-  direction:rtl;
+
+    width:100%;
+
+    padding:0 60px;
+
+    box-sizing:border-box;
+
+    text-align:center;
 }
 
 .title{
-  font-size:28px;
-  color:#fff;
-  text-align:center;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  width:100%;
+
+    color:#fff;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 }
 
 .subtitle{
-  font-size:18px;
-  color:#ddd;
-  opacity:0.9;
-  text-align:center;
-  display:-webkit-box;
-  -webkit-line-clamp:1;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-  margin-top:2px;
-  margin-bottom:10px;
-  width:100%;
+
+    color:#ddd;
+
+    font-size:18px;
+
+    margin-top:8px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 }
 
 /* =========================
    ICON
 ========================= */
+
 .statusBox{
-  width:100px;
 
-  display:flex;
+    width:120px;
 
-  align-items:center;
-  justify-content:center;
+    display:flex;
 
-  order:3;
+    justify-content:center;
 
-  flex-shrink:0;
+    align-items:center;
 
-  margin-right:20px;
+    flex-shrink:0;
 }
 
 .statusIcon{
-  width:200px;
-  height:200px;
-  object-fit:contain;
-  display:none;
+
+    width:90px;
+    height:90px;
+
+    object-fit:contain;
+
+    display:none;
 }
 
 /* =========================
-   ANIMATIONS
+   ANIMATION
 ========================= */
-.fade{animation:fadeIn 0.5s ease}
-.slide{animation:slideIn 0.5s ease}
-.zoom{animation:zoomIn 0.5s ease}
-.glitch{animation:glitch 0.4s infinite}
-.typewriter{overflow:hidden;white-space:nowrap;animation:typing 1s steps(30)}
 
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes zoomIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes typing{from{width:0}to{width:100%}}
+.fade{
+    animation:fadeIn .5s ease;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
 
 </style>
 </head>
@@ -243,183 +260,376 @@ body{
 
 <div class="container" id="box">
 
-  <div class="bg-layer" id="bg"></div>
+    <div class="bg-layer" id="bg"></div>
 
-  <div class="content-layer">
+    <div class="content-layer">
 
-    <!-- LOGO -->
-    <div class="logo">
-      <img id="logoImg">
-      <div class="clock" id="clock"></div>
+        <!-- LOGO -->
+        <div class="logo">
+
+            <img id="logoImg">
+
+            <div class="clock" id="clock"></div>
+
+        </div>
+
+        <!-- TEXT -->
+        <div class="content">
+
+            <div class="text">
+
+                <div class="title" id="titleText"></div>
+
+                <div class="subtitle" id="subtitleText"></div>
+
+            </div>
+
+        </div>
+
+        <!-- ICON -->
+        <div class="statusBox">
+
+            <img id="iconImg" class="statusIcon">
+
+        </div>
+
     </div>
 
-    <!-- TEXT -->
-    <div class="content">
-      <div class="text">
-        <div class="title" id="titleText"></div>
-        <div class="subtitle" id="subtitleText"></div>
-      </div>
-    </div>
-
-    <!-- ICON -->
-    <div class="statusBox">
-      <img id="iconImg" class="statusIcon">
-    </div>
-
-  </div>
 </div>
 
 <script>
+
 const STORAGE_KEY = "broadcast_settings";
 
 let state = {};
-let clockIntervalId = null;
-let currentZoneIndex = 0;
 
-/* TIMEZONES */
-const zones = [
-  { name:"ایران", timezone:"Asia/Tehran" },
-  { name:"اروپا", timezone:"Europe/Berlin" },
-  { name:"آمریکا", timezone:"America/New_York" },
-  { name:"اسرائیل", timezone:"Asia/Jerusalem" }
-];
+let clockInterval = null;
 
-/* LOAD */
+let currentZone = 0;
+
+/* =========================
+   TIMEZONES
+========================= */
+
+const zones = {
+
+    all:[
+        {name:"ایران", tz:"Asia/Tehran"},
+        {name:"اروپا", tz:"Europe/Berlin"},
+        {name:"آمریکا", tz:"America/New_York"},
+        {name:"اسرائیل", tz:"Asia/Jerusalem"}
+    ],
+
+    iran:[
+        {name:"ایران", tz:"Asia/Tehran"}
+    ],
+
+    usa:[
+        {name:"آمریکا", tz:"America/New_York"}
+    ],
+
+    europe:[
+        {name:"اروپا", tz:"Europe/Berlin"}
+    ],
+
+    israel:[
+        {name:"اسرائیل", tz:"Asia/Jerusalem"}
+    ]
+
+};
+
+/* =========================
+   LOAD
+========================= */
+
 function load(){
-  state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-  apply();
+
+    try{
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        state = saved
+            ? JSON.parse(saved)
+            : {};
+
+    }catch(err){
+
+        console.error(err);
+
+        state = {};
+    }
+
+    apply();
 }
 
-/* APPLY UI */
+/* =========================
+   APPLY
+========================= */
+
 function apply(){
 
-  const box = document.getElementById("box");
-  const bg = document.getElementById("bg");
+    const box =
+        document.getElementById("box");
 
-  if(state.container){
-    box.style.width = (state.container.width || 900) + "px";
-    box.style.height = (state.container.height || 180) + "px";
-  }
+    const bg =
+        document.getElementById("bg");
 
-  if(state.container){
-    bg.style.background = state.container.bgColor || "#000";
-    bg.style.opacity = state.container.opacity || 0.5;
-  }
+    /* SIZE */
 
-  const logo = document.getElementById("logoImg");
-  if(state.logo?.url){
-    logo.src = state.logo.url;
-    logo.style.display = "block";
-  } else {
-    logo.style.display = "none";
-  }
+    box.style.width =
+        (state.container?.width || 900) + "px";
 
-  const title = document.getElementById("titleText");
-  if(state.title){
-    title.innerText = state.title.text || "";
-    title.style.fontSize = (state.title.size || 28) + "px";
-    title.style.color = state.title.color || "#fff";
-    title.style.fontWeight = state.title.weight || 700;
-  }
+    box.style.height =
+        (state.container?.height || 180) + "px";
 
-  const sub = document.getElementById("subtitleText");
-  if(state.subtitle){
-    sub.innerText = state.subtitle.text || "";
-    sub.style.fontSize = (state.subtitle.size || 18) + "px";
-    sub.style.color = state.subtitle.color || "#ddd";
-  }
+    /* BACKGROUND */
 
-  const icon = document.getElementById("iconImg");
-  if(state.icon && state.icon.type !== "off"){
+    bg.style.background =
+        state.container?.bgColor || "#000";
+
+    bg.style.opacity =
+        state.container?.opacity || .6;
+
+    /* TITLE */
+
+    const title =
+        document.getElementById("titleText");
+
+    title.innerText =
+        state.title?.text || "";
+
+    title.style.fontSize =
+        (state.title?.size || 28) + "px";
+
+    title.style.color =
+        state.title?.color || "#fff";
+
+    title.style.fontFamily =
+        state.title?.font || "Vazirmatn";
+
+    title.style.fontWeight =
+        state.title?.weight || 700;
+
+    /* SUBTITLE */
+
+    const sub =
+        document.getElementById("subtitleText");
+
+    sub.innerText =
+        state.subtitle?.text || "";
+
+    sub.style.fontSize =
+        (state.subtitle?.size || 18) + "px";
+
+    sub.style.color =
+        state.subtitle?.color || "#ddd";
+
+    sub.style.fontFamily =
+        state.subtitle?.font || "Vazirmatn";
+
+    sub.style.fontWeight =
+        state.subtitle?.weight || 400;
+
+    /* LOGO */
+
+    const logo =
+        document.getElementById("logoImg");
+
+    if(state.logo?.url){
+
+        logo.src = state.logo.url;
+
+        logo.style.display = "block";
+
+    }else{
+
+        logo.style.display = "none";
+    }
+
+    /* ICON */
+
+    applyIcon();
+
+    /* CLOCK */
+
+    applyClock();
+
+    /* TRANSITION */
+
+    applyTransition();
+}
+
+/* =========================
+   ICON
+========================= */
+
+function applyIcon(){
+
+    const icon =
+        document.getElementById("iconImg");
+
+    const box =
+        document.querySelector(".statusBox");
+
+    if(!state.icon || state.icon.type === "off"){
+
+        icon.style.display = "none";
+
+        return;
+    }
+
     icon.style.display = "block";
 
-    if(state.icon.type === "custom") icon.src = state.icon.url;
-    if(state.icon.type === "live")
-      icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
+    if(state.icon.type === "live"){
 
-    if(state.icon.type === "breaking")
-      icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
+        icon.src =
+        "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
+    }
 
-    if(state.icon.type === "alert")
-      icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
+    if(state.icon.type === "breaking"){
 
-    icon.style.width = (state.icon.size || 200) + "px";
-    icon.style.height = (state.icon.size || 200) + "px";
+        icon.src =
+        "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
+    }
 
-  } else {
-    icon.style.display = "none";
-  }
+    if(state.icon.type === "alert"){
 
-  applyTransition();
+        icon.src =
+        "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
+    }
 
-  if(state.clock?.enabled){
-    document.getElementById("clock").style.display = "flex";
-    startClock();
-  } else {
-    stopClock();
-  }
+    if(state.icon.type === "custom"){
+
+        icon.src =
+        state.icon.url || "";
+    }
+
+    icon.style.width =
+        (state.icon.size || 90) + "px";
+
+    icon.style.height =
+        (state.icon.size || 90) + "px";
+
+    if(state.icon.position === "left"){
+
+        box.style.order = "1";
+
+    }else{
+
+        box.style.order = "3";
+    }
+
 }
 
-/* TRANSITION */
-function applyTransition(){
-  const type = state.transition?.type || "fade";
-  const box = document.getElementById("box");
+/* =========================
+   CLOCK
+========================= */
 
-  box.classList.remove("fade","slide","zoom","glitch","typewriter");
-  void box.offsetWidth;
-  box.classList.add(type);
-}
+function applyClock(){
 
-/* CLOCK */
-function startClock(){
+    clearInterval(clockInterval);
 
-  stopClock();
+    const clock =
+        document.getElementById("clock");
 
-  currentZoneIndex = 0;
+    if(!state.clock?.enabled){
 
-  const interval = (state.clock?.interval || 10) * 1000;
-  const clockEl = document.getElementById("clock");
+        clock.innerHTML = "";
 
-  updateClock();
+        return;
+    }
 
-  clockIntervalId = setInterval(()=>{
-    currentZoneIndex++;
-    if(currentZoneIndex >= zones.length) currentZoneIndex = 0;
+    const mode =
+        state.clock?.mode || "all";
+
+    const activeZones =
+        zones[mode] || zones.all;
+
+    const interval =
+        (state.clock?.interval || 10) * 1000;
+
+    function updateClock(){
+
+        const zone =
+            activeZones[currentZone];
+
+        const time =
+            new Date().toLocaleTimeString(
+                "fa-IR",
+                {
+                    timeZone:zone.tz,
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    hour12:false
+                }
+            );
+
+        clock.innerHTML = `
+            <div class="clock-country"
+                 style="font-size:${state.clock?.countrySize || 14}px">
+                 ${zone.name}
+            </div>
+
+            <div class="clock-time"
+                 style="font-size:${state.clock?.timeSize || 24}px">
+                 ${time}
+            </div>
+        `;
+
+        currentZone++;
+
+        if(currentZone >= activeZones.length){
+            currentZone = 0;
+        }
+    }
+
     updateClock();
-  }, interval);
 
-  function updateClock(){
-
-    const zone = zones[currentZoneIndex];
-
-    const time = new Date().toLocaleTimeString("fa-IR",{
-      timeZone: zone.timezone,
-      hour:"2-digit",
-      minute:"2-digit",
-      hour12:false
-    });
-
-    clockEl.innerHTML = `
-      <div class="clock-country">${zone.name}</div>
-      <div class="clock-time">${time}</div>
-    `;
-  }
+    clockInterval =
+        setInterval(updateClock, interval);
 }
 
-/* STOP CLOCK */
-function stopClock(){
-  if(clockIntervalId){
-    clearInterval(clockIntervalId);
-    clockIntervalId = null;
-  }
-  document.getElementById("clock").innerHTML = "";
+/* =========================
+   TRANSITION
+========================= */
+
+function applyTransition(){
+
+    const box =
+        document.getElementById("box");
+
+    box.classList.remove("fade");
+
+    void box.offsetWidth;
+
+    box.classList.add(
+        state.transition?.type || "fade"
+    );
 }
 
-/* EVENTS */
-window.addEventListener("storage", load);
-window.addEventListener("broadcast_update", load);
+/* =========================
+   EVENTS
+========================= */
+
+window.addEventListener(
+    "storage",
+    load
+);
+
+window.addEventListener(
+    "broadcast_update",
+    load
+);
+
+/* =========================
+   INIT
+========================= */
 
 load();
+
+setInterval(load, 1000);
+
 </script>
 
 </body>
