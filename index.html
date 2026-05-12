@@ -4,21 +4,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Broadcast Display</title>
 
-<link rel="stylesheet" href="assets/fonts/fonts.css">
+<title>Display</title>
 
 <style>
 
 body{
     margin:0;
     overflow:hidden;
-    background:transparent;
-    font-family: Vazirmatn, IRANYekanX, IRANSansX;
-    transform:translateZ(0);
+    background:#111; /* مهم: جلوگیری از سفید شدن */
+    font-family:sans-serif;
 }
 
-/* MAIN */
+/* BOX */
 .container{
     position:fixed;
     bottom:60px;
@@ -27,101 +25,80 @@ body{
     width:900px;
     height:180px;
     display:flex;
-    border-radius:16px;
+    border-radius:12px;
     overflow:hidden;
 }
 
-/* BACKGROUND ONLY (opacity safe) */
-.bg-layer{
+/* BACKGROUND (ONLY HERE OPACITY) */
+.bg{
     position:absolute;
     inset:0;
     background:#000;
-    opacity:.6;
-    z-index:1;
+    opacity:0.6;
 }
 
-/* CONTENT */
-.content-layer{
+/* LAYOUT */
+.content{
     position:relative;
     z-index:2;
     display:flex;
     width:100%;
     height:100%;
-    flex-direction:row-reverse;
 }
 
 /* LOGO */
 .logo{
-    width:200px;
+    width:180px;
     display:flex;
     flex-direction:column;
+    justify-content:center;
     align-items:center;
-    justify-content:space-between;
-    padding:10px;
-    box-sizing:border-box;
     background:rgba(255,255,255,0.05);
 }
 
 .logo img{
-    width:120px;
-    height:120px;
-    object-fit:contain;
+    width:100px;
+    height:100px;
     display:none;
 }
 
-/* CLOCK */
-.clock{
-    color:#fff;
-    text-align:center;
-}
-
-.clock-country{
-    font-size:14px;
-    opacity:.8;
-}
-
-.clock-time{
-    font-size:24px;
-    font-weight:800;
-}
-
 /* TEXT */
-.content{
+.center{
     flex:1;
     display:flex;
-    align-items:center;
+    flex-direction:column;
     justify-content:center;
-}
-
-.text{
     text-align:center;
-    padding:0 60px;
+    color:#fff;
 }
 
 .title{
     font-size:28px;
-    color:#fff;
-    font-weight:700;
 }
 
 .subtitle{
-    font-size:18px;
-    color:#ddd;
+    font-size:16px;
+    opacity:0.8;
 }
 
 /* ICON */
-.statusBox{
+.icon{
     width:120px;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 }
 
-.statusBox img{
-    width:90px;
-    height:90px;
-    object-fit:contain;
+.icon img{
+    width:80px;
+    height:80px;
     display:none;
+}
+
+.clock{
+    font-size:14px;
+    margin-top:8px;
+    opacity:0.8;
 }
 
 </style>
@@ -131,27 +108,22 @@ body{
 
 <div class="container">
 
-    <div class="bg-layer" id="bg"></div>
+    <div class="bg"></div>
 
-    <div class="content-layer">
+    <div class="content">
 
-        <!-- LOGO -->
         <div class="logo">
-            <img id="logoImg">
+            <img id="logo">
             <div class="clock" id="clock"></div>
         </div>
 
-        <!-- TEXT -->
-        <div class="content">
-            <div class="text">
-                <div class="title" id="titleText"></div>
-                <div class="subtitle" id="subtitleText"></div>
-            </div>
+        <div class="center">
+            <div class="title" id="title">Test Title</div>
+            <div class="subtitle" id="sub">Test Subtitle</div>
         </div>
 
-        <!-- ICON -->
-        <div class="statusBox">
-            <img id="iconImg">
+        <div class="icon">
+            <img id="icon">
         </div>
 
     </div>
@@ -160,136 +132,94 @@ body{
 
 <script>
 
-const KEY = "broadcast_settings";
+let state = JSON.parse(localStorage.getItem("broadcast_settings") || "{}");
 
-let state = {};
-let clockTimer = null;
-let zoneIndex = 0;
-
-/* LOAD */
-function load(){
-    try{
-        state = JSON.parse(localStorage.getItem(KEY)) || {};
-    }catch(e){
-        state = {};
-    }
-    render();
-}
-
-/* RENDER */
+/* SAFE RENDER */
 function render(){
 
-    /* BACKGROUND */
-    const bg = document.getElementById("bg");
-    bg.style.background = state.container?.bgColor || "#000";
-    bg.style.opacity = state.container?.opacity ?? 0.6;
+    try{
 
-    /* SIZE */
-    const box = document.querySelector(".container");
-    box.style.width = (state.container?.width || 900) + "px";
-    box.style.height = (state.container?.height || 180) + "px";
+        /* TITLE */
+        document.getElementById("title").innerText =
+            (state.title && state.title.text) || "LIVE NEWS";
 
-    /* TITLE */
-    document.getElementById("titleText").innerText =
-        state.title?.text || "";
+        /* SUB */
+        document.getElementById("sub").innerText =
+            (state.subtitle && state.subtitle.text) || "";
 
-    /* SUBTITLE */
-    document.getElementById("subtitleText").innerText =
-        state.subtitle?.text || "";
+        /* LOGO */
+        const logo = document.getElementById("logo");
 
-    /* LOGO */
-    const logo = document.getElementById("logoImg");
+        if(state.logo && state.logo.url){
+            logo.src = state.logo.url;
+            logo.style.display = "block";
+        }
 
-    if(state.logo?.url){
-        logo.src = state.logo.url;
-        logo.style.display = "block";
-    }else{
-        logo.style.display = "none";
+        /* ICON */
+        const icon = document.getElementById("icon");
+
+        if(state.icon && state.icon.type !== "off"){
+
+            icon.style.display = "block";
+
+            if(state.icon.type === "live")
+                icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
+
+            else if(state.icon.type === "breaking")
+                icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
+
+            else if(state.icon.type === "alert")
+                icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
+
+            else if(state.icon.type === "custom")
+                icon.src = state.icon.url || "";
+        }
+
+        /* CLOCK */
+        updateClock();
+
+    }catch(e){
+        console.log("Render error:", e);
     }
-
-    /* ICON */
-    const icon = document.getElementById("iconImg");
-
-    if(state.icon?.type && state.icon.type !== "off"){
-
-        icon.style.display = "block";
-
-        if(state.icon.type === "live"){
-            icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
-        }
-
-        if(state.icon.type === "breaking"){
-            icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
-        }
-
-        if(state.icon.type === "alert"){
-            icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
-        }
-
-        if(state.icon.type === "custom"){
-            icon.src = state.icon.url || "";
-        }
-
-    } else {
-        icon.style.display = "none";
-    }
-
-    /* CLOCK */
-    setupClock();
 }
 
-/* CLOCK FIXED (NO LOOP BUG) */
-function setupClock(){
+/* CLOCK SAFE */
+function updateClock(){
 
-    clearInterval(clockTimer);
+    try{
 
-    const el = document.getElementById("clock");
+        const zones = [
+            {n:"IR",t:"Asia/Tehran"},
+            {n:"EU",t:"Europe/Berlin"},
+            {n:"US",t:"America/New_York"}
+        ];
 
-    if(!state.clock?.enabled){
-        el.innerHTML = "";
-        return;
-    }
-
-    const zones = [
-        {name:"ایران", tz:"Asia/Tehran"},
-        {name:"اروپا", tz:"Europe/Berlin"},
-        {name:"آمریکا", tz:"America/New_York"},
-        {name:"اسرائیل", tz:"Asia/Jerusalem"}
-    ];
-
-    function update(){
-
-        const z = zones[zoneIndex];
+        const z = zones[Math.floor(Date.now()/10000)%zones.length];
 
         const time = new Date().toLocaleTimeString("fa-IR",{
-            timeZone:z.tz,
+            timeZone:z.t,
             hour:"2-digit",
             minute:"2-digit",
             hour12:false
         });
 
-        el.innerHTML =
-            `<div class="clock-country">${z.name}</div>
-             <div class="clock-time">${time}</div>`;
+        document.getElementById("clock").innerHTML =
+            z.n + " | " + time;
 
-        zoneIndex++;
-        if(zoneIndex >= zones.length) zoneIndex = 0;
+    }catch(e){
+        console.log("Clock error:", e);
     }
-
-    update();
-
-    clockTimer = setInterval(
-        update,
-        (state.clock?.interval || 10) * 1000
-    );
 }
 
-/* EVENTS */
-window.addEventListener("storage", load);
-window.addEventListener("broadcast_update", load);
-
 /* INIT */
-load();
+render();
+setInterval(updateClock, 1000);
+
+/* LIVE UPDATE */
+window.addEventListener("storage", () => {
+    state = JSON.parse(localStorage.getItem("broadcast_settings") || "{}");
+    render();
+});
 
 </script>
 
