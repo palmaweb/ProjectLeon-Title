@@ -281,75 +281,138 @@
 <script>
 
 const STORAGE_KEY = "broadcast_settings";
-const defaultState = { title:{}, subtitle:{}, container:{}, logo:{}, icon:{}, clock:{}, transition:{} };
 
-function load(){
+/* =========================
+   DEFAULT STATE
+========================= */
+let state = {
+  title:{},
+  subtitle:{},
+  container:{},
+  logo:{},
+  icon:{},
+  clock:{},
+  transition:{}
+};
+
+/* =========================
+   LOAD STATE
+========================= */
+function loadState(){
 
   try{
 
     const saved =
       localStorage.getItem(STORAGE_KEY);
 
-    state = saved
-      ? JSON.parse(saved)
-      : {};
+    if(saved){
+      state = JSON.parse(saved);
+    }
 
   }catch(err){
 
-    console.error("Storage Error:", err);
+    console.error(err);
 
-    state = {};
   }
 
-  apply();
 }
 
-function saveState(state){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  window.dispatchEvent(new Event("broadcast_update"));
+/* =========================
+   SAVE STATE
+========================= */
+function saveState(){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(state)
+  );
+
+  window.dispatchEvent(
+    new Event("broadcast_update")
+  );
+
 }
 
-let state = loadState();
-
+/* =========================
+   SAFE SET
+========================= */
 function safeSet(path,value){
+
   const keys = path.split(".");
+
   let obj = state;
+
   for(let i=0;i<keys.length-1;i++){
-    obj[keys[i]] = obj[keys[i]] || {};
+
+    if(!obj[keys[i]]){
+      obj[keys[i]] = {};
+    }
+
     obj = obj[keys[i]];
   }
+
   obj[keys[keys.length-1]] = value;
 }
 
+/* =========================
+   TEXT
+========================= */
 function saveText(){
+
   safeSet("title.text", titleText.value);
   safeSet("title.font", titleFont.value);
-  safeSet("title.weight", titleWeight.value);
-  safeSet("title.size", titleSize.value);
+  safeSet("title.weight", +titleWeight.value);
+  safeSet("title.size", +titleSize.value);
   safeSet("title.color", titleColor.value);
 
   safeSet("subtitle.text", subText.value);
   safeSet("subtitle.font", subFont.value);
-  safeSet("subtitle.weight", subWeight.value);
-  safeSet("subtitle.size", subSize.value);
+  safeSet("subtitle.weight", +subWeight.value);
+  safeSet("subtitle.size", +subSize.value);
   safeSet("subtitle.color", subColor.value);
 
-  saveState(state);
+  saveState();
 }
 
+/* =========================
+   CONTAINER
+========================= */
 function saveContainer(){
+
   safeSet("container.width", +width.value);
   safeSet("container.height", +height.value);
   safeSet("container.bgColor", bgColor.value);
-  safeSet("container.opacity", opacity.value);
-  saveState(state);
+  safeSet("container.opacity", parseFloat(opacity.value));
+
+  saveState();
 }
 
+/* =========================
+   LOGO
+========================= */
 function saveLogoUrl(){
+
   safeSet("logo.url", logoUrl.value);
-  saveState(state);
+
+  saveState();
 }
 
+/* =========================
+   ICON
+========================= */
+function saveIcon(){
+
+  safeSet("icon.type", iconType.value);
+  safeSet("icon.url", iconUrl.value);
+  safeSet("icon.size", +iconSize.value);
+  safeSet("icon.position", iconPosition.value);
+
+  saveState();
+}
+
+/* =========================
+   CLOCK
+========================= */
 function saveClock(){
 
   safeSet(
@@ -377,31 +440,31 @@ function saveClock(){
     +clockTimeSize.value
   );
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(state)
-  );
-
-  window.dispatchEvent(
-    new Event("broadcast_update")
-  );
+  saveState();
 }
 
+/* =========================
+   TRANSITION
+========================= */
 function saveTransition(){
-  safeSet("transition.type", transitionType.value);
-  safeSet("transition.duration", transitionDuration.value);
-  saveState(state);
+
+  safeSet(
+    "transition.type",
+    transitionType.value
+  );
+
+  safeSet(
+    "transition.duration",
+    +transitionDuration.value
+  );
+
+  saveState();
 }
 
-function saveIcon(){
-  safeSet("icon.type", iconType.value);
-  safeSet("icon.url", iconUrl.value);
-  safeSet("icon.size", iconSize.value);
-  safeSet("icon.position", iconPosition.value);
-  saveState(state);
-}
-
-  function hydrate(){
+/* =========================
+   HYDRATE UI
+========================= */
+function hydrate(){
 
   /* TITLE */
   titleText.value =
@@ -411,7 +474,7 @@ function saveIcon(){
     state.title?.font || "Vazirmatn";
 
   titleWeight.value =
-    state.title?.weight || "700";
+    state.title?.weight || 700;
 
   titleSize.value =
     state.title?.size || 28;
@@ -427,7 +490,7 @@ function saveIcon(){
     state.subtitle?.font || "Vazirmatn";
 
   subWeight.value =
-    state.subtitle?.weight || "400";
+    state.subtitle?.weight || 400;
 
   subSize.value =
     state.subtitle?.size || 18;
@@ -440,7 +503,7 @@ function saveIcon(){
     state.container?.width || 900;
 
   height.value =
-    state.container?.height || 160;
+    state.container?.height || 180;
 
   bgColor.value =
     state.container?.bgColor || "#000000";
@@ -460,7 +523,7 @@ function saveIcon(){
     state.icon?.url || "";
 
   iconSize.value =
-    state.icon?.size || 200;
+    state.icon?.size || 100;
 
   iconPosition.value =
     state.icon?.position || "right";
@@ -476,71 +539,96 @@ function saveIcon(){
     state.clock?.mode || "all";
 
   clockCountrySize.value =
-    state.clock?.countrySize || 11;
+    state.clock?.countrySize || 14;
 
   clockTimeSize.value =
-    state.clock?.timeSize || 16;
+    state.clock?.timeSize || 24;
 
   /* TRANSITION */
   transitionType.value =
     state.transition?.type || "fade";
 
   transitionDuration.value =
-    state.transition?.duration || 400;
+    state.transition?.duration || 500;
+}
+
+/* =========================
+   AUTO SAVE
+========================= */
+function bindAutoSave(){
+
+  document
+    .querySelectorAll("input, select")
+    .forEach(el=>{
+
+      el.addEventListener("input", ()=>{
+
+        if([
+          "titleText",
+          "titleFont",
+          "titleWeight",
+          "titleSize",
+          "titleColor",
+          "subText",
+          "subFont",
+          "subWeight",
+          "subSize",
+          "subColor"
+        ].includes(el.id)){
+          saveText();
+        }
+
+        if([
+          "width",
+          "height",
+          "bgColor",
+          "opacity"
+        ].includes(el.id)){
+          saveContainer();
+        }
+
+        if(el.id === "logoUrl"){
+          saveLogoUrl();
+        }
+
+        if([
+          "iconType",
+          "iconUrl",
+          "iconSize",
+          "iconPosition"
+        ].includes(el.id)){
+          saveIcon();
+        }
+
+        if([
+          "clockEnabled",
+          "clockInterval",
+          "clockMode",
+          "clockCountrySize",
+          "clockTimeSize"
+        ].includes(el.id)){
+          saveClock();
+        }
+
+        if([
+          "transitionType",
+          "transitionDuration"
+        ].includes(el.id)){
+          saveTransition();
+        }
+
+      });
+
+    });
 
 }
-  hydrate();
-  const inputs = document.querySelectorAll("input, select");
 
-inputs.forEach(el => {
-  el.addEventListener("input", () => {
-    // فقط save مربوط به بخش خودش اجرا شود
-    if(el.closest(".box")){
-      tryAutoSave(el);
-    }
-  });
-
-  el.addEventListener("change", () => {
-    if(el.closest(".box")){
-      tryAutoSave(el);
-    }
-  });
-});
-
-function tryAutoSave(el){
-
-  // TEXT
-  if(["titleText","titleFont","titleWeight","titleSize","titleColor"].includes(el.id) ||
-     ["subText","subFont","subWeight","subSize","subColor"].includes(el.id)){
-    saveText();
-  }
-
-  // CONTAINER
-  if(["width","height","bgColor","opacity"].includes(el.id)){
-    saveContainer();
-  }
-
-  // LOGO
-  if(el.id === "logoUrl"){
-    saveLogoUrl();
-  }
-
-  // ICON
-  if(["iconType","iconUrl","iconSize","iconPosition"].includes(el.id)){
-    saveIcon();
-  }
-
-  // CLOCK
-  if(["clockEnabled","clockInterval","clockMode","clockCountrySize","clockTimeSize"].includes(el.id)){
-    saveClock();
-  }
-
-  // TRANSITION
-  if(["transitionType","transitionDuration"].includes(el.id)){
-    saveTransition();
-  }
-
-}
+/* =========================
+   INIT
+========================= */
+loadState();
+hydrate();
+bindAutoSave();
 
 </script>
 
