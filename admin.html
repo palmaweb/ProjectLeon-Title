@@ -283,8 +283,25 @@
 const STORAGE_KEY = "broadcast_settings";
 const defaultState = { title:{}, subtitle:{}, container:{}, logo:{}, icon:{}, clock:{}, transition:{} };
 
-function loadState(){
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState;
+function load(){
+
+  try{
+
+    const saved =
+      localStorage.getItem(STORAGE_KEY);
+
+    state = saved
+      ? JSON.parse(saved)
+      : {};
+
+  }catch(err){
+
+    console.error("Storage Error:", err);
+
+    state = {};
+  }
+
+  apply();
 }
 
 function saveState(state){
