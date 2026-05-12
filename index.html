@@ -2,11 +2,8 @@
 <html lang="fa" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache">
-
 <title>Broadcast Display</title>
 
 <link rel="stylesheet" href="assets/fonts/fonts.css">
@@ -17,240 +14,114 @@ body{
     margin:0;
     overflow:hidden;
     background:transparent;
-    font-family:Vazirmatn, IRANYekanX, IRANSansX;
+    font-family: Vazirmatn, IRANYekanX, IRANSansX;
+    transform:translateZ(0);
 }
 
-/* =========================
-   MAIN BOX
-========================= */
-
+/* MAIN */
 .container{
-
     position:fixed;
-
     bottom:60px;
     left:50%;
-
     transform:translateX(-50%);
-
     width:900px;
     height:180px;
-
+    display:flex;
     border-radius:16px;
-
-    overflow:visible;
-
-    z-index:9999;
+    overflow:hidden;
 }
 
-/* =========================
-   BACKGROUND
-========================= */
-
+/* BACKGROUND ONLY (opacity safe) */
 .bg-layer{
-
     position:absolute;
-
     inset:0;
-
-    border-radius:16px;
-
     background:#000;
-
     opacity:.6;
-
     z-index:1;
 }
 
-/* =========================
-   CONTENT
-========================= */
-
+/* CONTENT */
 .content-layer{
-
     position:relative;
-
     z-index:2;
-
+    display:flex;
     width:100%;
     height:100%;
-
-    display:flex;
-
     flex-direction:row-reverse;
-
-    align-items:stretch;
 }
 
-/* =========================
-   LOGO
-========================= */
-
+/* LOGO */
 .logo{
-
     width:200px;
-
-    height:100%;
-
     display:flex;
-
     flex-direction:column;
-
-    justify-content:space-between;
-
     align-items:center;
-
-    box-sizing:border-box;
-
+    justify-content:space-between;
     padding:10px;
-
-    background:rgba(255,255,255,.04);
-
-    flex-shrink:0;
+    box-sizing:border-box;
+    background:rgba(255,255,255,0.05);
 }
 
 .logo img{
-
     width:120px;
     height:120px;
-
     object-fit:contain;
-
     display:none;
 }
 
-/* =========================
-   CLOCK
-========================= */
-
+/* CLOCK */
 .clock{
-
     color:#fff;
-
     text-align:center;
-
-    margin-bottom:6px;
 }
 
 .clock-country{
-
     font-size:14px;
-
     opacity:.8;
-
-    margin-bottom:4px;
 }
 
 .clock-time{
-
     font-size:24px;
-
     font-weight:800;
 }
 
-/* =========================
-   TEXT AREA
-========================= */
-
+/* TEXT */
 .content{
-
     flex:1;
-
     display:flex;
-
-    justify-content:center;
-
     align-items:center;
-
-    overflow:hidden;
+    justify-content:center;
 }
 
 .text{
-
-    width:100%;
-
-    padding:0 60px;
-
-    box-sizing:border-box;
-
     text-align:center;
+    padding:0 60px;
 }
 
 .title{
-
-    color:#fff;
-
     font-size:28px;
-
+    color:#fff;
     font-weight:700;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
 }
 
 .subtitle{
-
-    color:#ddd;
-
     font-size:18px;
-
-    margin-top:8px;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
+    color:#ddd;
 }
 
-/* =========================
-   ICON
-========================= */
-
+/* ICON */
 .statusBox{
-
     width:120px;
-
     display:flex;
-
-    justify-content:center;
-
     align-items:center;
-
-    flex-shrink:0;
+    justify-content:center;
 }
 
-.statusIcon{
-
+.statusBox img{
     width:90px;
     height:90px;
-
     object-fit:contain;
-
     display:none;
-}
-
-/* =========================
-   ANIMATION
-========================= */
-
-.fade{
-    animation:fadeIn .5s ease;
-}
-
-@keyframes fadeIn{
-
-    from{
-        opacity:0;
-    }
-
-    to{
-        opacity:1;
-    }
-
 }
 
 </style>
@@ -258,7 +129,7 @@ body{
 
 <body>
 
-<div class="container" id="box">
+<div class="container">
 
     <div class="bg-layer" id="bg"></div>
 
@@ -266,31 +137,21 @@ body{
 
         <!-- LOGO -->
         <div class="logo">
-
             <img id="logoImg">
-
             <div class="clock" id="clock"></div>
-
         </div>
 
         <!-- TEXT -->
         <div class="content">
-
             <div class="text">
-
                 <div class="title" id="titleText"></div>
-
                 <div class="subtitle" id="subtitleText"></div>
-
             </div>
-
         </div>
 
         <!-- ICON -->
         <div class="statusBox">
-
-            <img id="iconImg" class="statusIcon">
-
+            <img id="iconImg">
         </div>
 
     </div>
@@ -299,336 +160,136 @@ body{
 
 <script>
 
-const STORAGE_KEY = "broadcast_settings";
+const KEY = "broadcast_settings";
 
 let state = {};
+let clockTimer = null;
+let zoneIndex = 0;
 
-let clockInterval = null;
-
-let currentZone = 0;
-
-/* =========================
-   TIMEZONES
-========================= */
-
-const zones = {
-
-    all:[
-        {name:"ایران", tz:"Asia/Tehran"},
-        {name:"اروپا", tz:"Europe/Berlin"},
-        {name:"آمریکا", tz:"America/New_York"},
-        {name:"اسرائیل", tz:"Asia/Jerusalem"}
-    ],
-
-    iran:[
-        {name:"ایران", tz:"Asia/Tehran"}
-    ],
-
-    usa:[
-        {name:"آمریکا", tz:"America/New_York"}
-    ],
-
-    europe:[
-        {name:"اروپا", tz:"Europe/Berlin"}
-    ],
-
-    israel:[
-        {name:"اسرائیل", tz:"Asia/Jerusalem"}
-    ]
-
-};
-
-/* =========================
-   LOAD
-========================= */
-
+/* LOAD */
 function load(){
-
     try{
-
-        const saved =
-            localStorage.getItem(STORAGE_KEY);
-
-        state = saved
-            ? JSON.parse(saved)
-            : {};
-
-    }catch(err){
-
-        console.error(err);
-
+        state = JSON.parse(localStorage.getItem(KEY)) || {};
+    }catch(e){
         state = {};
     }
-
-    apply();
+    render();
 }
 
-/* =========================
-   APPLY
-========================= */
-
-function apply(){
-
-    const box =
-        document.getElementById("box");
-
-    const bg =
-        document.getElementById("bg");
-
-    /* SIZE */
-
-    box.style.width =
-        (state.container?.width || 900) + "px";
-
-    box.style.height =
-        (state.container?.height || 180) + "px";
+/* RENDER */
+function render(){
 
     /* BACKGROUND */
+    const bg = document.getElementById("bg");
+    bg.style.background = state.container?.bgColor || "#000";
+    bg.style.opacity = state.container?.opacity ?? 0.6;
 
-    bg.style.background =
-        state.container?.bgColor || "#000";
-
-    bg.style.opacity =
-        state.container?.opacity || .6;
+    /* SIZE */
+    const box = document.querySelector(".container");
+    box.style.width = (state.container?.width || 900) + "px";
+    box.style.height = (state.container?.height || 180) + "px";
 
     /* TITLE */
-
-    const title =
-        document.getElementById("titleText");
-
-    title.innerText =
+    document.getElementById("titleText").innerText =
         state.title?.text || "";
 
-    title.style.fontSize =
-        (state.title?.size || 28) + "px";
-
-    title.style.color =
-        state.title?.color || "#fff";
-
-    title.style.fontFamily =
-        state.title?.font || "Vazirmatn";
-
-    title.style.fontWeight =
-        state.title?.weight || 700;
-
     /* SUBTITLE */
-
-    const sub =
-        document.getElementById("subtitleText");
-
-    sub.innerText =
+    document.getElementById("subtitleText").innerText =
         state.subtitle?.text || "";
 
-    sub.style.fontSize =
-        (state.subtitle?.size || 18) + "px";
-
-    sub.style.color =
-        state.subtitle?.color || "#ddd";
-
-    sub.style.fontFamily =
-        state.subtitle?.font || "Vazirmatn";
-
-    sub.style.fontWeight =
-        state.subtitle?.weight || 400;
-
     /* LOGO */
-
-    const logo =
-        document.getElementById("logoImg");
+    const logo = document.getElementById("logoImg");
 
     if(state.logo?.url){
-
         logo.src = state.logo.url;
-
         logo.style.display = "block";
-
     }else{
-
         logo.style.display = "none";
     }
 
     /* ICON */
+    const icon = document.getElementById("iconImg");
 
-    applyIcon();
+    if(state.icon?.type && state.icon.type !== "off"){
+
+        icon.style.display = "block";
+
+        if(state.icon.type === "live"){
+            icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
+        }
+
+        if(state.icon.type === "breaking"){
+            icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
+        }
+
+        if(state.icon.type === "alert"){
+            icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
+        }
+
+        if(state.icon.type === "custom"){
+            icon.src = state.icon.url || "";
+        }
+
+    } else {
+        icon.style.display = "none";
+    }
 
     /* CLOCK */
-
-    applyClock();
-
-    /* TRANSITION */
-
-    applyTransition();
+    setupClock();
 }
 
-/* =========================
-   ICON
-========================= */
+/* CLOCK FIXED (NO LOOP BUG) */
+function setupClock(){
 
-function applyIcon(){
+    clearInterval(clockTimer);
 
-    const icon =
-        document.getElementById("iconImg");
-
-    const box =
-        document.querySelector(".statusBox");
-
-    if(!state.icon || state.icon.type === "off"){
-
-        icon.style.display = "none";
-
-        return;
-    }
-
-    icon.style.display = "block";
-
-    if(state.icon.type === "live"){
-
-        icon.src =
-        "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
-    }
-
-    if(state.icon.type === "breaking"){
-
-        icon.src =
-        "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
-    }
-
-    if(state.icon.type === "alert"){
-
-        icon.src =
-        "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
-    }
-
-    if(state.icon.type === "custom"){
-
-        icon.src =
-        state.icon.url || "";
-    }
-
-    icon.style.width =
-        (state.icon.size || 90) + "px";
-
-    icon.style.height =
-        (state.icon.size || 90) + "px";
-
-    if(state.icon.position === "left"){
-
-        box.style.order = "1";
-
-    }else{
-
-        box.style.order = "3";
-    }
-
-}
-
-/* =========================
-   CLOCK
-========================= */
-
-function applyClock(){
-
-    clearInterval(clockInterval);
-
-    const clock =
-        document.getElementById("clock");
+    const el = document.getElementById("clock");
 
     if(!state.clock?.enabled){
-
-        clock.innerHTML = "";
-
+        el.innerHTML = "";
         return;
     }
 
-    const mode =
-        state.clock?.mode || "all";
+    const zones = [
+        {name:"ایران", tz:"Asia/Tehran"},
+        {name:"اروپا", tz:"Europe/Berlin"},
+        {name:"آمریکا", tz:"America/New_York"},
+        {name:"اسرائیل", tz:"Asia/Jerusalem"}
+    ];
 
-    const activeZones =
-        zones[mode] || zones.all;
+    function update(){
 
-    const interval =
-        (state.clock?.interval || 10) * 1000;
+        const z = zones[zoneIndex];
 
-    function updateClock(){
+        const time = new Date().toLocaleTimeString("fa-IR",{
+            timeZone:z.tz,
+            hour:"2-digit",
+            minute:"2-digit",
+            hour12:false
+        });
 
-        const zone =
-            activeZones[currentZone];
+        el.innerHTML =
+            `<div class="clock-country">${z.name}</div>
+             <div class="clock-time">${time}</div>`;
 
-        const time =
-            new Date().toLocaleTimeString(
-                "fa-IR",
-                {
-                    timeZone:zone.tz,
-                    hour:"2-digit",
-                    minute:"2-digit",
-                    hour12:false
-                }
-            );
-
-        clock.innerHTML = `
-            <div class="clock-country"
-                 style="font-size:${state.clock?.countrySize || 14}px">
-                 ${zone.name}
-            </div>
-
-            <div class="clock-time"
-                 style="font-size:${state.clock?.timeSize || 24}px">
-                 ${time}
-            </div>
-        `;
-
-        currentZone++;
-
-        if(currentZone >= activeZones.length){
-            currentZone = 0;
-        }
+        zoneIndex++;
+        if(zoneIndex >= zones.length) zoneIndex = 0;
     }
 
-    updateClock();
+    update();
 
-    clockInterval =
-        setInterval(updateClock, interval);
-}
-
-/* =========================
-   TRANSITION
-========================= */
-
-function applyTransition(){
-
-    const box =
-        document.getElementById("box");
-
-    box.classList.remove("fade");
-
-    void box.offsetWidth;
-
-    box.classList.add(
-        state.transition?.type || "fade"
+    clockTimer = setInterval(
+        update,
+        (state.clock?.interval || 10) * 1000
     );
 }
 
-/* =========================
-   EVENTS
-========================= */
+/* EVENTS */
+window.addEventListener("storage", load);
+window.addEventListener("broadcast_update", load);
 
-window.addEventListener(
-    "storage",
-    load
-);
-
-window.addEventListener(
-    "broadcast_update",
-    load
-);
-
-/* =========================
-   INIT
-========================= */
-
+/* INIT */
 load();
-
-setInterval(load, 1000);
 
 </script>
 
