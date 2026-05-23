@@ -1,465 +1,403 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Broadcast Display</title>
 
+<!-- FONT CSS -->
 <link rel="stylesheet" href="assets/fonts/fonts.css">
+
+<title>Broadcast Display</title>
 
 <style>
 
-*{
-  box-sizing:border-box;
-}
-
-html,body{
+body{
   margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
   background:transparent;
-  font-family:Vazirmatn,IRANYekanX,IRANSansX,sans-serif;
+  overflow:hidden;
+  font-family: Vazirmatn, IRANYekanX, IRANSansX;
 }
 
+/* =========================
+   OUTER WRAPPER
+========================= */
 .container{
   position:fixed;
-  left:50%;
   bottom:60px;
+  left:50%;
   transform:translateX(-50%);
-
-  width:1000px;
-  height:180px;
-
-  border-radius:18px;
-  overflow:hidden;
-
   display:flex;
-
-  z-index:999;
-
+  border-radius:16px;
+  overflow:hidden;
+  align-items:stretch;
+  z-index:1;
+  background:transparent;
+  width:auto;
+  min-width:900px;
   isolation:isolate;
+  contain:layout paint;
 }
 
-.bg{
+/* =========================
+   BACKGROUND LAYER
+========================= */
+.bg-layer{
   position:absolute;
   inset:0;
-  background:#000;
-  opacity:.5;
   z-index:0;
 }
 
-.inner{
+/* =========================
+   CONTENT LAYER
+========================= */
+.content-layer{
   position:relative;
   z-index:2;
-
   display:flex;
+  flex-direction:row;
+  align-items:stretch;
   width:100%;
   height:100%;
-
   direction:ltr;
 }
 
-.logoArea{
-  width:210px;
-  min-width:210px;
-
+/* =========================
+   LOGO
+========================= */
+.logo{
+  order:1;
+  width:200px;
+  height:100%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:space-between;
-
-  background:rgba(0,0,0,.18);
-
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-
+  background:rgba(0,0,0,0.2);
+  backdrop-filter:blur(8px);
+  box-sizing:border-box;
+  flex-shrink:0;
   overflow:hidden;
 }
 
-.logoArea img{
+.logo img{
   width:130px;
   height:130px;
   object-fit:contain;
-  margin-top:8px;
   display:none;
+  flex-shrink:0;
 }
 
+/* =========================
+   CLOCK
+========================= */
 .clock{
-  width:100%;
-  text-align:center;
-  color:#fff;
-  padding-bottom:10px;
-}
-
-.clock-country{
-  font-weight:800;
-  opacity:.85;
-  margin-bottom:4px;
-}
-
-.clock-time{
-  font-weight:900;
-}
-
-.content{
-  flex:1;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  overflow:hidden;
-}
-
-.textWrap{
-  width:100%;
-  max-width:1100px;
-
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-
-  gap:10px;
-
-  padding:0 70px;
-
+  width:100%;
+  height:100%;
+  margin-top:auto;
+  margin-bottom:8px;
+  line-height:1.0;
+  color:#fff;
   text-align:center;
+}
+
+.clock-country{
+  font-size:24px;
+  opacity:0.8;
+  white-space:nowrap;
+  margin-bottom:4px;
+  font-weight:800;
+}
+
+.clock-time{
+  font-size:24px;
+  font-weight:800;
+  white-space:nowrap;
+  line-height:1;
+}
+
+/* =========================
+   TEXT AREA
+========================= */
+.content{
+  order:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+  min-width:500px;
+  gap:20px;
+  flex:1;
+  overflow:hidden;
+}
+
+/* =========================
+   TEXT BLOCK
+========================= */
+.text{
+  order:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  width:100%;
+  max-width:1000px;
+  padding:0 80px;
+  box-sizing:border-box;
+  margin:0 auto;
+  gap:10px;
   direction:rtl;
 }
 
 .title{
-  width:100%;
-
+  font-size:28px;
   color:#fff;
-  font-size:32px;
-  font-weight:800;
-
-  white-space:nowrap;
+  text-align:center;
   overflow:hidden;
   text-overflow:ellipsis;
+  white-space:nowrap;
+  width:100%;
 }
 
 .subtitle{
-  width:100%;
-
-  color:#ddd;
   font-size:18px;
-
-  white-space:nowrap;
+  color:#ddd;
+  opacity:0.9;
+  text-align:center;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
   overflow:hidden;
-  text-overflow:ellipsis;
+  margin-top:2px;
+  margin-bottom:10px;
+  width:100%;
 }
 
-.iconArea{
-  width:130px;
-  min-width:130px;
-
+/* =========================
+   ICON
+========================= */
+.statusBox{
+  width:100px;
+  height:100%;
+  margin-right:20px;
+  order:3;
   display:flex;
   align-items:center;
   justify-content:center;
-
-  padding:10px;
+  margin-left:auto;
+  flex-shrink:0;
 }
 
-.iconArea img{
-  width:90px;
-  height:90px;
+.statusIcon{
+  width:200px;
+  height:200px;
   object-fit:contain;
   display:none;
 }
 
-.fade{
-  animation:fadeAnim .5s ease;
-}
+/* =========================
+   ANIMATIONS
+========================= */
+.fade{animation:fadeIn 0.5s ease}
+.slide{animation:slideIn 0.5s ease}
+.zoom{animation:zoomIn 0.5s ease}
+.glitch{animation:glitch 0.4s infinite}
+.typewriter{overflow:hidden;white-space:nowrap;animation:typing 1s steps(30)}
 
-.slide{
-  animation:slideAnim .5s ease;
-}
-
-.zoom{
-  animation:zoomAnim .5s ease;
-}
-
-@keyframes fadeAnim{
-  from{opacity:0}
-  to{opacity:1}
-}
-
-@keyframes slideAnim{
-  from{
-    opacity:0;
-    transform:translateX(-50%) translateY(25px);
-  }
-  to{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
-  }
-}
-
-@keyframes zoomAnim{
-  from{
-    opacity:0;
-    transform:translateX(-50%) scale(.95);
-  }
-  to{
-    opacity:1;
-    transform:translateX(-50%) scale(1);
-  }
-}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes zoomIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes typing{from{width:0}to{width:100%}}
 
 </style>
 </head>
+
 <body>
 
-<div class="container fade" id="box">
+<div class="container" id="box">
 
-  <div class="bg" id="bg"></div>
+  <div class="bg-layer" id="bg"></div>
 
-  <div class="inner">
+  <div class="content-layer">
 
-    <div class="logoArea">
+    <!-- LOGO -->
+    <div class="logo">
       <img id="logoImg">
       <div class="clock" id="clock"></div>
     </div>
 
+    <!-- TEXT -->
     <div class="content">
-      <div class="textWrap">
-        <div class="title" id="title"></div>
-        <div class="subtitle" id="subtitle"></div>
+      <div class="text">
+        <div class="title" id="titleText"></div>
+        <div class="subtitle" id="subtitleText"></div>
       </div>
     </div>
 
-    <div class="iconArea" id="iconArea">
-      <img id="iconImg">
+    <!-- ICON -->
+    <div class="statusBox">
+      <img id="iconImg" class="statusIcon">
     </div>
 
   </div>
-
 </div>
 
 <script>
-
-const STORAGE_KEY = 'broadcast_overlay_state';
+const STORAGE_KEY = "broadcast_settings";
 
 let state = {};
-let lastRaw = '';
+let clockIntervalId = null;
+let currentZoneIndex = 0;
 
-function defaultState(){
+/* TIMEZONES */
+const zones = [
+  { name:"ایران", timezone:"Asia/Tehran" },
+  { name:"اروپا", timezone:"Europe/Berlin" },
+  { name:"آمریکا", timezone:"America/New_York" },
+  { name:"اسرائیل", timezone:"Asia/Jerusalem" }
+];
 
-  return {
-
-    title:{
-      text:'Breaking News',
-      size:32,
-      color:'#ffffff',
-      weight:800,
-      font:'Vazirmatn'
-    },
-
-    subtitle:{
-      text:'Subtitle Here',
-      size:18,
-      color:'#dddddd',
-      weight:400,
-      font:'Vazirmatn'
-    },
-
-    container:{
-      width:1000,
-      height:180,
-      bgColor:'#000000',
-      opacity:.5
-    },
-
-    logo:{
-      url:''
-    },
-
-    icon:{
-      type:'off',
-      url:'',
-      size:90,
-      position:'right'
-    },
-
-    clock:{
-      enabled:true,
-      timezone:'Asia/Tehran',
-      label:'ایران',
-      countrySize:16,
-      timeSize:24
-    },
-
-    transition:{
-      type:'fade',
-      duration:500
-    }
-
-  };
-}
-
+/* LOAD */
 function load(){
-
-  try{
-
-    const raw = localStorage.getItem(STORAGE_KEY);
-
-    if(!raw) return;
-
-    if(raw === lastRaw) return;
-
-    lastRaw = raw;
-
-    state = JSON.parse(raw);
-
-    apply();
-
-  }catch(err){
-
-    console.error(err);
-
-  }
+  state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  apply();
 }
 
+/* APPLY UI */
 function apply(){
 
-  const box = document.getElementById('box');
-  const bg = document.getElementById('bg');
+  const box = document.getElementById("box");
+  const bg = document.getElementById("bg");
 
-  box.style.width = state.container.width + 'px';
-  box.style.height = state.container.height + 'px';
+  if(state.container){
+    box.style.width = (state.container.width || 900) + "px";
+    box.style.height = (state.container.height || 180) + "px";
+  }
 
-  bg.style.background = state.container.bgColor;
-  bg.style.opacity = state.container.opacity;
+  if(state.container){
+    bg.style.background = state.container.bgColor || "#000";
+    bg.style.opacity = state.container.opacity || 0.5;
+  }
 
-  const title = document.getElementById('title');
-
-  title.innerText = state.title.text;
-  title.style.fontSize = state.title.size + 'px';
-  title.style.color = state.title.color;
-  title.style.fontWeight = state.title.weight;
-  title.style.fontFamily = state.title.font;
-
-  const subtitle = document.getElementById('subtitle');
-
-  subtitle.innerText = state.subtitle.text;
-  subtitle.style.fontSize = state.subtitle.size + 'px';
-  subtitle.style.color = state.subtitle.color;
-  subtitle.style.fontWeight = state.subtitle.weight;
-  subtitle.style.fontFamily = state.subtitle.font;
-
-  const logo = document.getElementById('logoImg');
-
-  if(state.logo.url){
-
+  const logo = document.getElementById("logoImg");
+  if(state.logo?.url){
     logo.src = state.logo.url;
-    logo.style.display = 'block';
-
-  }else{
-
-    logo.style.display = 'none';
+    logo.style.display = "block";
+  } else {
+    logo.style.display = "none";
   }
 
-  const iconArea = document.getElementById('iconArea');
-  const icon = document.getElementById('iconImg');
-
-  iconArea.style.order =
-    state.icon.position === 'left'
-      ? 0
-      : 3;
-
-  if(state.icon.type === 'off'){
-
-    icon.style.display = 'none';
-
-  }else{
-
-    icon.style.display = 'block';
-
-    if(state.icon.type === 'custom'){
-      icon.src = state.icon.url;
-    }
-
-    if(state.icon.type === 'live'){
-      icon.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Live_icon.svg/512px-Live_icon.svg.png';
-    }
-
-    if(state.icon.type === 'breaking'){
-      icon.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Breaking_News.svg/512px-Breaking_News.svg.png';
-    }
-
-    if(state.icon.type === 'alert'){
-      icon.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/OOjs_UI_icon_alert-destructive.svg/512px-OOjs_UI_icon_alert-destructive.svg.png';
-    }
-
-    icon.style.width = state.icon.size + 'px';
-    icon.style.height = state.icon.size + 'px';
+  const title = document.getElementById("titleText");
+  if(state.title){
+    title.innerText = state.title.text || "";
+    title.style.fontSize = (state.title.size || 28) + "px";
+    title.style.color = state.title.color || "#fff";
+    title.style.fontWeight = state.title.weight || 700;
   }
 
-  const clock = document.getElementById('clock');
+  const sub = document.getElementById("subtitleText");
+  if(state.subtitle){
+    sub.innerText = state.subtitle.text || "";
+    sub.style.fontSize = (state.subtitle.size || 18) + "px";
+    sub.style.color = state.subtitle.color || "#ddd";
+  }
 
-  if(!state.clock.enabled){
+  const icon = document.getElementById("iconImg");
+  if(state.icon && state.icon.type !== "off"){
+    icon.style.display = "block";
 
-    clock.style.display = 'none';
+    if(state.icon.type === "custom") icon.src = state.icon.url;
+    if(state.icon.type === "live")
+      icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
 
-  }else{
+    if(state.icon.type === "breaking")
+      icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
 
-    clock.style.display = 'block';
+    if(state.icon.type === "alert")
+      icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
 
-    const time = new Date().toLocaleTimeString('fa-IR',{
-      timeZone:state.clock.timezone,
-      hour:'2-digit',
-      minute:'2-digit',
-      hour12:false
-    });
+    icon.style.width = (state.icon.size || 200) + "px";
+    icon.style.height = (state.icon.size || 200) + "px";
 
-    clock.innerHTML = `
-      <div class="clock-country"
-        style="font-size:${state.clock.countrySize}px">
-        ${state.clock.label}
-      </div>
-
-      <div class="clock-time"
-        style="font-size:${state.clock.timeSize}px">
-        ${time}
-      </div>
-    `;
+  } else {
+    icon.style.display = "none";
   }
 
   applyTransition();
+
+  if(state.clock?.enabled){
+    document.getElementById("clock").style.display = "flex";
+    startClock();
+  } else {
+    stopClock();
+  }
 }
 
+/* TRANSITION */
 function applyTransition(){
+  const type = state.transition?.type || "fade";
+  const box = document.getElementById("box");
 
-  const box = document.getElementById('box');
-
-  box.classList.remove('fade','slide','zoom');
-
+  box.classList.remove("fade","slide","zoom","glitch","typewriter");
   void box.offsetWidth;
-
-  box.style.animationDuration =
-    state.transition.duration + 'ms';
-
-  box.classList.add(
-    state.transition.type
-  );
+  box.classList.add(type);
 }
 
-if(!localStorage.getItem(STORAGE_KEY)){
+/* CLOCK */
+function startClock(){
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(defaultState())
-  );
+  stopClock();
+
+  currentZoneIndex = 0;
+
+  const interval = (state.clock?.interval || 10) * 1000;
+  const clockEl = document.getElementById("clock");
+
+  updateClock();
+
+  clockIntervalId = setInterval(()=>{
+    currentZoneIndex++;
+    if(currentZoneIndex >= zones.length) currentZoneIndex = 0;
+    updateClock();
+  }, interval);
+
+  function updateClock(){
+
+    const zone = zones[currentZoneIndex];
+
+    const time = new Date().toLocaleTimeString("fa-IR",{
+      timeZone: zone.timezone,
+      hour:"2-digit",
+      minute:"2-digit",
+      hour12:false
+    });
+
+    clockEl.innerHTML = `
+      <div class="clock-country">${zone.name}</div>
+      <div class="clock-time">${time}</div>
+    `;
+  }
 }
 
-setInterval(load,120);
-setInterval(apply,1000);
+/* STOP CLOCK */
+function stopClock(){
+  if(clockIntervalId){
+    clearInterval(clockIntervalId);
+    clockIntervalId = null;
+  }
+  document.getElementById("clock").innerHTML = "";
+}
+
+/* EVENTS */
+window.addEventListener("storage", load);
+window.addEventListener("broadcast_update", load);
 
 load();
-
 </script>
+
 </body>
 </html>
