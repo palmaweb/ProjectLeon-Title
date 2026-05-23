@@ -327,9 +327,22 @@ function saveState(){
     JSON.stringify(state)
   );
 
-  window.dispatchEvent(
-    new Event("broadcast_update")
-  );
+  function saveState(){
+
+  try{
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(state)
+    );
+
+  }catch(err){
+
+    console.error(err);
+
+  }
+
+}
 
 }
 
