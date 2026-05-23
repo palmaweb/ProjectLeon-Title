@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +12,15 @@
 
 <style>
 
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
   background:transparent;
   overflow:hidden;
-  font-family: Vazirmatn, IRANYekanX, IRANSansX;
+  font-family:Vazirmatn, IRANYekanX, IRANSansX, sans-serif;
 }
 
 /* =========================
@@ -35,7 +40,6 @@ body{
   width:auto;
   min-width:900px;
   isolation:isolate;
-  contain:layout paint;
 }
 
 /* =========================
@@ -45,6 +49,7 @@ body{
   position:absolute;
   inset:0;
   z-index:0;
+  pointer-events:none;
 }
 
 /* =========================
@@ -67,15 +72,18 @@ body{
 .logo{
   order:1;
   width:200px;
+  min-width:200px;
   height:100%;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:space-between;
-  background:rgba(0,0,0,0.2);
+
+  background:rgba(0,0,0,0.25);
+
   backdrop-filter:blur(8px);
-  box-sizing:border-box;
-  flex-shrink:0;
+  -webkit-backdrop-filter:blur(8px);
+
   overflow:hidden;
 }
 
@@ -85,6 +93,7 @@ body{
   object-fit:contain;
   display:none;
   flex-shrink:0;
+  margin-top:10px;
 }
 
 /* =========================
@@ -96,10 +105,9 @@ body{
   align-items:center;
   justify-content:center;
   width:100%;
-  height:100%;
   margin-top:auto;
-  margin-bottom:8px;
-  line-height:1.0;
+  margin-bottom:10px;
+  line-height:1.1;
   color:#fff;
   text-align:center;
 }
@@ -129,7 +137,6 @@ body{
   justify-content:center;
   text-align:center;
   min-width:500px;
-  gap:20px;
   flex:1;
   overflow:hidden;
 }
@@ -138,7 +145,6 @@ body{
    TEXT BLOCK
 ========================= */
 .text{
-  order:2;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -147,7 +153,6 @@ body{
   width:100%;
   max-width:1000px;
   padding:0 80px;
-  box-sizing:border-box;
   margin:0 auto;
   gap:10px;
   direction:rtl;
@@ -161,6 +166,7 @@ body{
   text-overflow:ellipsis;
   white-space:nowrap;
   width:100%;
+  font-weight:700;
 }
 
 .subtitle{
@@ -168,12 +174,16 @@ body{
   color:#ddd;
   opacity:0.9;
   text-align:center;
+
   display:-webkit-box;
   -webkit-line-clamp:1;
   -webkit-box-orient:vertical;
+
   overflow:hidden;
+
   margin-top:2px;
   margin-bottom:10px;
+
   width:100%;
 }
 
@@ -181,20 +191,22 @@ body{
    ICON
 ========================= */
 .statusBox{
-  width:100px;
+  width:130px;
+  min-width:130px;
   height:100%;
-  margin-right:20px;
   order:3;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  margin-left:auto;
+
+  padding:10px;
   flex-shrink:0;
 }
 
 .statusIcon{
-  width:200px;
-  height:200px;
+  width:100px;
+  height:100px;
   object-fit:contain;
   display:none;
 }
@@ -202,16 +214,62 @@ body{
 /* =========================
    ANIMATIONS
 ========================= */
-.fade{animation:fadeIn 0.5s ease}
-.slide{animation:slideIn 0.5s ease}
-.zoom{animation:zoomIn 0.5s ease}
-.glitch{animation:glitch 0.4s infinite}
-.typewriter{overflow:hidden;white-space:nowrap;animation:typing 1s steps(30)}
 
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes zoomIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes typing{from{width:0}to{width:100%}}
+.fade{
+  animation:fadeIn .5s ease;
+}
+
+.slide{
+  animation:slideIn .5s ease;
+}
+
+.zoom{
+  animation:zoomIn .5s ease;
+}
+
+.glitch{
+  animation:glitch .4s infinite;
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+  }
+  to{
+    opacity:1;
+  }
+}
+
+@keyframes slideIn{
+  from{
+    transform:translateX(-50%) translateY(20px);
+    opacity:0;
+  }
+  to{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+  }
+}
+
+@keyframes zoomIn{
+  from{
+    transform:translateX(-50%) scale(.95);
+    opacity:0;
+  }
+  to{
+    transform:translateX(-50%) scale(1);
+    opacity:1;
+  }
+}
+
+/* =========================
+   SAFETY FOR CHROME
+========================= */
+
+img{
+  user-select:none;
+  -webkit-user-drag:none;
+}
 
 </style>
 </head>
@@ -226,177 +284,335 @@ body{
 
     <!-- LOGO -->
     <div class="logo">
-      <img id="logoImg">
+
+      <img id="logoImg" alt="Logo">
+
       <div class="clock" id="clock"></div>
+
     </div>
 
     <!-- TEXT -->
     <div class="content">
+
       <div class="text">
+
         <div class="title" id="titleText"></div>
+
         <div class="subtitle" id="subtitleText"></div>
+
       </div>
+
     </div>
 
     <!-- ICON -->
     <div class="statusBox">
-      <img id="iconImg" class="statusIcon">
+
+      <img id="iconImg" class="statusIcon" alt="Status">
+
     </div>
 
   </div>
+
 </div>
 
 <script>
+
 const STORAGE_KEY = "broadcast_settings";
 
 let state = {};
 let clockIntervalId = null;
 let currentZoneIndex = 0;
 
-/* TIMEZONES */
+/* =========================
+   TIME ZONES
+========================= */
+
 const zones = [
-  { name:"ایران", timezone:"Asia/Tehran" },
-  { name:"اروپا", timezone:"Europe/Berlin" },
-  { name:"آمریکا", timezone:"America/New_York" },
-  { name:"اسرائیل", timezone:"Asia/Jerusalem" }
+  {
+    name:"ایران",
+    timezone:"Asia/Tehran"
+  },
+  {
+    name:"اروپا",
+    timezone:"Europe/Berlin"
+  },
+  {
+    name:"آمریکا",
+    timezone:"America/New_York"
+  },
+  {
+    name:"اسرائیل",
+    timezone:"Asia/Jerusalem"
+  }
 ];
 
-/* LOAD */
+/* =========================
+   SAFE LOAD
+========================= */
+
 function load(){
-  state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+  try{
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    state = saved ? JSON.parse(saved) : {};
+
+  }catch(error){
+
+    console.error("LocalStorage Error:", error);
+
+    state = {};
+  }
+
   apply();
 }
 
-/* APPLY UI */
+/* =========================
+   APPLY UI
+========================= */
+
 function apply(){
 
   const box = document.getElementById("box");
   const bg = document.getElementById("bg");
 
-  if(state.container){
-    box.style.width = (state.container.width || 900) + "px";
-    box.style.height = (state.container.height || 180) + "px";
-  }
+  /* CONTAINER */
 
-  if(state.container){
-    bg.style.background = state.container.bgColor || "#000";
-    bg.style.opacity = state.container.opacity || 0.5;
-  }
+  const container = state.container || {};
+
+  box.style.width = (container.width || 900) + "px";
+  box.style.height = (container.height || 180) + "px";
+
+  bg.style.background = container.bgColor || "#000";
+  bg.style.opacity = container.opacity ?? 0.5;
+
+  /* LOGO */
 
   const logo = document.getElementById("logoImg");
+
   if(state.logo?.url){
+
     logo.src = state.logo.url;
     logo.style.display = "block";
-  } else {
+
+  }else{
+
+    logo.removeAttribute("src");
     logo.style.display = "none";
   }
 
+  /* TITLE */
+
   const title = document.getElementById("titleText");
-  if(state.title){
-    title.innerText = state.title.text || "";
-    title.style.fontSize = (state.title.size || 28) + "px";
-    title.style.color = state.title.color || "#fff";
-    title.style.fontWeight = state.title.weight || 700;
-  }
+
+  title.innerText = state.title?.text || "";
+
+  title.style.fontSize =
+    (state.title?.size || 28) + "px";
+
+  title.style.color =
+    state.title?.color || "#fff";
+
+  title.style.fontWeight =
+    state.title?.weight || 700;
+
+  /* SUBTITLE */
 
   const sub = document.getElementById("subtitleText");
-  if(state.subtitle){
-    sub.innerText = state.subtitle.text || "";
-    sub.style.fontSize = (state.subtitle.size || 18) + "px";
-    sub.style.color = state.subtitle.color || "#ddd";
-  }
+
+  sub.innerText = state.subtitle?.text || "";
+
+  sub.style.fontSize =
+    (state.subtitle?.size || 18) + "px";
+
+  sub.style.color =
+    state.subtitle?.color || "#ddd";
+
+  /* ICON */
 
   const icon = document.getElementById("iconImg");
+
   if(state.icon && state.icon.type !== "off"){
+
     icon.style.display = "block";
 
-    if(state.icon.type === "custom") icon.src = state.icon.url;
-    if(state.icon.type === "live")
-      icon.src = "https://static.vecteezy.com/system/resources/previews/023/456/825/non_2x/red-live-button-icon-for-tv-and-streaming-on-a-transparent-background-free-png.png";
+    switch(state.icon.type){
 
-    if(state.icon.type === "breaking")
-      icon.src = "https://static.vecteezy.com/system/resources/thumbnails/008/506/377/small/breaking-news-red-3d-text-free-png.png";
+      case "custom":
+        icon.src = state.icon.url || "";
+      break;
 
-    if(state.icon.type === "alert")
-      icon.src = "https://uxwing.com/wp-content/themes/uxwing/download/signs-and-symbols/red-alert-icon.png";
+      case "live":
+        icon.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Live_icon.svg/512px-Live_icon.svg.png";
+      break;
 
-    icon.style.width = (state.icon.size || 200) + "px";
-    icon.style.height = (state.icon.size || 200) + "px";
+      case "breaking":
+        icon.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Breaking_News.svg/512px-Breaking_News.svg.png";
+      break;
 
-  } else {
+      case "alert":
+        icon.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/OOjs_UI_icon_alert-destructive.svg/512px-OOjs_UI_icon_alert-destructive.svg.png";
+      break;
+    }
+
+    icon.style.width =
+      (state.icon.size || 100) + "px";
+
+    icon.style.height =
+      (state.icon.size || 100) + "px";
+
+  }else{
+
+    icon.removeAttribute("src");
     icon.style.display = "none";
   }
 
   applyTransition();
 
+  /* CLOCK */
+
+  const clockEl = document.getElementById("clock");
+
   if(state.clock?.enabled){
-    document.getElementById("clock").style.display = "flex";
+
+    clockEl.style.display = "flex";
     startClock();
-  } else {
+
+  }else{
+
+    clockEl.style.display = "none";
     stopClock();
   }
 }
 
-/* TRANSITION */
-function applyTransition(){
-  const type = state.transition?.type || "fade";
-  const box = document.getElementById("box");
+/* =========================
+   TRANSITION
+========================= */
 
-  box.classList.remove("fade","slide","zoom","glitch","typewriter");
+function applyTransition(){
+
+  const type =
+    state.transition?.type || "fade";
+
+  const box =
+    document.getElementById("box");
+
+  box.classList.remove(
+    "fade",
+    "slide",
+    "zoom",
+    "glitch"
+  );
+
   void box.offsetWidth;
+
   box.classList.add(type);
 }
 
-/* CLOCK */
+/* =========================
+   CLOCK
+========================= */
+
 function startClock(){
 
   stopClock();
 
   currentZoneIndex = 0;
 
-  const interval = (state.clock?.interval || 10) * 1000;
-  const clockEl = document.getElementById("clock");
+  const interval =
+    (state.clock?.interval || 10) * 1000;
 
   updateClock();
 
   clockIntervalId = setInterval(()=>{
+
     currentZoneIndex++;
-    if(currentZoneIndex >= zones.length) currentZoneIndex = 0;
+
+    if(currentZoneIndex >= zones.length){
+      currentZoneIndex = 0;
+    }
+
     updateClock();
+
   }, interval);
+}
 
-  function updateClock(){
+function updateClock(){
 
-    const zone = zones[currentZoneIndex];
+  const clockEl =
+    document.getElementById("clock");
 
-    const time = new Date().toLocaleTimeString("fa-IR",{
-      timeZone: zone.timezone,
-      hour:"2-digit",
-      minute:"2-digit",
-      hour12:false
-    });
+  const zone = zones[currentZoneIndex];
+
+  try{
+
+    const time =
+      new Date().toLocaleTimeString(
+        "fa-IR",
+        {
+          timeZone: zone.timezone,
+          hour:"2-digit",
+          minute:"2-digit",
+          hour12:false
+        }
+      );
 
     clockEl.innerHTML = `
-      <div class="clock-country">${zone.name}</div>
-      <div class="clock-time">${time}</div>
+      <div class="clock-country">
+        ${zone.name}
+      </div>
+
+      <div class="clock-time">
+        ${time}
+      </div>
     `;
+
+  }catch(error){
+
+    console.error("Clock Error:", error);
   }
 }
 
-/* STOP CLOCK */
+/* =========================
+   STOP CLOCK
+========================= */
+
 function stopClock(){
+
   if(clockIntervalId){
+
     clearInterval(clockIntervalId);
+
     clockIntervalId = null;
   }
+
   document.getElementById("clock").innerHTML = "";
 }
 
-/* EVENTS */
-window.addEventListener("storage", load);
-window.addEventListener("broadcast_update", load);
+/* =========================
+   EVENTS
+========================= */
 
-load();
+window.addEventListener(
+  "storage",
+  load
+);
+
+window.addEventListener(
+  "broadcast_update",
+  load
+);
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  load
+);
+
 </script>
 
 </body>
