@@ -1,15 +1,21 @@
 function getState() {
-  var data = localStorage.getItem("subtitle");
+  var data = localStorage.getItem("subtitle_state");
+
   return data ? JSON.parse(data) : {
+    width: 1200,
+    height: 150,
     logo: "",
     icon: "",
-    t1: "تیتر اصلی",
-    t2: "زیرتیتر"
+    title1: "تیتر اصلی",
+    title2: "زیرتیتر"
   };
 }
 
-function setState(s) {
-  localStorage.setItem("subtitle", JSON.stringify(s));
+function setState(state) {
+  localStorage.setItem("subtitle_state", JSON.stringify(state));
+
+  // این خط باعث میشه viewer سریع بفهمه تغییر شده
+  localStorage.setItem("subtitle_ping", Date.now());
 }
 
 /* =======================
