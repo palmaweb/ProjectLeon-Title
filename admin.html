@@ -149,11 +149,45 @@ input {
 <script src="app.js"></script>
 
 <script>
-function showTab(id){
-  document.querySelectorAll('.card').forEach(c=>c.style.display='none');
-  document.getElementById(id).style.display='block';
+var state = getState();
+
+var width = document.getElementById("width");
+var height = document.getElementById("height");
+var logo = document.getElementById("logo");
+var icon = document.getElementById("icon");
+var t1 = document.getElementById("t1");
+var t2 = document.getElementById("t2");
+
+function save() {
+  state.width = parseInt(width.value || 1200);
+  state.height = parseInt(height.value || 150);
+  state.logo = logo.value;
+  state.icon = icon.value;
+  state.title1 = t1.value;
+  state.title2 = t2.value;
+
+  setState(state);
 }
-showTab('general');
+
+// live update
+width.oninput = save;
+height.oninput = save;
+logo.oninput = save;
+icon.oninput = save;
+t1.oninput = save;
+t2.oninput = save;
+
+// load اولیه
+function load() {
+  width.value = state.width;
+  height.value = state.height;
+  logo.value = state.logo;
+  icon.value = state.icon;
+  t1.value = state.title1;
+  t2.value = state.title2;
+}
+
+load();
 </script>
 
 </body>
