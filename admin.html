@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Broadcast Control Room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="panel">
+
+<h2>🎛 کنترل پخش زنده</h2>
+
+<label>عرض</label>
+<input id="w">
+
+<label>ارتفاع</label>
+<input id="h">
+
+<label>لوگو</label>
+<input id="logo">
+
+<button onclick="setPreset('fox')">FOX Style</button>
+<button onclick="setPreset('news')">NEWS Style</button>
+
+<label>تیتر اصلی</label>
+<input id="t1">
+
+<label>تیتر دوم</label>
+<input id="t2">
+
+</div>
+
+<script src="engine.js"></script>
+<script src="presets.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>
