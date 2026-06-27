@@ -85,5 +85,34 @@ body {
 
 <script src="app.js"></script>
 
+<script>
+var box = document.querySelector(".box");
+
+function render() {
+  var s = getState();
+
+  box.style.width = s.width + "px";
+  box.style.height = s.height + "px";
+
+  document.getElementById("logo").src = s.logo || "";
+  document.getElementById("icon").src = s.icon || "";
+  document.getElementById("t1").innerText = s.title1;
+  document.getElementById("t2").innerText = s.title2;
+}
+
+// اول لود
+render();
+
+// 🔥 real sync بین تب‌ها
+window.addEventListener("storage", function(e) {
+  if (e.key === "subtitle_ping") {
+    render();
+  }
+});
+
+// 🔄 fallback برای Vimix / WebView
+setInterval(render, 1000);
+</script>
+
 </body>
 </html>
