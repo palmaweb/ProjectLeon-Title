@@ -154,6 +154,25 @@ function showTab(id){
   document.getElementById(id).style.display='block';
 }
 showTab('general');
+  function getState() {
+  var data = localStorage.getItem("subtitle_state");
+
+  return data ? JSON.parse(data) : {
+    width: 1200,
+    height: 150,
+    logo: "",
+    icon: "",
+    title1: "تیتر اصلی",
+    title2: "زیرتیتر"
+  };
+}
+
+function setState(state) {
+  localStorage.setItem("subtitle_state", JSON.stringify(state));
+
+  // این خط باعث میشه viewer سریع بفهمه تغییر شده
+  localStorage.setItem("subtitle_ping", Date.now());
+}
 </script>
 
 </body>
