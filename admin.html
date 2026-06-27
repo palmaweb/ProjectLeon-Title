@@ -2,39 +2,33 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Broadcast Control Room</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Admin Panel</title>
+  <style>
+    body{font-family:tahoma;background:#222;color:#fff;padding:20px;}
+    input{width:100%;padding:8px;margin:5px 0;}
+    .card{background:#333;padding:15px;border-radius:10px;}
+  </style>
 </head>
 
 <body>
 
-<div class="panel">
+<div class="card">
+  <h3>پنل مدیریت زیرنویس</h3>
 
-<h2>🎛 کنترل پخش زنده</h2>
+  <label>لوگو URL</label>
+  <input id="logo">
 
-<label>عرض</label>
-<input id="w">
+  <label>آیکون URL</label>
+  <input id="icon">
 
-<label>ارتفاع</label>
-<input id="h">
+  <label>تیتر اصلی</label>
+  <input id="t1">
 
-<label>لوگو</label>
-<input id="logo">
-
-<button onclick="setPreset('fox')">FOX Style</button>
-<button onclick="setPreset('news')">NEWS Style</button>
-
-<label>تیتر اصلی</label>
-<input id="t1">
-
-<label>تیتر دوم</label>
-<input id="t2">
-
+  <label>تیتر دوم</label>
+  <input id="t2">
 </div>
 
-<script src="engine.js"></script>
-<script src="presets.js"></script>
-<script src="admin.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
