@@ -2,31 +2,44 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Broadcast Viewer</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Viewer</title>
+  <style>
+    body { margin:0; background:#111; }
+    .box{
+      position:absolute;
+      bottom:50px;
+      left:50%;
+      transform:translateX(-50%);
+      width:1200px;
+      height:150px;
+      background:#000;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      padding:15px;
+      box-sizing:border-box;
+      border-left:6px solid red;
+      font-family:tahoma;
+    }
+    .logo img, .icon img { width:60px; height:60px; }
+    .text{ flex:1; padding:0 15px; }
+    .t1{ font-size:26px; font-weight:bold; }
+    .t2{ font-size:14px; opacity:0.8; }
+  </style>
 </head>
 
 <body>
 
-<div id="cg" class="cg-box">
-
-  <div class="left">
-    <img id="logo">
+<div class="box">
+  <div class="logo"><img id="logo"></div>
+  <div class="text">
+    <div class="t1" id="t1"></div>
+    <div class="t2" id="t2"></div>
   </div>
-
-  <div class="center">
-    <div id="t1" class="t1"></div>
-    <div id="t2" class="t2"></div>
-  </div>
-
-  <div class="right">
-    <img id="icon">
-  </div>
-
+  <div class="icon"><img id="icon"></div>
 </div>
 
-<script src="engine.js"></script>
-<script src="viewer.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
