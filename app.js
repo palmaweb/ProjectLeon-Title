@@ -45,6 +45,9 @@ if (location.href.indexOf("admin") !== -1) {
   var t1 = document.getElementById("t1");
   var t2 = document.getElementById("t2");
 
+  var status = document.getElementById("status");
+
+  // load saved
   logo.value = s.logo;
   icon.value = s.icon;
   t1.value = s.t1;
@@ -63,4 +66,35 @@ if (location.href.indexOf("admin") !== -1) {
   icon.oninput = update;
   t1.oninput = update;
   t2.oninput = update;
+
+  // 💾 SAVE BUTTON
+  document.getElementById("saveBtn").onclick = function () {
+    update();
+    status.innerText = "✔ ذخیره شد";
+    setTimeout(function(){
+      status.innerText = "";
+    }, 1500);
+  };
+
+  // 🔄 RESET BUTTON
+  document.getElementById("resetBtn").onclick = function () {
+    var defaultState = {
+      logo: "",
+      icon: "",
+      t1: "تیتر اصلی",
+      t2: "زیرتیتر"
+    };
+
+    setState(defaultState);
+
+    logo.value = defaultState.logo;
+    icon.value = defaultState.icon;
+    t1.value = defaultState.t1;
+    t2.value = defaultState.t2;
+
+    status.innerText = "↩ بازنشانی شد";
+    setTimeout(function(){
+      status.innerText = "";
+    }, 1500);
+  };
 }
